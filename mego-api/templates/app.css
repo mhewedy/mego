@@ -1,0 +1,12 @@
+
+textarea {
+    height: 38px !important;
+}
+
+.input-group-text {
+    width: 170px;
+}
+
+.adjusted-checkbox {
+    margin-top: 5px !important;
+}
