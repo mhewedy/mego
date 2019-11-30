@@ -27,11 +27,13 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="basic-addon3">Rooms</span>
         </div>
-        <textarea class="form-control" aria-label="With textarea" placeholder="List of candidate rooms"></textarea>
+        <textarea class="form-control" aria-label="With textarea" placeholder="List of candidate rooms"
+                  :disabled="allRooms"></textarea>
         <div class="input-group-append">
           <div class="input-group-text">
             <div class="form-check">
-              <input class="form-check-input adjusted-checkbox" type="checkbox" id="check1">
+              <input class="form-check-input adjusted-checkbox" type="checkbox" id="check1"
+                     v-on:change="toggleAllRooms()">
               <label class="form-check-label" for="check1">
                 All Rooms
               </label>
@@ -62,7 +64,17 @@
 
 <script>
     export default {
-        name: "Search"
+        name: "Search",
+        data: function () {
+            return {
+                allRooms: false
+            }
+        },
+        methods: {
+            toggleAllRooms: function () {
+                this.allRooms = !this.allRooms
+            }
+        }
     }
 </script>
 
