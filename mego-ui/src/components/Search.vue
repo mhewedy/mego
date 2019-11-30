@@ -56,13 +56,15 @@
     </div>
 
     <div class="row">
-      <button type="button" class="btn btn-secondary btn-lg btn-block">Search</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" v-on:click="search">Search</button>
     </div>
 
   </div>
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
         name: "Search",
         data: function () {
@@ -73,6 +75,10 @@
         methods: {
             toggleAllRooms: function () {
                 this.allRooms = !this.allRooms
+            },
+            search: function () {
+                axios.get("/api/test")
+                    .then(resp => alert(resp.data["key"]))
             }
         }
     }

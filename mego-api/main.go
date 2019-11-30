@@ -1,32 +1,48 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/mhewedy/ews"
-	"github.com/mhewedy/ews/ewsutil"
 	"log"
-	"time"
+	"net/http"
 )
 
 func main() {
 
-	c := ews.NewClientWithConfig(
-		"https://outlook.office365.com/EWS/Exchange.asmx",
-		"example@mhewedy.onmicrosoft.com",
-		"systemsystem@123",
-		&ews.Config{Dump: true},
-	)
+	http.HandleFunc("/api/test", func(w http.ResponseWriter, r *http.Request) {
+		bytes, err := json.Marshal(struct {
+			Key string `json:"key"`
+		}{Key: "Value from server"})
 
-	err := ewsutil.CreateEvent(c,
-		[]string{"mhewedy@mhewedy.onmicrosoft.com", "room001@mhewedy.onmicrosoft.com"},
-		"Meeing in room001",
-		"The email body, as plain text ...",
-		"", time.Now().Add(48*time.Hour), time.Minute*45,
-	)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 
-	if err != nil {
-		log.Fatal("err>: ", err.Error())
-	}
+		w.Header().Set("Content-type", "application/json")
+		_, _ = w.Write(bytes)
+	})
 
-	fmt.Println("--- success ---")
+	fmt.Println("Server start listening on port 3000")
+	log.Fatal(http.ListenAndServe(":3000", nil))
+	/*
+		c := ews.NewClientWithConfig(
+			"https://outlook.office365.com/EWS/Exchange.asmx",
+			"example@mhewedy.onmicrosoft.com",
+			"systemsystem@123",
+			&ews.Config{Dump: true},
+		)
+
+		err := ewsutil.CreateEvent(c,
+			[]string{"mhewedy@mhewedy.onmicrosoft.com", "room001@mhewedy.onmicrosoft.com"},
+			"Meeing in room001",
+			"The email body, as plain text ...",
+			"", time.Now().Add(48*time.Hour), time.Minute*45,
+		)
+
+		if err != nil {
+			log.Fatal("err>: ", err.Error())
+		}
+
+		fmt.Println("--- success ---")
+	*/
 }
