@@ -9,6 +9,12 @@ import (
 
 func main() {
 
+	// TODO build 2 apis
+	// GET /api/user/aggregated-non-available-times > returns list of non-available times
+	// GET /api/room/available-times	> return map of each room and its available time
+
+	// find a one-day calendar component
+
 	http.HandleFunc("/api/test", func(w http.ResponseWriter, r *http.Request) {
 		bytes, err := json.Marshal(struct {
 			Key string `json:"key"`
