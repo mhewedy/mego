@@ -33,7 +33,7 @@
           <div class="input-group-text">
             <div class="form-check">
               <input class="form-check-input adjusted-checkbox" type="checkbox" id="check1"
-                     v-on:change="toggleAllRooms()">
+                     v-on:change="toggleAllRooms()" :checked="allRooms">
               <label class="form-check-label" for="check1">
                 All Rooms
               </label>
@@ -56,6 +56,27 @@
     </div>
 
     <div class="row">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon4">Start time</span>
+        </div>
+        <input type="datetime-local" class="form-control" :disabled="startsNow">
+
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <div class="form-check">
+              <input class="form-check-input adjusted-checkbox" type="checkbox" id="check2"
+                     v-on:change="toggleStartsNow()" :checked="startsNow">
+              <label class="form-check-label" for="check1">
+                Starts immediately
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
       <button type="button" class="btn btn-secondary btn-lg btn-block" v-on:click="search">Search</button>
     </div>
 
@@ -69,12 +90,16 @@
         name: "Search",
         data: function () {
             return {
-                allRooms: false
+                allRooms: true,
+                startsNow: true
             }
         },
         methods: {
             toggleAllRooms: function () {
                 this.allRooms = !this.allRooms
+            },
+            toggleStartsNow: function () {
+                this.startsNow = !this.startsNow
             },
             search: function () {
                 axios.get("/api/test")
