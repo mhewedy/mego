@@ -28,6 +28,7 @@ func main() {
 
 	router.HandleFunc("/api/v1/attendees", attendess.ListAttendees).Methods("GET")
 	router.HandleFunc("/api/v1/attendees/search", attendess.SearchAttendees).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/{email}/photo", attendess.GetPhoto).Methods("GET")
 
 	router.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {

@@ -2,6 +2,7 @@ package attendess
 
 import (
 	"fmt"
+	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"strings"
 	"time"
@@ -14,7 +15,7 @@ type Attendee struct {
 	Image        string `json:"image,omitempty"`
 }
 
-var attendeesIndex []Attendee
+var attendeesIndex map[string]Attendee
 
 func indexAttendees() {
 	const chars = "abcdefghijklmnopqrstuvwxyz"
@@ -28,12 +29,12 @@ func indexAttendees() {
 	}
 
 	var i int
-	var attendeesIndexMap = make(map[string]Attendee)
+	attendeesIndex = make(map[string]Attendee)
 	for {
 		select {
 		case atts := <-result:
 			for _, att := range atts {
-				attendeesIndexMap[att.EmailAddress] = att
+				attendeesIndex[att.EmailAddress] = att
 			}
 			i++
 		case <-time.After(1 * time.Minute):
@@ -44,8 +45,6 @@ func indexAttendees() {
 			break
 		}
 	}
-
-	attendeesIndex = attendeeMapToSlice(attendeesIndexMap)
 }
 
 func indexAttendeesStartsWith(s string) []Attendee {
@@ -115,6 +114,27 @@ func searchAttendees(q string) []Attendee {
 	}
 
 	return attendees
+}
+
+func getAttendeePhoto(c ews.Client, email string) (string, error) {
+
+	attendee := attendeesIndex[email]
+
+	if len(attendee.Image) > 0 {
+		return attendee.Image, nil
+	}
+
+	base64, err := ewsutil.GetUserPhotoBase64(c, email)
+	if err != nil {
+		return "", err
+	}
+
+	if attendeesIndex != nil {
+		attendee.Image = base64
+		attendeesIndex[email] = attendee
+	}
+
+	return base64, nil
 }
 
 // --- utilities

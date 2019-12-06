@@ -2,7 +2,9 @@ package attendess
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/mhewedy/ews"
+	"github.com/mhewedy/mego/api"
 	"net/http"
 	"sync"
 )
@@ -21,4 +23,19 @@ func SearchAttendees(w http.ResponseWriter, r *http.Request) {
 
 	attendees := searchAttendees(r.URL.Query().Get("q"))
 	json.NewEncoder(w).Encode(attendees)
+}
+
+func GetPhoto(w http.ResponseWriter, r *http.Request) {
+
+	email := mux.Vars(r)["email"]
+	base64, err := getAttendeePhoto(EWSClient, email)
+
+	if err != nil {
+		api.HandleError(w, err, http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(w).Encode(struct {
+		Base64 string `json:"base64"`
+	}{Base64: base64})
 }
