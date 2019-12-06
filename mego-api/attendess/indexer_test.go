@@ -2,6 +2,7 @@ package attendess
 
 import (
 	"github.com/stretchr/testify/assert"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -93,4 +94,77 @@ func Test_indexAttendees(t *testing.T) {
 			Image:        "",
 		},
 	})
+}
+
+func Test_searchAttendees(t *testing.T) {
+
+	attendeesIndex = []Attendee{
+		{
+			DisplayName:  "Terry Adams",
+			Title:        "",
+			EmailAddress: "terry@litwareinc.com",
+			Image:        "",
+		},
+		{
+			DisplayName:  "Abbas Fernas",
+			Title:        "",
+			EmailAddress: "abbas@litwareinc.com",
+			Image:        "",
+		},
+	}
+
+	type args struct {
+		q string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []Attendee
+	}{
+		{
+			name: "test start with",
+			args: args{q: "terry"},
+			want: []Attendee{
+				{
+					DisplayName:  "Terry Adams",
+					Title:        "",
+					EmailAddress: "terry@litwareinc.com",
+					Image:        "",
+				},
+			},
+		}, {
+			name: "test contains",
+			args: args{q: "erry"},
+			want: []Attendee{
+				{
+					DisplayName:  "Terry Adams",
+					Title:        "",
+					EmailAddress: "terry@litwareinc.com",
+					Image:        "",
+				},
+			},
+		}, {
+			name: "test contains of last name",
+			args: args{q: "ams"},
+			want: []Attendee{
+				{
+					DisplayName:  "Terry Adams",
+					Title:        "",
+					EmailAddress: "terry@litwareinc.com",
+					Image:        "",
+				},
+			},
+		}, {
+			name: "test non existence",
+			args: args{q: "xyz"},
+			want: []Attendee{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := searchAttendees(tt.args.q); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("searchAttendees() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }

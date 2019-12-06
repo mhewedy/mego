@@ -3,6 +3,7 @@ package attendess
 import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
+	"strings"
 	"time"
 )
 
@@ -71,12 +72,16 @@ func indexAttendeesStartsWith(s string) []Attendee {
 }
 
 func searchAttendees(q string) []Attendee {
-
 	attendees := make([]Attendee, 0)
 
-	for _, aa := range attendeesIndex {
-		attendees = append(attendees, aa)
-	}
+	q = strings.ToLower(q)
 
-	return []Attendee{}
+	for _, aa := range attendeesIndex {
+		if strings.Contains(strings.ToLower(aa.EmailAddress), q) ||
+			strings.Contains(strings.ToLower(aa.DisplayName), q) {
+
+			attendees = append(attendees, aa)
+		}
+	}
+	return attendees
 }
