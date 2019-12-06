@@ -27,10 +27,13 @@ func indexAttendees() {
 	}
 
 	var i int
+	var attendeesIndexMap = make(map[string]Attendee)
 	for {
 		select {
-		case att := <-result:
-			attendeesIndex = append(attendeesIndex, att...)
+		case atts := <-result:
+			for _, att := range atts {
+				attendeesIndexMap[att.EmailAddress] = att
+			}
 			i++
 		case <-time.After(1 * time.Minute):
 			fmt.Println("Timeout!")
@@ -39,6 +42,13 @@ func indexAttendees() {
 		if i == len(chars) {
 			break
 		}
+	}
+
+	var k int
+	attendeesIndex = make([]Attendee, len(attendeesIndexMap))
+	for _, v := range attendeesIndexMap {
+		attendeesIndex[k] = v
+		k++
 	}
 }
 
@@ -59,4 +69,15 @@ func indexAttendeesStartsWith(s string) []Attendee {
 	}
 
 	return attendees
+}
+
+func searchAttendees(q string) []Attendee {
+
+	attendees := make([]Attendee, 0)
+
+	for _, aa := range attendeesIndex {
+		attendees = append(attendees, aa)
+	}
+
+	return []Attendee{}
 }
