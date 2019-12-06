@@ -2,4 +2,7 @@ module github.com/mhewedy/mego
 
 go 1.12
 
-require github.com/mhewedy/ews v1.0.3
+require (
+	github.com/gorilla/mux v1.7.3
+	github.com/mhewedy/ews v1.0.3
+)

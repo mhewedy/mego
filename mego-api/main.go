@@ -1,55 +1,41 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	"github.com/mhewedy/ews"
 	_ "github.com/mhewedy/ews"
+	"github.com/mhewedy/mego/attendess"
 	"log"
 	"net/http"
 )
 
+var ewsClient *ews.Client
+
 func main() {
 
-	// TODO build 2 apis
-	// GET /api/user/aggregated-non-available-times > returns list of non-available times
-	// GET /api/room/available-times	> return map of each room and its available time
+	// Test
+	ewsClient = ews.NewClient(
+		"https://outlook.office365.com/EWS/Exchange.asmx",
+		"example@mhewedy.onmicrosoft.com",
+		"systemsystem@123",
+		&ews.Config{Dump: false},
+	)
 
-	// find a one-day calendar component
+	attendess.EWSClient = ewsClient
 
-	http.HandleFunc("/api/test", func(w http.ResponseWriter, r *http.Request) {
-		bytes, err := json.Marshal(struct {
-			Key string `json:"key"`
-		}{Key: "Value from server"})
+	router := mux.NewRouter()
 
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+	router.HandleFunc("/api/v1/attendees", attendess.ListAttendees).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/search", attendess.SearchAttendees).Methods("GET")
 
-		w.Header().Set("Content-type", "application/json")
-		_, _ = w.Write(bytes)
+	router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			w.Header().Add("Content-Type", "application/json")
+			next.ServeHTTP(w, req)
+		})
 	})
 
 	fmt.Println("Server start listening on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", nil))
-	/*
-		c := ews.NewClientWithConfig(
-			"https://outlook.office365.com/EWS/Exchange.asmx",
-			"example@mhewedy.onmicrosoft.com",
-			"systemsystem@123",
-			&ews.Config{Dump: true},
-		)
-
-		err := ewsutil.CreateEvent(c,
-			[]string{"mhewedy@mhewedy.onmicrosoft.com", "room001@mhewedy.onmicrosoft.com"},
-			"Meeing in room001",
-			"The email body, as plain text ...",
-			"", time.Now().Add(48*time.Hour), time.Minute*45,
-		)
-
-		if err != nil {
-			log.Fatal("err>: ", err.Error())
-		}
-
-		fmt.Println("--- success ---")
-	*/
+	log.Fatal(http.ListenAndServe(":3000", router))
 }

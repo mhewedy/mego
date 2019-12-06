@@ -91,7 +91,7 @@
         data: function () {
             return {
                 allRooms: true,
-                startsNow: true
+                startsNow: false
             }
         },
         methods: {
