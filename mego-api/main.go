@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-var ewsClient *ews.Client
+var ewsClient ews.Client
 
 func main() {
 

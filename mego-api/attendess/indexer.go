@@ -67,7 +67,6 @@ func indexAttendeesStartsWith(s string) []Attendee {
 			EmailAddress: p.EmailAddress.EmailAddress,
 		}
 	}
-
 	return attendees
 }
 

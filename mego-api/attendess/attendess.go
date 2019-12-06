@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-var EWSClient *ews.Client
+var EWSClient ews.Client
 var attendOnce sync.Once
 
 func ListAttendees(w http.ResponseWriter, r *http.Request) {
