@@ -8,10 +8,10 @@ import (
 )
 
 type Attendee struct {
-	DisplayName  string
-	Title        string
-	EmailAddress string
-	Image        string
+	DisplayName  string `json:"display_name"`
+	Title        string `json:"title,omitempty"`
+	EmailAddress string `json:"email_address"`
+	Image        string `json:"image,omitempty"`
 }
 
 var attendeesIndex []Attendee
@@ -45,12 +45,7 @@ func indexAttendees() {
 		}
 	}
 
-	var k int
-	attendeesIndex = make([]Attendee, len(attendeesIndexMap))
-	for _, v := range attendeesIndexMap {
-		attendeesIndex[k] = v
-		k++
-	}
+	attendeesIndex = attendeeMapToSlice(attendeesIndexMap)
 }
 
 func indexAttendeesStartsWith(s string) []Attendee {
@@ -71,17 +66,74 @@ func indexAttendeesStartsWith(s string) []Attendee {
 	return attendees
 }
 
+// Priority based searching, it searches the query input as follows:
+// 1. email address starts with the query
+// 2. display name starts with the query
+// 3. split display name on space and check each part star with the query
+// 4. email address or display name contains the query
 func searchAttendees(q string) []Attendee {
+
 	attendees := make([]Attendee, 0)
+	attendeesP2 := make([]Attendee, 0)
+	attendeesP3 := make([]Attendee, 0)
 
 	q = strings.ToLower(q)
 
 	for _, aa := range attendeesIndex {
-		if strings.Contains(strings.ToLower(aa.EmailAddress), q) ||
-			strings.Contains(strings.ToLower(aa.DisplayName), q) {
+		lowerEmailAddress := strings.ToLower(aa.EmailAddress)
+		lowerDisplayName := strings.ToLower(aa.DisplayName)
 
+		if strings.HasPrefix(lowerEmailAddress, q) {
 			attendees = append(attendees, aa)
 		}
+		if strings.HasPrefix(lowerDisplayName, q) {
+			attendeesP2 = append(attendeesP2, aa)
+		}
+
+		nameSlice := strings.Split(lowerDisplayName, " ")
+		for _, nn := range nameSlice {
+			if strings.HasPrefix(nn, q) {
+				attendeesP2 = append(attendeesP2, aa)
+			}
+		}
+
+		if strings.Contains(lowerEmailAddress, q) ||
+			strings.Contains(lowerDisplayName, q) {
+			attendeesP3 = append(attendeesP3, aa)
+		}
+	}
+
+	for _, aa := range attendeesP2 {
+		if !contains(attendees, aa) {
+			attendees = append(attendees, aa)
+		}
+	}
+	for _, aa := range attendeesP3 {
+		if !contains(attendees, aa) {
+			attendees = append(attendees, aa)
+		}
+	}
+
+	return attendees
+}
+
+// --- utilities
+
+func contains(attendees []Attendee, attendee Attendee) bool {
+	for _, att := range attendees {
+		if att.EmailAddress == attendee.EmailAddress {
+			return true
+		}
+	}
+	return false
+}
+
+func attendeeMapToSlice(attendeesMap map[string]Attendee) []Attendee {
+	attendees := make([]Attendee, len(attendeesMap))
+	var i = 0
+	for _, v := range attendeesMap {
+		attendees[i] = v
+		i++
 	}
 	return attendees
 }
