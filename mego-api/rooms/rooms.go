@@ -97,7 +97,7 @@ func buildRoomTree() {
 				if !contains(z.Children, key) {
 					z.Children = append(z.Children, Node{
 						Key:   key,
-						Label: field,
+						Label: fmt.Sprintf("%s Person", field),
 					})
 				}
 			}

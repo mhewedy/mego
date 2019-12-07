@@ -42,8 +42,8 @@
       </div>
 
       <div>
-        <h3>Room:</h3>
-        <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
+        <h3>Rooms:</h3>
+        <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms" style="width: 100%"></Tree>
       </div>
 
     </div>
