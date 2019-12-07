@@ -71,6 +71,15 @@
         </div>
       </div>
 
+      <div class="p-grid">
+        <div class="p-col-3"></div>
+        <div class="p-col-6 p-fluid">
+          <Button label="Search" icon="pi pi-search"
+                  class="p-button-raised p-button-rounded p-button-info" @click="search()" />
+        </div>
+        <div class="p-col-3"></div>
+      </div>
+
     </div>
 
   </div>
@@ -85,7 +94,6 @@
         name: "Search",
         data: function () {
             return {
-                comp: this,
                 selectedReqAttendees: [],
                 filteredReqAttendees: null,
                 selectedOptAttendees: [],
@@ -97,10 +105,7 @@
             }
         },
         mounted() {
-            RoomsService.list(it => {
-                console.log(it);
-                return this.roomsTree = it;
-            })
+            RoomsService.list(it => this.roomsTree = it)
         },
         methods: {
             searchReqAttendees: function (event) {
@@ -154,6 +159,9 @@
                     date.setHours(date.getHours() + 1);
                 }
                 return date
+            },
+            search: function () {
+                console.log("searching")
             }
         }
     }
