@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/mhewedy/ews"
 	_ "github.com/mhewedy/ews"
+	"github.com/mhewedy/mego/api"
 	"github.com/mhewedy/mego/attendess"
 	"log"
 	"net/http"
@@ -24,19 +24,6 @@ func main() {
 
 	attendess.EWSClient = ewsClient
 
-	router := mux.NewRouter()
-
-	router.HandleFunc("/api/v1/attendees", attendess.ListAttendees).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/search", attendess.SearchAttendees).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/{email}/photo", attendess.GetPhoto).Methods("GET")
-
-	router.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-			w.Header().Add("Content-Type", "application/json")
-			next.ServeHTTP(w, req)
-		})
-	})
-
 	fmt.Println("Server start listening on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(http.ListenAndServe(":3000", api.Route()))
 }
