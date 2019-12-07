@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/attendess"
+	"github.com/mhewedy/mego/events"
 	"github.com/mhewedy/mego/rooms"
 	"net/http"
 )
@@ -15,6 +16,7 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/attendees/{email}/photo", attendess.GetPhoto).Methods("GET")
 
 	router.HandleFunc("/api/v1/rooms/tree", rooms.ListRoomsTree).Methods("GET")
+	router.HandleFunc("/api/v1/events/search", events.Search).Methods("GET")
 
 	// Middleware
 	router.Use(jsonContentTypeInjector)

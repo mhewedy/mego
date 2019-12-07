@@ -6,6 +6,7 @@ import (
 	_ "github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/api"
 	"github.com/mhewedy/mego/attendess"
+	"github.com/mhewedy/mego/events"
 	"log"
 	"net/http"
 )
@@ -22,6 +23,7 @@ func main() {
 		&ews.Config{Dump: false},
 	)
 
+	events.EWSClient = ewsClient
 	attendess.EWSClient = ewsClient
 
 	fmt.Println("Server start listening on port 3000")
