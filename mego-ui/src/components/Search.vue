@@ -56,16 +56,17 @@
 
       <div class="p-grid">
         <div class="p-col-2">Start time</div>
-        <div class="p-col-4">
+        <div class="p-col-3">
           <span class="p-fluid">
             <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
                       :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
           </span>
         </div>
-        <div class="p-col-2">Duration</div>
-        <div class="p-col-4">
+        <div class="p-col-2"></div>
+        <div class="p-col-1">Duration</div>
+        <div class="p-col-3">
           <span class="p-fluid">
-
+            <Spinner v-model="duration" :step="30" :min="30"/>
           </span>
         </div>
       </div>
@@ -91,7 +92,8 @@
                 filteredOptAttendees: null,
                 roomsTree: null,
                 selectedRooms: null,
-                startTime: this.getNextMeetingTime()
+                startTime: this.getNextMeetingTime(),
+                duration: 30
             }
         },
         mounted() {
