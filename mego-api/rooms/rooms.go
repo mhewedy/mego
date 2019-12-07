@@ -133,6 +133,6 @@ func get(nodes []Node, key string) *Node {
 			return &nodes[i]
 		}
 	}
-	log.Fatalf("should never happen: key %s not found in nodes %s\n", key, nodes)
+	log.Fatalf("should never happen: key \"%s\" not found in nodes \"%#v\"\n", key, nodes)
 	return nil
 }
