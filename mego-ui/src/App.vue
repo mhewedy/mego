@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <Search></Search>
-
-    <Toast/>
   </div>
 </template>
 

@@ -1,52 +1,77 @@
 <template>
   <div>
 
-    <div class="content-section implementation">
+    <div id="search-panel">
 
-      <div>
-        <h3>Required Attendees:</h3>
-        <span class="p-fluid">
-        <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
-                      @complete="searchReqAttendees($event)" field="name">
-           <template #item="slotProps">
-                <div class="p-clearfix p-autocomplete-brand-item">
-                  <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-                  <div style="display: flex">
-                    <span>{{slotProps.item.email_address}}</span>
-                    <span><b>{{slotProps.item.display_name}}</b></span>
-                    <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+      <div class="p-grid">
+        <div class="p-col-2">Required Attendees</div>
+        <div class="p-col-10">
+          <span class="p-fluid">
+            <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
+                          @complete="searchReqAttendees($event)" field="name">
+               <template #item="slotProps">
+                    <div class="p-clearfix p-autocomplete-brand-item">
+                      <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+                      <div style="display: flex">
+                        <span>{{slotProps.item.email_address}}</span>
+                        <span><b>{{slotProps.item.display_name}}</b></span>
+                        <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+                        </div>
                     </div>
-                </div>
-            </template>
-        </AutoComplete>
-      </span>
+                </template>
+            </AutoComplete>
+          </span>
+        </div>
       </div>
 
-      <div>
-        <h3>Optional Attendees:</h3>
-        <span class="p-fluid">
-          <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
-                        @complete="searchOptAttendees($event)" field="name">
-             <template #item="slotProps">
-                  <div class="p-clearfix p-autocomplete-brand-item">
-                    <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-                    <div style="display: flex">
-                      <span>{{slotProps.item.email_address}}</span>
-                      <span><b>{{slotProps.item.display_name}}</b></span>
-                      <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
-                      </div>
-                  </div>
-              </template>
-          </AutoComplete>
+      <div class="p-grid">
+        <div class="p-col-2">Optional Attendees</div>
+        <div class="p-col-10">
+          <span class="p-fluid">
+            <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
+                          @complete="searchOptAttendees($event)" field="name">
+               <template #item="slotProps">
+                    <div class="p-clearfix p-autocomplete-brand-item">
+                      <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+                      <div style="display: flex">
+                        <span>{{slotProps.item.email_address}}</span>
+                        <span><b>{{slotProps.item.display_name}}</b></span>
+                        <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+                        </div>
+                    </div>
+                </template>
+            </AutoComplete>
         </span>
+        </div>
       </div>
 
-      <div>
-        <h3>Rooms:</h3>
-        <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms" style="width: 100%"></Tree>
+      <div class="p-grid">
+        <div class="p-col-2">Rooms</div>
+        <div class="p-col-10">
+          <span class="p-fluid">
+            <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
+        </span>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-2">Start time</div>
+        <div class="p-col-4">
+          <span class="p-fluid">
+            <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
+                      :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
+          </span>
+        </div>
+        <div class="p-col-2">Duration</div>
+        <div class="p-col-4">
+          <span class="p-fluid">
+
+          </span>
+        </div>
       </div>
 
     </div>
+
   </div>
 </template>
 
@@ -65,7 +90,8 @@
                 selectedOptAttendees: [],
                 filteredOptAttendees: null,
                 roomsTree: null,
-                selectedRooms: null
+                selectedRooms: null,
+                startTime: this.getNextMeetingTime()
             }
         },
         mounted() {
@@ -116,6 +142,16 @@
                     }, function (err) {
                         console.log(err)
                     })
+            },
+            getNextMeetingTime: function () {
+                let date = new Date();
+                if (date.getMinutes() > 0 && date.getMinutes() < 30) {
+                    date.setMinutes(30);
+                } else if (date.getMinutes() > 30) {
+                    date.setMinutes(0);
+                    date.setHours(date.getHours() + 1);
+                }
+                return date
             }
         }
     }
