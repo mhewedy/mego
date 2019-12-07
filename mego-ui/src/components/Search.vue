@@ -41,6 +41,10 @@
         </span>
       </div>
 
+      <div>
+        <h3>Room:</h3>
+        <Tree :value="roomTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
+      </div>
 
     </div>
   </div>
@@ -49,6 +53,7 @@
 <script>
 
     import AttendeesService from '../services/attendees'
+    import RoomService from '../services/room'
 
     export default {
         name: "Search",
@@ -59,7 +64,12 @@
                 filteredReqAttendees: null,
                 selectedOptAttendees: [],
                 filteredOptAttendees: null,
+                roomTree: null,
+                selectedRooms: null
             }
+        },
+        mounted() {
+            RoomService.list(it => this.roomTree = it)
         },
         methods: {
             searchReqAttendees: function (event) {
