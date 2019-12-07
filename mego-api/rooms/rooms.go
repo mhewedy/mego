@@ -41,7 +41,7 @@ func ListRoomsTree(w http.ResponseWriter, r *http.Request) {
 
 func loadRoomList() {
 
-	file, err := os.OpenFile("rooms.csv", os.O_RDONLY, os.ModePerm)
+	file, err := os.Open("rooms.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
