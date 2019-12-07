@@ -43,7 +43,7 @@
 
       <div>
         <h3>Room:</h3>
-        <Tree :value="roomsTree" ></Tree>
+        <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
       </div>
 
     </div>

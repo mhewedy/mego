@@ -19,11 +19,8 @@ const (
 )
 
 var roomList [][]string
-var roomTree *Root
+var roomTree []Node
 
-type Root struct {
-	Root []Node `json:"root"`
-}
 type Node struct {
 	Key      string `json:"key"`
 	Label    string `json:"label"`
@@ -64,7 +61,7 @@ func loadRoomList() {
 
 func buildRoomTree() {
 
-	root := Root{Root: []Node{}}
+	var tree []Node
 
 	for i, row := range roomList {
 		if i == 0 {
@@ -72,8 +69,8 @@ func buildRoomTree() {
 		}
 		for j, field := range row {
 			if j == building {
-				if !contains(root.Root, field) {
-					root.Root = append(root.Root, Node{
+				if !contains(tree, field) {
+					tree = append(tree, Node{
 						Key:   field,
 						Label: field,
 					})
@@ -81,7 +78,7 @@ func buildRoomTree() {
 			}
 			if j == zone {
 				buildingKey := row[j-1]
-				b := get(root.Root, buildingKey)
+				b := get(tree, buildingKey)
 				if !contains(b.Children, field) {
 					b.Children = append(b.Children, Node{
 						Key:   field,
@@ -91,7 +88,7 @@ func buildRoomTree() {
 			}
 			if j == size {
 				buildingKey := row[j-2]
-				b := get(root.Root, buildingKey)
+				b := get(tree, buildingKey)
 				zoneKey := row[j-1]
 				z := get(b.Children, zoneKey)
 				if !contains(z.Children, field) {
@@ -103,7 +100,7 @@ func buildRoomTree() {
 			}
 			if j == displayName {
 				buildingKey := row[j-3]
-				b := get(root.Root, buildingKey)
+				b := get(tree, buildingKey)
 				zoneKey := row[j-2]
 				z := get(b.Children, zoneKey)
 				sizeKey := row[j-1]
@@ -118,7 +115,7 @@ func buildRoomTree() {
 			}
 		}
 	}
-	roomTree = &root
+	roomTree = tree
 }
 
 func contains(nodes []Node, key string) bool {

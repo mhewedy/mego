@@ -21,8 +21,8 @@ func Test_buildRoomTree(t *testing.T) {
 
 	logRootTreeForTest()
 
-	assert.Len(t, roomTree.Root, 2)
-	assert.Equal(t, *roomTree, Root{Root: []Node{
+	assert.Len(t, roomTree, 2)
+	assert.Equal(t, roomTree, []Node{
 		{
 			Key:   "building 1",
 			Label: "building 1",
@@ -106,11 +106,11 @@ func Test_buildRoomTree(t *testing.T) {
 				},
 			},
 		},
-	}})
+	})
 }
 
 func logRootTreeForTest() {
-	for _, a := range roomTree.Root {
+	for _, a := range roomTree {
 		fmt.Println(a.Key)
 
 		for _, aa := range a.Children {
