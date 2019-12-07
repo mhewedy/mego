@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/ews"
-	"github.com/mhewedy/mego/api"
 	"net/http"
 	"sync"
 )
@@ -31,7 +30,7 @@ func GetPhoto(w http.ResponseWriter, r *http.Request) {
 	base64, err := getAttendeePhoto(EWSClient, email)
 
 	if err != nil {
-		api.HandleError(w, err, http.StatusNotFound)
+		//api.HandleError(w, err, http.StatusNotFound)
 		return
 	}
 
