@@ -25,20 +25,20 @@
       <div>
         <h3>Optional Attendees:</h3>
         <span class="p-fluid">
-        <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
-                      @complete="searchOptAttendees($event)" field="name">
-           <template #item="slotProps">
-                <div class="p-clearfix p-autocomplete-brand-item">
-                  <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-                  <div style="display: flex">
-                    <span>{{slotProps.item.email_address}}</span>
-                    <span><b>{{slotProps.item.display_name}}</b></span>
-                    <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
-                    </div>
-                </div>
-            </template>
-        </AutoComplete>
-      </span>
+          <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
+                        @complete="searchOptAttendees($event)" field="name">
+             <template #item="slotProps">
+                  <div class="p-clearfix p-autocomplete-brand-item">
+                    <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+                    <div style="display: flex">
+                      <span>{{slotProps.item.email_address}}</span>
+                      <span><b>{{slotProps.item.display_name}}</b></span>
+                      <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+                      </div>
+                  </div>
+              </template>
+          </AutoComplete>
+        </span>
       </div>
 
 
