@@ -28,11 +28,11 @@ func Test_buildRoomTree(t *testing.T) {
 			Label: "building 1",
 			Children: []Node{
 				{
-					Key:   "Zone10",
+					Key:   "building 1-Zone10",
 					Label: "Zone10",
 					Children: []Node{
 						{
-							Key:   "8",
+							Key:   "building 1-8",
 							Label: "8",
 							Children: []Node{
 								{
@@ -42,7 +42,7 @@ func Test_buildRoomTree(t *testing.T) {
 							},
 						},
 						{
-							Key:   "9",
+							Key:   "building 1-9",
 							Label: "9",
 							Children: []Node{
 								{
@@ -54,11 +54,11 @@ func Test_buildRoomTree(t *testing.T) {
 					},
 				},
 				{
-					Key:   "Zone2",
+					Key:   "building 1-Zone2",
 					Label: "Zone2",
 					Children: []Node{
 						{
-							Key:   "10",
+							Key:   "building 1-10",
 							Label: "10",
 							Children: []Node{
 								{
@@ -76,11 +76,11 @@ func Test_buildRoomTree(t *testing.T) {
 			Label: "building 2",
 			Children: []Node{
 				{
-					Key:   "Zone2",
+					Key:   "building 2-Zone2",
 					Label: "Zone2",
 					Children: []Node{
 						{
-							Key:   "10",
+							Key:   "building 2-10",
 							Label: "10",
 							Children: []Node{
 								{
@@ -90,7 +90,7 @@ func Test_buildRoomTree(t *testing.T) {
 							},
 						},
 						{
-							Key:   "12",
+							Key:   "building 2-12",
 							Label: "12",
 							Children: []Node{
 								{

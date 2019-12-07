@@ -3,6 +3,7 @@ package rooms
 import (
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -79,9 +80,10 @@ func buildRoomTree() {
 			if j == zone {
 				buildingKey := row[j-1]
 				b := get(tree, buildingKey)
-				if !contains(b.Children, field) {
+				key := fmt.Sprintf("%s-%s", buildingKey, field)
+				if !contains(b.Children, key) {
 					b.Children = append(b.Children, Node{
-						Key:   field,
+						Key:   key,
 						Label: field,
 					})
 				}
@@ -89,11 +91,12 @@ func buildRoomTree() {
 			if j == size {
 				buildingKey := row[j-2]
 				b := get(tree, buildingKey)
-				zoneKey := row[j-1]
+				zoneKey := fmt.Sprintf("%s-%s", buildingKey, row[j-1])
 				z := get(b.Children, zoneKey)
-				if !contains(z.Children, field) {
+				key := fmt.Sprintf("%s-%s", buildingKey, field)
+				if !contains(z.Children, key) {
 					z.Children = append(z.Children, Node{
-						Key:   field,
+						Key:   key,
 						Label: field,
 					})
 				}
@@ -101,9 +104,9 @@ func buildRoomTree() {
 			if j == displayName {
 				buildingKey := row[j-3]
 				b := get(tree, buildingKey)
-				zoneKey := row[j-2]
+				zoneKey := fmt.Sprintf("%s-%s", buildingKey, row[j-2])
 				z := get(b.Children, zoneKey)
-				sizeKey := row[j-1]
+				sizeKey := fmt.Sprintf("%s-%s", buildingKey, row[j-1])
 				s := get(z.Children, sizeKey)
 				key := row[code]
 				if !contains(s.Children, key) {
