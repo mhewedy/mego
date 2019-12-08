@@ -23,8 +23,8 @@ func main() {
 	// Test
 	ewsClient = ews.NewClient(
 		conf.Get("ews.exchange_url"),
-		"example@mhewedy.onmicrosoft.com",
-		"systemsystem@123",
+		conf.Get("ews.exchange_username"),
+		conf.Get("ews.exchange_password"),
 		&config,
 	)
 
