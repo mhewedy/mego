@@ -4,8 +4,8 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gorilla/mux v1.7.3 h1:gnP5JzjVOuiZD07fKKToCAOjS0yOpj/qPETTXCCS6hw=
 github.com/gorilla/mux v1.7.3/go.mod h1:1lud6UwP+6orDFRuTfBEV8e9/aOM/c4fVVCaMa2zaAs=
-github.com/mhewedy/ews v1.0.7 h1:Y0kHv+Bq+PNiHk5dbx7SHaCWNInN9hW0wc1+HPivjaw=
-github.com/mhewedy/ews v1.0.7/go.mod h1:mBH4sbvnR8T4UMLxPGjsjv7nwqQBMQl59BiBXUpHsJk=
+github.com/mhewedy/ews v1.0.8 h1:24uzpDpihnvs4CVOPVMlMN+k0rDx8KiedGzQhyMEntg=
+github.com/mhewedy/ews v1.0.8/go.mod h1:mBH4sbvnR8T4UMLxPGjsjv7nwqQBMQl59BiBXUpHsJk=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

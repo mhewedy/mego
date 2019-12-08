@@ -19,7 +19,7 @@ func main() {
 		"https://outlook.office365.com/EWS/Exchange.asmx",
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",
-		&ews.Config{Dump: false},
+		&ews.Config{},
 	)
 
 	events.EWSClient = ewsClient
