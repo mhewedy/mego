@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/mhewedy/ews"
-	_ "github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/api"
 	"github.com/mhewedy/mego/attendess"
 	"github.com/mhewedy/mego/events"
