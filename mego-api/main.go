@@ -5,6 +5,7 @@ import (
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/api"
 	"github.com/mhewedy/mego/attendess"
+	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/events"
 	"log"
 	"net/http"
@@ -14,12 +15,17 @@ var ewsClient ews.Client
 
 func main() {
 
+	config := ews.Config{
+		Dump:    conf.GetBool("ews.dump", false),
+		NTLM:    conf.GetBool("ews.ntlm", true),
+		SkipTLS: conf.GetBool("ews.skip_tls", false),
+	}
 	// Test
 	ewsClient = ews.NewClient(
-		"https://outlook.office365.com/EWS/Exchange.asmx",
+		conf.Get("ews.exchange_url"),
 		"example@mhewedy.onmicrosoft.com",
 		"systemsystem@123",
-		&ews.Config{},
+		&config,
 	)
 
 	events.EWSClient = ewsClient

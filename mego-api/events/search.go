@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/conf"
 	"log"
 	"time"
 )
@@ -45,7 +46,7 @@ func returnBusyTime(
 			fmt.Println("finish searching room:", re.Room)
 			result = append(result, re)
 			i++
-		case <-time.After(1 * time.Minute):
+		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
 			fmt.Println("Timeout!")
 			i++
 		}

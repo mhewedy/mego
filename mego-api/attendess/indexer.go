@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/conf"
 	"strings"
 	"time"
 )
@@ -37,7 +38,7 @@ func indexAttendees() {
 				attendeesIndex[att.EmailAddress] = att
 			}
 			i++
-		case <-time.After(1 * time.Minute):
+		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
 			fmt.Println("Timeout!")
 			i++
 		}
