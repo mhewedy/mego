@@ -19,20 +19,20 @@ var attendeesIndex map[string]Attendee
 
 func indexAttendees() {
 	const chars = "abcdefghijklmnopqrstuvwxyz"
-	result := make(chan []Attendee, len(chars))
+	ch := make(chan []Attendee, len(chars))
 
-	for _, ch := range chars {
-		go func(ch string) {
-			fmt.Println("indexing:", ch)
-			result <- indexAttendeesStartsWith(ch)
-		}(string(ch))
+	for _, c := range chars {
+		go func(c string) {
+			fmt.Println("indexing:", c)
+			ch <- indexAttendeesStartsWith(c)
+		}(string(c))
 	}
 
 	var i int
 	attendeesIndex = make(map[string]Attendee)
 	for {
 		select {
-		case atts := <-result:
+		case atts := <-ch:
 			for _, att := range atts {
 				attendeesIndex[att.EmailAddress] = att
 			}
