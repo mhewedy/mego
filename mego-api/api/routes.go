@@ -1,32 +1,54 @@
 package api
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/attendess"
 	"github.com/mhewedy/mego/events"
 	"github.com/mhewedy/mego/rooms"
 	"net/http"
+	"os"
 )
 
 func Route() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/v1/attendees", attendess.ListAttendees).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/search", attendess.SearchAttendees).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/{email}/photo", attendess.GetPhoto).Methods("GET")
+	router.HandleFunc("/api/v1/attendees", handle(attendess.ListAttendees)).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/search", handle(attendess.SearchAttendees)).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/{email}/photo", handle(attendess.GetPhoto)).Methods("GET")
 
-	router.HandleFunc("/api/v1/rooms/tree", rooms.ListRoomsTree).Methods("GET")
-	router.HandleFunc("/api/v1/events/search", events.Search).Methods("GET")
-
-	// Middleware
-	router.Use(jsonContentTypeInjector)
+	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListRoomsTree)).Methods("GET")
+	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("GET")
 
 	return router
 }
 
-func jsonContentTypeInjector(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+type handlerFunc func(w http.ResponseWriter, r *http.Request) (interface{}, error)
+
+func handle(fn handlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
-		next.ServeHTTP(w, req)
+		i, err := fn(w, r)
+
+		if err != nil {
+			handleError(w, err, http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(i)
+	}
+}
+
+func handleError(w http.ResponseWriter, err error, code int) {
+	fmt.Fprintln(os.Stderr, err.Error())
+
+	w.WriteHeader(code)
+	json.NewEncoder(w).Encode(struct {
+		Error      string `json:"error"`
+		StatusCode int    `json:"status_code"`
+	}{
+		Error:      err.Error(),
+		StatusCode: code,
 	})
 }

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -18,27 +17,14 @@ type input struct {
 
 var EWSClient ews.Client
 
-func Search(w http.ResponseWriter, r *http.Request) {
+func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 	var i input
 	err := json.NewDecoder(r.Body).Decode(&i)
 	if err != nil {
-		handleError(w, err, http.StatusInternalServerError)
-		return
+		return nil, err
 	}
 
 	fmt.Println(i)
-}
-
-func handleError(w http.ResponseWriter, err error, code int) {
-	fmt.Fprintln(os.Stderr, err.Error())
-
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(struct {
-		Error      string `json:"error"`
-		StatusCode int    `json:"status_code"`
-	}{
-		Error:      err.Error(),
-		StatusCode: code,
-	})
+	return i, nil
 }

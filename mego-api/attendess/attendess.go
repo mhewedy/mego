@@ -1,7 +1,6 @@
 package attendess
 
 import (
-	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/ews"
 	"net/http"
@@ -11,30 +10,25 @@ import (
 var EWSClient ews.Client
 var attendOnce sync.Once
 
-func ListAttendees(w http.ResponseWriter, r *http.Request) {
+func ListAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	attendOnce.Do(indexAttendees)
 
-	json.NewEncoder(w).Encode(attendeesIndex)
+	return attendeesIndex, nil
 }
 
-func SearchAttendees(w http.ResponseWriter, r *http.Request) {
+func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	attendOnce.Do(indexAttendees)
 
 	attendees := searchAttendees(r.URL.Query().Get("q"))
-	json.NewEncoder(w).Encode(attendees)
+	return attendees, nil
 }
 
-func GetPhoto(w http.ResponseWriter, r *http.Request) {
+func GetPhoto(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 	email := mux.Vars(r)["email"]
-	base64, err := getAttendeePhoto(EWSClient, email)
+	base64, _ := getAttendeePhoto(EWSClient, email)
 
-	if err != nil {
-		//api.HandleError(w, err, http.StatusNotFound)
-		return
-	}
-
-	json.NewEncoder(w).Encode(struct {
+	return struct {
 		Base64 string `json:"base64"`
-	}{Base64: base64})
+	}{Base64: base64}, nil
 }

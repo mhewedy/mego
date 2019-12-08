@@ -2,7 +2,6 @@ package rooms
 
 import (
 	"encoding/csv"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -30,10 +29,10 @@ type Node struct {
 
 var once sync.Once
 
-func ListRoomsTree(w http.ResponseWriter, r *http.Request) {
+func ListRoomsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	once.Do(loadRoomList)
 
-	json.NewEncoder(w).Encode(roomTree)
+	return roomTree, nil
 }
 
 func loadRoomList() {
