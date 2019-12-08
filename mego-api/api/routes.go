@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/attendess"
+	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/events"
 	"github.com/mhewedy/mego/rooms"
 	"net/http"
@@ -32,6 +33,10 @@ func handle(fn handlerFunc) http.HandlerFunc {
 		i, err := fn(w, r)
 
 		if err != nil {
+			if _, ok := err.(*commons.ClientError); ok {
+				handleError(w, err, http.StatusBadRequest)
+				return
+			}
 			handleError(w, err, http.StatusInternalServerError)
 			return
 		}
@@ -41,7 +46,7 @@ func handle(fn handlerFunc) http.HandlerFunc {
 }
 
 func handleError(w http.ResponseWriter, err error, code int) {
-	fmt.Fprintln(os.Stderr, err.Error())
+	fmt.Fprintln(os.Stderr, err.Error(), code)
 
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(struct {

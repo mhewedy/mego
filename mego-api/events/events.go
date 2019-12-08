@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/commons"
 	"net/http"
 	"time"
 )
@@ -24,26 +25,41 @@ var EWSClient ews.Client
 
 func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
-	// TODO do client validation and return ClientError type so it could be translated as 400
+	input, err := parseAndValidate(r)
+	if err != nil {
+		return nil, err
+	}
 
+	eventUsers := buildEventUserSlices(input)
+	doSearch(eventUsers, input.From, time.Duration(input.Duration)*time.Minute)
+
+	return input, nil
+}
+
+func parseAndValidate(r *http.Request) (*input, error) {
 	var i input
 	err := json.NewDecoder(r.Body).Decode(&i)
 	if err != nil {
 		return nil, err
 	}
+	if len(i.Emails) == 0 {
+		return nil, commons.NewClientError("empty emails")
+	}
+	if len(i.Rooms) == 0 {
+		return nil, commons.NewClientError("empty rooms")
+	}
+	if i.Duration == 0 || i.Duration%30 != 0 {
+		return nil, commons.NewClientError("duration should be multiple of 30")
+	}
 
-	eventUsers := buildEventUserSlices(i)
-
-	doSearch(eventUsers, i.From, time.Duration(i.Duration)*time.Minute)
-
-	return i, nil
+	return &i, nil
 }
 
 func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration) {
 
 }
 
-func buildEventUserSlices(i input) [][]ewsutil.EventUser {
+func buildEventUserSlices(i *input) [][]ewsutil.EventUser {
 	me := ewsutil.EventUser{
 		Email:        EWSClient.GetUsername(),
 		AttendeeType: ews.AttendeeTypeOrganizer,
