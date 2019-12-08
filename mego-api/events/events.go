@@ -9,10 +9,10 @@ import (
 )
 
 type input struct {
-	Emails   []string      `json:"emails"`
-	Rooms    []string      `json:"rooms"`
-	From     time.Time     `json:"from"`
-	Duration time.Duration `json:"duration"`
+	Emails   []string  `json:"emails"`
+	Rooms    []string  `json:"rooms"`
+	From     time.Time `json:"from"`
+	Duration int       `json:"duration"`
 }
 
 var EWSClient ews.Client
