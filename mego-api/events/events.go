@@ -32,9 +32,9 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	eventUsers := buildEventUserSlices(input)
-	doSearch(eventUsers, input.From, time.Duration(input.Duration)*time.Minute)
+	events := doSearch(eventUsers, input.From, time.Duration(input.Duration)*time.Minute)
 
-	return input, nil
+	return events, nil
 }
 
 func parseAndValidate(r *http.Request) (*input, error) {

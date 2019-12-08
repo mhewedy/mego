@@ -9,10 +9,12 @@ import (
 	"time"
 )
 
-func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration) {
-	busyTime := returnBusyTime(eventUsers, from, duration)
+func doSearch(
+	eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration,
+) []roomEvents {
 
-	fmt.Println(busyTime)
+	busyTime := returnBusyTime(eventUsers, from, getDuration(from))
+	return busyTime
 }
 
 func returnBusyTime(
@@ -66,4 +68,11 @@ func getRoom(eventsUsers []ewsutil.EventUser) string {
 	}
 	log.Fatal("attendee of type resource should be exist in", eventsUsers)
 	return ""
+}
+
+// getDuration gets duration until 6 pm
+func getDuration(from time.Time) time.Duration {
+	year, month, day := from.Date()
+	to := time.Date(year, month, day, conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
+	return to.Sub(from)
 }
