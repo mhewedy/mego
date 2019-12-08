@@ -70,7 +70,6 @@ func getRoom(eventsUsers []ewsutil.EventUser) string {
 	return ""
 }
 
-// getDuration gets duration until 6 pm
 func getDuration(from time.Time) time.Duration {
 	year, month, day := from.Date()
 	to := time.Date(year, month, day, conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
