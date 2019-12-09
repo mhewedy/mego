@@ -96,13 +96,15 @@
                 selectedOptAttendees: [],
                 filteredOptAttendees: null,
                 roomsTree: null,
+                roomsList: null,
                 selectedRooms: null,
                 startTime: this.getNextMeetingTime(),
                 duration: 30
             }
         },
         mounted() {
-            RoomsService.list(it => this.roomsTree = it)
+            RoomsService.tree(it => this.roomsTree = it);
+            RoomsService.list(it => this.roomsList = it);
         },
         methods: {
             searchReqAttendees: function (event) {
@@ -158,7 +160,11 @@
                 return date
             },
             search: function () {
-                console.log("searching")
+                console.log(this.selectedReqAttendees)
+                console.log(this.selectedOptAttendees)
+                console.log(this.selectedRooms)
+                console.log(this.startTime)
+                console.log(this.duration)
             }
         }
     }

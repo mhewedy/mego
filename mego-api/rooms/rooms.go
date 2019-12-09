@@ -29,6 +29,20 @@ type Node struct {
 
 var once sync.Once
 
+func ListRooms(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	once.Do(loadRoomList)
+
+	roomCodes := make([]string, 0)
+	for i, rr := range roomList {
+		if i == 0 {
+			continue // skip header
+		}
+		roomCodes = append(roomCodes, rr[code])
+	}
+
+	return roomCodes, nil
+}
+
 func ListRoomsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	once.Do(loadRoomList)
 
