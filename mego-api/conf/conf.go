@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -15,14 +16,18 @@ const commentChar = "#"
 
 var props map[string]string
 
+var once sync.Once
+
+var DefaultSource Source = source{}
+
 type Source interface {
-	read() (io.ReadCloser, error)
+	Read() (io.ReadCloser, error)
 }
 
 type source struct {
 }
 
-func (s source) read() (io.ReadCloser, error) {
+func (s source) Read() (io.ReadCloser, error) {
 	f, err := os.Open("mego.conf")
 	if err != nil {
 		return nil, err
@@ -30,10 +35,10 @@ func (s source) read() (io.ReadCloser, error) {
 	return f, nil
 }
 
-func init() {
+func load() {
 	props = make(map[string]string)
 
-	r, err := source{}.read()
+	r, err := DefaultSource.Read()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -57,6 +62,8 @@ func init() {
 }
 
 func Get(key string, defaultValue ...string) string {
+	once.Do(load)
+
 	v, found := props[key]
 	if !found || len(v) == 0 {
 		fmt.Fprintln(os.Stderr, "key", key, "not found")
@@ -69,6 +76,8 @@ func Get(key string, defaultValue ...string) string {
 }
 
 func GetBool(key string, defaultValue bool) bool {
+	once.Do(load)
+
 	v, found := props[key]
 	if !found {
 		fmt.Fprintln(os.Stderr, "key", key, "not found")
@@ -79,6 +88,8 @@ func GetBool(key string, defaultValue bool) bool {
 }
 
 func GetInt(key string, defaultValue int) int {
+	once.Do(load)
+
 	v, found := props[key]
 	if !found {
 		fmt.Fprintln(os.Stderr, "key", key, "not found")
@@ -94,6 +105,8 @@ func GetInt(key string, defaultValue int) int {
 }
 
 func GetDuration(key string, defaultValue time.Duration) time.Duration {
+	once.Do(load)
+
 	v, found := props[key]
 	if !found {
 		fmt.Fprintln(os.Stderr, "key", key, "not found")
