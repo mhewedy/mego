@@ -127,7 +127,7 @@ func getAttendeePhoto(c ews.Client, email string) (string, error) {
 
 	base64, err := ewsutil.GetUserPhotoBase64(c, email)
 	if err != nil {
-		return "", err
+		base64 = "NA"
 	}
 
 	if attendeesIndex != nil {

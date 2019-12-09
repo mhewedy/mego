@@ -9,7 +9,8 @@
                           @complete="searchReqAttendees($event)" field="name">
                <template #item="slotProps">
                     <div class="p-clearfix p-autocomplete-brand-item">
-                      <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+                      <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
+                           alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
                       <div style="display: flex">
                         <span>{{slotProps.item.email_address}}</span>
                         <span><b>{{slotProps.item.display_name}}</b></span>
