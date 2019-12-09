@@ -87,6 +87,7 @@
 
     import AttendeesService from '../services/attendees'
     import RoomsService from '../services/rooms'
+    import MessageService from '../services/messages'
 
     export default {
         name: "Search",
@@ -183,7 +184,20 @@
                 emails.push(...this.selectedReqAttendees.map(it => it.email_address));
                 emails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
-                this.$emit("searched", input)
+                if (this.validate(input)){
+                    this.$emit("searched", input);
+                }
+            },
+            validate: function (input) {
+                if (input.emails == 0 ){
+                    MessageService.error('one required attendee is required at least');
+                    return false
+                }
+                if (input.rooms == 0 ){
+                    MessageService.error('choose one meeting room at least');
+                    return false
+                }
+                return true
             }
         }
     }

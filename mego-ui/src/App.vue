@@ -1,18 +1,27 @@
 <template>
   <div id="app">
-    <Search @searched="sentSearchInput"></Search>
-    <Result v-if="searchInput" :search-input="searchInput"></Result>
+
+    <div v-show="messages">
+      <Message v-for="msg of messages" :severity="msg.severity" :key="msg.key" :sticky="false">{{msg.content}}</Message>
+    </div>
+
+    <div>
+      <Search @searched="sentSearchInput"></Search>
+      <Result v-if="searchInput" :search-input="searchInput"></Result>
+    </div>
   </div>
 </template>
 
 <script>
 import Search from './components/Search.vue'
 import Result from "./components/Result";
+import MessageService from './services/messages'
 
 export default {
     data() {
         return {
-            searchInput: null
+            searchInput: null,
+            messages: MessageService.messages
         }
     },
     methods: {
@@ -32,7 +41,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .app-container {

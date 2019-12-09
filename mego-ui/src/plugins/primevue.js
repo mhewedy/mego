@@ -9,6 +9,7 @@ import Tree from 'primevue/tree';
 import Calendar from 'primevue/calendar';
 import Spinner from 'primevue/spinner';
 import ProgressSpinner from 'primevue/progressspinner';
+import Message from 'primevue/message';
 
 Vue.use(ToastService);
 
@@ -20,6 +21,7 @@ Vue.component('Tree', Tree);
 Vue.component('Calendar', Calendar);
 Vue.component('Spinner', Spinner);
 Vue.component('ProgressSpinner', ProgressSpinner);
+Vue.component('Message', Message);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';

@@ -27,12 +27,20 @@
                 loadingResult: false
             }
         },
+        mounted() {
+            this.search(this.searchInput)
+        },
         watch: {
             searchInput: function (newSearchInput) {
+                this.search(newSearchInput)
+            }
+        },
+        methods: {
+            search: function (input) {
                 const that = this;
                 this.loadingResult = true;
 
-                EventService.search(newSearchInput, function (data) {
+                EventService.search(input, function (data) {
                     console.log(data);
                     that.loadingResult = false;
                 }, function (err) {
