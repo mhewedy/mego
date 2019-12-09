@@ -17,10 +17,10 @@ type input struct {
 }
 
 type roomEvents struct {
-	Room      string  `json:"room"`
-	Busy      []event `json:"busy"`
-	Available []event `json:"available"`
-	Error     string  `json:"error"`
+	Room  string  `json:"room"`
+	Busy  []event `json:"busy"`
+	Free  []event `json:"free"`
+	Error string  `json:"error"`
 }
 
 type event struct {
