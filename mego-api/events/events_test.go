@@ -40,27 +40,9 @@ func Test_buildEventUserSlices(t *testing.T) {
 	expected := [][]ewsutil.EventUser{
 		{
 			{
-				Email:        "abc",
-				AttendeeType: ews.AttendeeTypeRequired,
-			},
-			{
-				Email:        "efg",
-				AttendeeType: ews.AttendeeTypeRequired,
-			},
-			{
-				Email:        "hij",
-				AttendeeType: ews.AttendeeTypeRequired,
-			},
-			{
-				Email:        "mhewedy",
-				AttendeeType: ews.AttendeeTypeOrganizer,
-			},
-			{
 				Email:        "rm1",
 				AttendeeType: ews.AttendeeTypeResource,
 			},
-		},
-		{
 			{
 				Email:        "abc",
 				AttendeeType: ews.AttendeeTypeRequired,
@@ -77,12 +59,12 @@ func Test_buildEventUserSlices(t *testing.T) {
 				Email:        "mhewedy",
 				AttendeeType: ews.AttendeeTypeOrganizer,
 			},
+		},
+		{
 			{
 				Email:        "rm2",
 				AttendeeType: ews.AttendeeTypeResource,
 			},
-		},
-		{
 			{
 				Email:        "abc",
 				AttendeeType: ews.AttendeeTypeRequired,
@@ -99,9 +81,27 @@ func Test_buildEventUserSlices(t *testing.T) {
 				Email:        "mhewedy",
 				AttendeeType: ews.AttendeeTypeOrganizer,
 			},
+		},
+		{
 			{
 				Email:        "rm3",
 				AttendeeType: ews.AttendeeTypeResource,
+			},
+			{
+				Email:        "abc",
+				AttendeeType: ews.AttendeeTypeRequired,
+			},
+			{
+				Email:        "efg",
+				AttendeeType: ews.AttendeeTypeRequired,
+			},
+			{
+				Email:        "hij",
+				AttendeeType: ews.AttendeeTypeRequired,
+			},
+			{
+				Email:        "mhewedy",
+				AttendeeType: ews.AttendeeTypeOrganizer,
 			},
 		},
 	}

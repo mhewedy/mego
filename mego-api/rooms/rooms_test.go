@@ -33,7 +33,7 @@ func Test_buildRoomTree(t *testing.T) {
 					Children: []Node{
 						{
 							Key:   "building 1-8",
-							Label: "8",
+							Label: "8 Person",
 							Children: []Node{
 								{
 									Key:   "PAX-Hobby-8",
@@ -43,7 +43,7 @@ func Test_buildRoomTree(t *testing.T) {
 						},
 						{
 							Key:   "building 1-9",
-							Label: "9",
+							Label: "9 Person",
 							Children: []Node{
 								{
 									Key:   "PAX-XHobby-9",
@@ -59,7 +59,7 @@ func Test_buildRoomTree(t *testing.T) {
 					Children: []Node{
 						{
 							Key:   "building 1-10",
-							Label: "10",
+							Label: "10 Person",
 							Children: []Node{
 								{
 									Key:   "PAX-Floppy-10",
@@ -81,7 +81,7 @@ func Test_buildRoomTree(t *testing.T) {
 					Children: []Node{
 						{
 							Key:   "building 2-10",
-							Label: "10",
+							Label: "10 Person",
 							Children: []Node{
 								{
 									Key:   "PAX-Zloopy-10",
@@ -91,7 +91,7 @@ func Test_buildRoomTree(t *testing.T) {
 						},
 						{
 							Key:   "building 2-12",
-							Label: "12",
+							Label: "12 Person",
 							Children: []Node{
 								{
 									Key:   "PAX-XZloopy-12",
