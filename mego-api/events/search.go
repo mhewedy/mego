@@ -21,7 +21,15 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 
 	for _, ee := range eventUsers {
 		go func(ee []ewsutil.EventUser) {
-			events, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
+			e, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
+			events := make([]event, len(e))
+			for i := range e {
+				events[i] = event{
+					Start: e[i].Start,
+					End:   e[i].End,
+				}
+			}
+
 			if err != nil {
 				ch <- roomEvents{
 					Room:  ee[roomIndex].Email,
@@ -53,7 +61,31 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 		}
 	}
 
-	return result
+	return mergeRoomEvents(result)
+}
+
+func mergeRoomEvents(roomEvents []roomEvents) []roomEvents {
+
+	contains := func(ee []event, ex event) bool {
+		for _, e := range ee {
+			if ex.Start == e.Start && ex.End == e.End {
+				return true
+			}
+		}
+		return false
+	}
+
+	for i, rr := range roomEvents {
+		events := make([]event, 0)
+		for _, ee := range rr.Events {
+			if !contains(events, ee) {
+				events = append(events, ee)
+			}
+		}
+		roomEvents[i].Events = events
+	}
+
+	return roomEvents
 }
 
 func getDuration(from time.Time) time.Duration {

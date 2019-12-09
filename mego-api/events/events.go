@@ -17,9 +17,14 @@ type input struct {
 }
 
 type roomEvents struct {
-	Room   string          `json:"room"`
-	Events []ewsutil.Event `json:"events"`
-	Error  string          `json:"error"`
+	Room   string  `json:"room"`
+	Events []event `json:"events"`
+	Error  string  `json:"error"`
+}
+
+type event struct {
+	Start time.Time `json:"start"`
+	End   time.Time `json:"end"`
 }
 
 var EWSClient ews.Client
