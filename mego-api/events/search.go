@@ -13,7 +13,7 @@ func doSearch(
 ) []roomEvents {
 
 	roomEvents := returnBusyTime(eventUsers, from)
-	calculateFreeTimeSlots(roomEvents)
+	calculateFreeTimeSlots(roomEvents, from, duration)
 	return roomEvents
 }
 
@@ -90,22 +90,64 @@ func mergeRoomEvents(roomEvents []roomEvents) []roomEvents {
 	return roomEvents
 }
 
-func calculateFreeTimeSlots(roomEvents []roomEvents) {
+func calculateFreeTimeSlots(roomEvents []roomEvents, from time.Time, duration time.Duration) {
 
-	for _, roomEvent := range roomEvents {
+	splitTime := func(start, end time.Time, duration time.Duration) []event {
+		events := make([]event, 0)
+		// TODO vip
+		return events
+	}
 
+	for i, roomEvent := range roomEvents {
+
+		free := make([]event, 0)
+
+		// if no busy time, then split the whole time in durations
+		if len(roomEvent.Busy) == 0 {
+			f := splitTime(from, getLatestSlot(from), duration)
+			free = append(free, f...)
+			continue
+		}
+
+		// sort the busy events on start time
 		sort.Slice(roomEvent.Busy, func(i, j int) bool {
 			return roomEvent.Busy[i].Start.Before(roomEvent.Busy[j].Start)
 		})
 
-		// TODO continue
+		// if there's time slots before the first event
+		if from.Before(roomEvent.Busy[0].Start) {
+			f := splitTime(from, roomEvent.Busy[0].Start, duration)
+			free = append(free, f...)
+		}
 
+		for j, curr := range roomEvent.Busy {
+			var nextStart time.Time
+
+			if j < len(roomEvent.Busy)-1 {
+				nextStart = roomEvent.Busy[j+1].Start
+			} else {
+				nextStart = getLatestSlot(from)
+			}
+
+			fmt.Println(roomEvent.Room, curr.End, nextStart)
+
+			if curr.End.Before(nextStart) {
+				f := splitTime(curr.End, nextStart, duration)
+				free = append(free, f...)
+			}
+		}
+
+		roomEvents[i].Free = free
 	}
 }
 
 func getDuration(from time.Time) time.Duration {
+	return getLatestSlot(from).Sub(from)
+}
+
+func getLatestSlot(from time.Time) time.Time {
 	year, month, day := from.Date()
 	to := time.Date(year, month, day,
 		conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
-	return to.Sub(from)
+	return to
 }
