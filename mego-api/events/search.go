@@ -94,7 +94,19 @@ func calculateFreeTimeSlots(roomEvents []roomEvents, from time.Time, duration ti
 
 	splitTime := func(start, end time.Time, duration time.Duration) []event {
 		events := make([]event, 0)
-		// TODO vip
+
+		for {
+			if start.Add(duration).After(end) {
+				break
+			}
+			event := event{
+				Start: start,
+				End:   start.Add(duration),
+			}
+			events = append(events, event)
+
+			start = event.End
+		}
 		return events
 	}
 
@@ -128,8 +140,6 @@ func calculateFreeTimeSlots(roomEvents []roomEvents, from time.Time, duration ti
 			} else {
 				nextStart = getLatestSlot(from)
 			}
-
-			fmt.Println(roomEvent.Room, curr.End, nextStart)
 
 			if curr.End.Before(nextStart) {
 				f := splitTime(curr.End, nextStart, duration)
