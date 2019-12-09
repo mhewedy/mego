@@ -2,10 +2,8 @@ package events
 
 import (
 	"fmt"
-	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
-	"log"
 	"time"
 )
 
@@ -28,12 +26,12 @@ func returnBusyTime(
 			events, err := ewsutil.ListUsersEvents(EWSClient, ee, from, duration)
 			if err != nil {
 				ch <- roomEvents{
-					Room:  getRoom(ee),
+					Room:  ee[roomIndex].Email,
 					Error: err.Error(),
 				}
 			} else {
 				ch <- roomEvents{
-					Room:   getRoom(ee),
+					Room:   ee[roomIndex].Email,
 					Events: events,
 				}
 			}
@@ -58,16 +56,6 @@ func returnBusyTime(
 	}
 
 	return result
-}
-
-func getRoom(eventsUsers []ewsutil.EventUser) string {
-	for _, rr := range eventsUsers {
-		if rr.AttendeeType == ews.AttendeeTypeResource {
-			return rr.Email
-		}
-	}
-	log.Fatal("attendee of type resource should be exist in", eventsUsers)
-	return ""
 }
 
 func getDuration(from time.Time) time.Duration {

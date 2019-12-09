@@ -23,6 +23,7 @@ type roomEvents struct {
 }
 
 var EWSClient ews.Client
+var roomIndex = 0
 
 func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
@@ -71,13 +72,13 @@ func buildEventUserSlices(i *input) [][]ewsutil.EventUser {
 	events := make([][]ewsutil.EventUser, len(i.Rooms))
 
 	for i, rr := range i.Rooms {
-		events[i] = make([]ewsutil.EventUser, 0)
-		events[i] = append(events[i], emails...)
-		events[i] = append(events[i], me)
-		events[i] = append(events[i], ewsutil.EventUser{
+		events[i] = make([]ewsutil.EventUser, 1)
+		events[i][roomIndex] = ewsutil.EventUser{
 			Email:        rr,
 			AttendeeType: ews.AttendeeTypeResource,
-		})
+		}
+		events[i] = append(events[i], emails...)
+		events[i] = append(events[i], me)
 	}
 
 	return events
