@@ -189,11 +189,11 @@
                 }
             },
             validate: function (input) {
-                if (input.emails == 0 ){
+                if (input.emails.length === 0 ){
                     MessageService.error('one required attendee is required at least');
                     return false
                 }
-                if (input.rooms == 0 ){
+                if (input.rooms.length === 0 ){
                     MessageService.error('choose one meeting room at least');
                     return false
                 }
