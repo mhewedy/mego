@@ -2,6 +2,7 @@ package conf
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,16 +15,31 @@ const commentChar = "#"
 
 var props map[string]string
 
+type Source interface {
+	read() (io.ReadCloser, error)
+}
+
+type source struct {
+}
+
+func (s source) read() (io.ReadCloser, error) {
+	f, err := os.Open("mego.conf")
+	if err != nil {
+		return nil, err
+	}
+	return f, nil
+}
+
 func init() {
 	props = make(map[string]string)
 
-	f, err := os.Open("mego.conf")
+	r, err := source{}.read()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer f.Close()
+	defer r.Close()
 
-	b, err := ioutil.ReadAll(f)
+	b, err := ioutil.ReadAll(r)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +50,8 @@ func init() {
 		trimmedLine := strings.TrimSpace(line)
 		if len(trimmedLine) > 0 && !strings.HasPrefix(trimmedLine, commentChar) {
 			kv := strings.Split(trimmedLine, "=")
-			props[kv[0]] = strings.Split(kv[1], commentChar)[0] // take value part before comment char
+			props[strings.TrimSpace(kv[0])] =
+				strings.TrimSpace(strings.Split(kv[1], commentChar)[0]) // take value part before comment char
 		}
 	}
 }
