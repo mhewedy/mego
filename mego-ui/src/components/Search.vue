@@ -4,69 +4,69 @@
     <div class="p-grid">
       <div class="p-col-2">Required Attendees</div>
       <div class="p-col-10">
-          <span class="p-fluid">
-            <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
-                          @complete="searchReqAttendees($event)" field="name">
-               <template #item="slotProps">
-                    <div class="p-clearfix p-autocomplete-brand-item">
-                      <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
-                           alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-                      <div style="display: flex">
-                        <span>{{slotProps.item.email_address}}</span>
-                        <span><b>{{slotProps.item.display_name}}</b></span>
-                        <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
-                        </div>
-                    </div>
-                </template>
-            </AutoComplete>
-          </span>
+      <span class="p-fluid">
+      <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
+                    @complete="searchReqAttendees($event)" field="name">
+         <template #item="slotProps">
+          <div class="p-clearfix p-autocomplete-brand-item">
+            <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
+                 alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+            <div style="display: flex">
+            <span>{{slotProps.item.email_address}}</span>
+            <span><b>{{slotProps.item.display_name}}</b></span>
+            <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+            </div>
+          </div>
+        </template>
+      </AutoComplete>
+      </span>
       </div>
     </div>
 
     <div class="p-grid">
       <div class="p-col-2">Optional Attendees</div>
       <div class="p-col-10">
-          <span class="p-fluid">
-            <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
-                          @complete="searchOptAttendees($event)" field="name">
-               <template #item="slotProps">
-                    <div class="p-clearfix p-autocomplete-brand-item">
-                      <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-                      <div style="display: flex">
-                        <span>{{slotProps.item.email_address}}</span>
-                        <span><b>{{slotProps.item.display_name}}</b></span>
-                        <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
-                        </div>
-                    </div>
-                </template>
-            </AutoComplete>
-        </span>
+      <span class="p-fluid">
+      <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
+                    @complete="searchOptAttendees($event)" field="name">
+         <template #item="slotProps">
+          <div class="p-clearfix p-autocomplete-brand-item">
+            <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+            <div style="display: flex">
+            <span>{{slotProps.item.email_address}}</span>
+            <span><b>{{slotProps.item.display_name}}</b></span>
+            <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+            </div>
+          </div>
+        </template>
+      </AutoComplete>
+    </span>
       </div>
     </div>
 
     <div class="p-grid">
       <div class="p-col-2">Rooms</div>
       <div class="p-col-10">
-          <span class="p-fluid">
-            <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
-        </span>
+      <span class="p-fluid">
+      <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
+    </span>
       </div>
     </div>
 
     <div class="p-grid">
       <div class="p-col-2">Start time</div>
       <div class="p-col-3">
-          <span class="p-fluid">
-            <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
-                      :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
-          </span>
+      <span class="p-fluid">
+      <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
+                :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
+      </span>
       </div>
       <div class="p-col-2"></div>
       <div class="p-col-1">Duration</div>
       <div class="p-col-3">
-          <span class="p-fluid">
-            <Spinner v-model="duration" :step="30" :min="30"/>
-          </span>
+      <span class="p-fluid">
+      <Spinner v-model="duration" :step="30" :min="30"/>
+      </span>
       </div>
     </div>
 
@@ -183,7 +183,7 @@
                 mails.push(...this.selectedReqAttendees.map(it => it.email_address));
                 mails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
-                console.log(input)
+                this.$emit("sentSearchInput", input)
             }
         }
     }

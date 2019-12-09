@@ -8,7 +8,13 @@
 
 <script>
     export default {
-        name: "Result"
+        name: "Result",
+        props: {
+            searchInput: null
+        },
+        mounted() {
+            console.log("searchInput", this.searchInput)
+        }
     }
 </script>
 

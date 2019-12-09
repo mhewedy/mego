@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Search></Search>
-    <Result></Result>
+    <Search @sentSearchInput="sentSearchInput"></Search>
+    <Result v-if="searchInput" :search-input="searchInput"></Result>
   </div>
 </template>
 
@@ -12,14 +12,12 @@ import Result from "./components/Result";
 export default {
     data() {
         return {
-            message: null,
-            text: null
+            searchInput: null
         }
     },
     methods: {
-        greet() {
-            this.$toast.add({severity: 'info', summary: 'Hello '  + this.text});
-            this.message = 'Hello ' + this.text;
+        sentSearchInput: function (searchInput) {
+            this.searchInput = searchInput
         }
     },
     components: {
