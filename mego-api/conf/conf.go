@@ -34,7 +34,7 @@ func init() {
 		trimmedLine := strings.TrimSpace(line)
 		if len(trimmedLine) > 0 && !strings.HasPrefix(trimmedLine, commentChar) {
 			kv := strings.Split(trimmedLine, "=")
-			props[kv[0]] = parseValue(kv[1])
+			props[kv[0]] = strings.Split(kv[1], commentChar)[0] // take value part before comment char
 		}
 	}
 }
@@ -89,8 +89,4 @@ func GetDuration(key string, defaultValue time.Duration) time.Duration {
 		return defaultValue
 	}
 	return d
-}
-
-func parseValue(v string) string {
-	return strings.Split(v, commentChar)[0]
 }

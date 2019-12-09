@@ -60,6 +60,7 @@ func returnBusyTime(
 
 func getDuration(from time.Time) time.Duration {
 	year, month, day := from.Date()
-	to := time.Date(year, month, day, conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
+	to := time.Date(year, month, day,
+		conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
 	return to.Sub(from)
 }
