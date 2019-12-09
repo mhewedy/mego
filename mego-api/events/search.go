@@ -11,19 +11,17 @@ func doSearch(
 	eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration,
 ) []roomEvents {
 
-	busyTime := returnBusyTime(eventUsers, from, getDuration(from))
+	busyTime := returnBusyTime(eventUsers, from)
 	return busyTime
 }
 
-func returnBusyTime(
-	eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration,
-) []roomEvents {
+func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
 
 	ch := make(chan roomEvents, len(eventUsers))
 
 	for _, ee := range eventUsers {
 		go func(ee []ewsutil.EventUser) {
-			events, err := ewsutil.ListUsersEvents(EWSClient, ee, from, duration)
+			events, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
 			if err != nil {
 				ch <- roomEvents{
 					Room:  ee[roomIndex].Email,
