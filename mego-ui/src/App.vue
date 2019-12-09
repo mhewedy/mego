@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <Search></Search>
+    <Result></Result>
   </div>
 </template>
 
 <script>
 import Search from './components/Search.vue'
+import Result from "./components/Result";
 
 export default {
     data() {
@@ -21,7 +23,7 @@ export default {
         }
     },
     components: {
-      Search
+      Search, Result
     }
 }
 </script>

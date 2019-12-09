@@ -1,11 +1,9 @@
 <template>
-  <div>
+  <div id="search-panel">
 
-    <div id="search-panel">
-
-      <div class="p-grid">
-        <div class="p-col-2">Required Attendees</div>
-        <div class="p-col-10">
+    <div class="p-grid">
+      <div class="p-col-2">Required Attendees</div>
+      <div class="p-col-10">
           <span class="p-fluid">
             <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
                           @complete="searchReqAttendees($event)" field="name">
@@ -21,12 +19,12 @@
                 </template>
             </AutoComplete>
           </span>
-        </div>
       </div>
+    </div>
 
-      <div class="p-grid">
-        <div class="p-col-2">Optional Attendees</div>
-        <div class="p-col-10">
+    <div class="p-grid">
+      <div class="p-col-2">Optional Attendees</div>
+      <div class="p-col-10">
           <span class="p-fluid">
             <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
                           @complete="searchOptAttendees($event)" field="name">
@@ -42,47 +40,46 @@
                 </template>
             </AutoComplete>
         </span>
-        </div>
       </div>
+    </div>
 
-      <div class="p-grid">
-        <div class="p-col-2">Rooms</div>
-        <div class="p-col-10">
+    <div class="p-grid">
+      <div class="p-col-2">Rooms</div>
+      <div class="p-col-10">
           <span class="p-fluid">
             <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
         </span>
-        </div>
       </div>
+    </div>
 
-      <div class="p-grid">
-        <div class="p-col-2">Start time</div>
-        <div class="p-col-3">
+    <div class="p-grid">
+      <div class="p-col-2">Start time</div>
+      <div class="p-col-3">
           <span class="p-fluid">
             <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
                       :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
           </span>
-        </div>
-        <div class="p-col-2"></div>
-        <div class="p-col-1">Duration</div>
-        <div class="p-col-3">
+      </div>
+      <div class="p-col-2"></div>
+      <div class="p-col-1">Duration</div>
+      <div class="p-col-3">
           <span class="p-fluid">
             <Spinner v-model="duration" :step="30" :min="30"/>
           </span>
-        </div>
       </div>
+    </div>
 
-      <div class="p-grid">
-        <div class="p-col-3"></div>
-        <div class="p-col-6 p-fluid">
-          <Button label="Search" icon="pi pi-search"
-                  class="p-button-raised p-button-rounded p-button-info" @click="search()" />
-        </div>
-        <div class="p-col-3"></div>
+    <div class="p-grid">
+      <div class="p-col-3"></div>
+      <div class="p-col-6 p-fluid">
+        <Button label="Search" icon="pi pi-search"
+                class="p-button-raised p-button-rounded p-button-info" @click="search()"/>
       </div>
-
+      <div class="p-col-3"></div>
     </div>
 
   </div>
+
 </template>
 
 <script>
