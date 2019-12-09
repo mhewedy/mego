@@ -1,6 +1,7 @@
 package attendess
 
 import (
+	"github.com/mhewedy/mego/conf"
 	"github.com/stretchr/testify/assert"
 	"reflect"
 	"strings"
@@ -74,38 +75,41 @@ func (m mockEWSClient) GetUsername() string {
 	return ""
 }
 
+func init() {
+	conf.DefaultSource = conf.DummySource{}
+}
+
 func Test_indexAttendees(t *testing.T) {
 
 	EWSClient = &mockEWSClient{}
 	indexAttendees()
 
 	assert.Equal(t, 2, len(attendeesIndex))
-	assert.ElementsMatch(t, attendeesIndex, []Attendee{
-		{
-			DisplayName:  "Terry Adams",
-			Title:        "",
-			EmailAddress: "terry@litwareinc.com",
-			Image:        "",
-		},
-		{
-			DisplayName:  "Abbas Adams",
-			Title:        "",
-			EmailAddress: "abbas@litwareinc.com",
-			Image:        "",
-		},
+	assert.Equal(t, attendeesIndex["terry@litwareinc.com"], Attendee{
+		DisplayName:  "Terry Adams",
+		Title:        "",
+		EmailAddress: "terry@litwareinc.com",
+		Image:        "",
+	})
+
+	assert.Equal(t, attendeesIndex["abbas@litwareinc.com"], Attendee{
+		DisplayName:  "Abbas Adams",
+		Title:        "",
+		EmailAddress: "abbas@litwareinc.com",
+		Image:        "",
 	})
 }
 
 func Test_searchAttendees(t *testing.T) {
 
-	attendeesIndex = []Attendee{
-		{
+	attendeesIndex = map[string]Attendee{
+		"terry@litwareinc.com": {
 			DisplayName:  "Terry Adams",
 			Title:        "",
 			EmailAddress: "terry@litwareinc.com",
 			Image:        "",
 		},
-		{
+		"abbas@litwareinc.com": {
 			DisplayName:  "Abbas Fernas",
 			Title:        "",
 			EmailAddress: "abbas@litwareinc.com",
