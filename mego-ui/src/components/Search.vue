@@ -160,11 +160,29 @@
                 return date
             },
             search: function () {
-                console.log(this.selectedReqAttendees)
-                console.log(this.selectedOptAttendees)
-                console.log(this.selectedRooms)
-                console.log(this.startTime)
-                console.log(this.duration)
+
+                let rooms = [];
+                let mails = [];
+                let input = {
+                    rooms: rooms,
+                    mails: mails,
+                    from: this.startTime.toISOString(),
+                    duration: this.duration
+                };
+
+                for (const key in this.selectedRooms) {
+                    let value = this.selectedRooms[key];
+                    if (value.checked) {
+                        if (this.roomsList.indexOf(key) > -1) {
+                            rooms.push(key)
+                        }
+                    }
+                }
+
+                mails.push(...this.selectedReqAttendees.map(it => it.email_address));
+                mails.push(...this.selectedOptAttendees.map(it => it.email_address));
+
+                console.log(input)
             }
         }
     }
