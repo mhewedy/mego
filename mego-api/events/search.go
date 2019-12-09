@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
+	"sort"
 	"time"
 )
 
@@ -11,8 +12,9 @@ func doSearch(
 	eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration,
 ) []roomEvents {
 
-	busyTime := returnBusyTime(eventUsers, from)
-	return busyTime
+	roomEvents := returnBusyTime(eventUsers, from)
+	calculateFreeTimeSlots(roomEvents)
+	return roomEvents
 }
 
 func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
@@ -86,6 +88,19 @@ func mergeRoomEvents(roomEvents []roomEvents) []roomEvents {
 	}
 
 	return roomEvents
+}
+
+func calculateFreeTimeSlots(roomEvents []roomEvents) {
+
+	for _, roomEvent := range roomEvents {
+
+		sort.Slice(roomEvent.Busy, func(i, j int) bool {
+			return roomEvent.Busy[i].Start.Before(roomEvent.Busy[j].Start)
+		})
+
+		// TODO continue
+
+	}
 }
 
 func getDuration(from time.Time) time.Duration {
