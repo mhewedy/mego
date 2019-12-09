@@ -163,10 +163,10 @@
             search: function () {
 
                 let rooms = [];
-                let mails = [];
+                let emails = [];
                 let input = {
                     rooms: rooms,
-                    mails: mails,
+                    emails: emails,
                     from: this.startTime.toISOString(),
                     duration: this.duration
                 };
@@ -180,10 +180,10 @@
                     }
                 }
 
-                mails.push(...this.selectedReqAttendees.map(it => it.email_address));
-                mails.push(...this.selectedOptAttendees.map(it => it.email_address));
+                emails.push(...this.selectedReqAttendees.map(it => it.email_address));
+                emails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
-                this.$emit("sentSearchInput", input)
+                this.$emit("searched", input)
             }
         }
     }

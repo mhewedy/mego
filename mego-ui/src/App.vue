@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Search @sentSearchInput="sentSearchInput"></Search>
+    <Search @searched="sentSearchInput"></Search>
     <Result v-if="searchInput" :search-input="searchInput"></Result>
   </div>
 </template>

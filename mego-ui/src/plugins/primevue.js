@@ -8,6 +8,7 @@ import ToastService from 'primevue/toastservice';
 import Tree from 'primevue/tree';
 import Calendar from 'primevue/calendar';
 import Spinner from 'primevue/spinner';
+import ProgressSpinner from 'primevue/progressspinner';
 
 Vue.use(ToastService);
 
@@ -18,6 +19,7 @@ Vue.component('AutoComplete', AutoComplete);
 Vue.component('Tree', Tree);
 Vue.component('Calendar', Calendar);
 Vue.component('Spinner', Spinner);
+Vue.component('ProgressSpinner', ProgressSpinner);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';

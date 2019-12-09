@@ -22,7 +22,7 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/rooms", handle(rooms.ListRooms)).Methods("GET")
 	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListRoomsTree)).Methods("GET")
 
-	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("GET")
+	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("POST")
 
 	return router
 }
