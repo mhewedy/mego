@@ -33,7 +33,7 @@ func handle(fn handlerFunc) http.HandlerFunc {
 		i, err := fn(w, r)
 
 		if err != nil {
-			if _, ok := err.(*commons.ClientError); ok {
+			if commons.IsClientError(err) {
 				handleError(w, err, http.StatusBadRequest)
 				return
 			}
