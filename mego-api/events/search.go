@@ -37,8 +37,8 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 				}
 			} else {
 				ch <- roomEvents{
-					Room:   ee[roomIndex].Email,
-					Events: events,
+					Room: ee[roomIndex].Email,
+					Busy: events,
 				}
 			}
 		}(ee)
@@ -77,12 +77,12 @@ func mergeRoomEvents(roomEvents []roomEvents) []roomEvents {
 
 	for i, rr := range roomEvents {
 		events := make([]event, 0)
-		for _, ee := range rr.Events {
+		for _, ee := range rr.Busy {
 			if !contains(events, ee) {
 				events = append(events, ee)
 			}
 		}
-		roomEvents[i].Events = events
+		roomEvents[i].Busy = events
 	}
 
 	return roomEvents

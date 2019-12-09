@@ -16,7 +16,7 @@ func Test_mergeRoomEvents(t *testing.T) {
 	actual := mergeRoomEvents([]roomEvents{
 		{
 			Room: "room002@mhewedy.onmicrosoft.com",
-			Events: []event{
+			Busy: []event{
 				{
 					Start: t1,
 					End:   t1.Add(30 * time.Minute),
@@ -30,7 +30,7 @@ func Test_mergeRoomEvents(t *testing.T) {
 		},
 		{
 			Room: "room001@mhewedy.onmicrosoft.com",
-			Events: []event{
+			Busy: []event{
 				{
 					Start: t1,
 					End:   t1.Add(30 * time.Minute),
@@ -47,7 +47,7 @@ func Test_mergeRoomEvents(t *testing.T) {
 	expected := []roomEvents{
 		{
 			Room: "room002@mhewedy.onmicrosoft.com",
-			Events: []event{
+			Busy: []event{
 				{
 					Start: t1,
 					End:   t1.Add(30 * time.Minute),
@@ -57,7 +57,7 @@ func Test_mergeRoomEvents(t *testing.T) {
 		},
 		{
 			Room: "room001@mhewedy.onmicrosoft.com",
-			Events: []event{
+			Busy: []event{
 				{
 					Start: t1,
 					End:   t1.Add(30 * time.Minute),
