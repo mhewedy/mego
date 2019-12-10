@@ -111,6 +111,12 @@ func calculateFreeTimeSlots(roomEvents []roomEvents, from time.Time, duration ti
 	}
 
 	for i, roomEvent := range roomEvents {
+
+		if len(roomEvent.Error) != 0 { // skip in case of error busy time
+			roomEvents[i].Free = make([]event, 0)
+			continue
+		}
+
 		// if no busy time, then split the whole time in durations
 		if len(roomEvent.Busy) == 0 {
 			f := splitTime(from, getLatestSlot(from), duration)

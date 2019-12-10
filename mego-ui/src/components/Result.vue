@@ -16,6 +16,7 @@
 
 <script>
     import EventService from '../services/events'
+    import MessageService from '../services/messages'
 
     export default {
         name: "Result",
@@ -44,6 +45,7 @@
                     console.log(data);
                     that.loadingResult = false;
                 }, function (err) {
+                    MessageService.error(err);
                     console.log('error:', err);
                     that.loadingResult = false;
                 });

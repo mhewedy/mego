@@ -65,7 +65,7 @@
       <div class="p-col-1">Duration</div>
       <div class="p-col-3">
       <span class="p-fluid">
-      <Spinner v-model="duration" :step="30" :min="30"/>
+      <Spinner v-model="duration" :step="30" :min="30" :readonly="true"/>
       </span>
       </div>
     </div>
