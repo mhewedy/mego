@@ -1,7 +1,7 @@
-code           ,building  ,zone  ,size,display_name
-PAX-Hobby-8    ,building 1,Zone10,8   ,Hobby
-PAX-XHobby-9   ,building 1,Zone10,9   ,XHobby
-PAX-Floppy-10  ,building 1,Zone2 ,10  ,Floppy
-PAX-Zloopy-10  ,building 2,Zone2 ,10  ,Zloopy
-PAX-XZloopy-12 ,building 2,Zone2 ,12  ,XZloopy
-PAX-XXZloopy-12,building 2,Zone2 ,12  ,XXZloopy
+code                           ,building  ,zone  ,size,display_name
+room001@mhewedy.onmicrosoft.com,building 1,Zone10,8   ,Hobby
+PAX-XHobby-9                   ,building 1,Zone10,9   ,XHobby
+PAX-Floppy-10                  ,building 1,Zone2 ,10  ,Floppy
+PAX-Zloopy-10                  ,building 2,Zone2 ,10  ,Zloopy
+PAX-XZloopy-12                 ,building 2,Zone2 ,12  ,XZloopy
+PAX-XXZloopy-12                ,building 2,Zone2 ,12  ,XXZloopy
