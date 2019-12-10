@@ -190,7 +190,7 @@
             },
             validate: function (input) {
                 if (input.emails.length === 0) {
-                    MessageService.error('one required attendee is required at least');
+                    MessageService.error('one attendee is required at least');
                     return false
                 }
                 if (input.rooms.length === 0) {
