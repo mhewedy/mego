@@ -1,3 +1,6 @@
 .idea
 *.iml
+
 /mego-api/public
+/mego-api/pkged.go
+/mego-api/mego

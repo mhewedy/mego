@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/markbates/pkger"
 	"github.com/mhewedy/mego/attendess"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/events"
@@ -23,6 +24,8 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListRoomsTree)).Methods("GET")
 
 	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("POST")
+
+	router.PathPrefix("/").Handler(http.FileServer(pkger.Dir("/public")))
 
 	return router
 }
