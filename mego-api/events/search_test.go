@@ -15,7 +15,7 @@ func Test_mergeRoomEvents(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	actual := mergeRoomEvents([]roomEvents{
+	actual := removeBusyDup([]roomEvents{
 		{
 			Room: "room002@mhewedy.onmicrosoft.com",
 			Busy: []event{

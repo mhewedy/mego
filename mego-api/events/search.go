@@ -63,10 +63,10 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 		}
 	}
 
-	return mergeRoomEvents(result)
+	return removeBusyDup(result)
 }
 
-func mergeRoomEvents(roomEvents []roomEvents) []roomEvents {
+func removeBusyDup(roomEvents []roomEvents) []roomEvents {
 
 	contains := func(ee []event, ex event) bool {
 		for _, e := range ee {
