@@ -23,7 +23,10 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 
 	for _, ee := range eventUsers {
 		go func(ee []ewsutil.EventUser) {
-			e, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
+
+			m, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
+
+			e := toSlice(m)
 			events := make([]event, len(e))
 			for i := range e {
 				events[i] = event{
@@ -39,8 +42,9 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 				}
 			} else {
 				ch <- roomEvents{
-					Room: ee[roomIndex].Email,
-					Busy: events,
+					Room:        ee[roomIndex].Email,
+					Busy:        events,
+					BusyDetails: wrap(m),
 				}
 			}
 		}(ee)
@@ -64,6 +68,28 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 	}
 
 	return removeBusyDup(result)
+}
+
+// use json type instead of non-json types
+func wrap(events map[ewsutil.EventUser][]ewsutil.Event) map[string][]event {
+	m := make(map[string][]event)
+	for k, v := range events {
+
+		s := make([]event, len(v))
+		for k, vv := range v {
+			s[k] = event{Start: vv.Start, End: vv.End, BusyType: string(vv.BusyType)}
+		}
+		m[k.Email] = s
+	}
+	return m
+}
+
+func toSlice(events map[ewsutil.EventUser][]ewsutil.Event) []ewsutil.Event {
+	s := make([]ewsutil.Event, 0)
+	for _, v := range events {
+		s = append(s, v...)
+	}
+	return s
 }
 
 func removeBusyDup(roomEvents []roomEvents) []roomEvents {

@@ -17,15 +17,17 @@ type input struct {
 }
 
 type roomEvents struct {
-	Room  string  `json:"room"`
-	Busy  []event `json:"busy"`
-	Free  []event `json:"free"`
-	Error string  `json:"error"`
+	Room        string             `json:"room"`
+	Busy        []event            `json:"busy"`
+	BusyDetails map[string][]event `json:"busy_details"`
+	Free        []event            `json:"free"`
+	Error       string             `json:"error"`
 }
 
 type event struct {
-	Start time.Time `json:"start"`
-	End   time.Time `json:"end"`
+	Start    time.Time `json:"start"`
+	End      time.Time `json:"end"`
+	BusyType string    `json:"busy_type,omitempty"`
 }
 
 var EWSClient ews.Client
