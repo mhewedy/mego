@@ -10,6 +10,19 @@
       <div class="p-col-5"></div>
     </div>
 
+    <div>
+
+      <div v-for="t in timeSlotCount" :key="t" class="p-grid">
+
+        <span v-for="tt in t" :key="tt" :id="tt-'room'" :style="{width: 100/t + '%'}"
+              style="border: 1px groove #2c3e50; min-height: 60px">
+
+        </span>
+
+      </div>
+
+    </div>
+
   </div>
 
 </template>
@@ -25,7 +38,8 @@
         },
         data() {
             return {
-                loadingResult: false
+                loadingResult: false,
+                timeSlotCount: []
             }
         },
         mounted() {
@@ -42,13 +56,36 @@
                 this.loadingResult = true;
 
                 EventService.search(input, function (data) {
-                    console.log(data);
+                    that.draw(input, data);
                     that.loadingResult = false;
                 }, function (err) {
                     MessageService.error(err);
                     console.log('error:', err);
                     that.loadingResult = false;
                 });
+            },
+            draw(input, result) {
+                let index = 0;  // todo for loop
+                result = result[index];
+
+                let getTo = function () {
+                    if (result.busy.length > 0 && result.free.length > 0) {
+                        return Math.max(
+                            result.busy[result.busy.length - 1],
+                            result.free[result.free.length - 1],
+                        )["end"]
+                    } else if (result.busy.length > 0) {
+                        return result.busy[result.busy.length - 1]["end"]
+                    } else if (result.free.length > 0) {
+                        return result.free[result.free.length - 1]["end"]
+                    }
+                };
+
+                let from = new Date(input.from);
+                let to = new Date(getTo());
+                this.timeSlotCount[index] =
+                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / input.duration);
+
             }
         }
     }
