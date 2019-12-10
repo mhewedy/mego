@@ -64,6 +64,9 @@ func parseAndValidate(r *http.Request) (*input, error) {
 }
 
 func buildEventUserSlices(i *input) [][]ewsutil.EventUser {
+
+	i.From = i.From.Truncate(1 * time.Minute)
+
 	me := ewsutil.EventUser{
 		Email:        EWSClient.GetUsername(),
 		AttendeeType: ews.AttendeeTypeOrganizer,

@@ -6,6 +6,7 @@ import (
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 type ewsMock struct {
@@ -107,4 +108,12 @@ func Test_buildEventUserSlices(t *testing.T) {
 	}
 
 	assert.ElementsMatch(t, expected, actual)
+}
+
+func Test_RoundTime(t *testing.T) {
+	t1, _ := time.Parse(time.RFC3339, "2019-11-29T14:30:40+03:00")
+	rounded := t1.Truncate(1 * time.Minute)
+	expected, _ := time.Parse(time.RFC3339, "2019-11-29T14:30:00+03:00")
+
+	assert.Equal(t, rounded, expected)
 }
