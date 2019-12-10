@@ -72,7 +72,7 @@
 
     <div class="p-grid">
       <div class="p-col-3"></div>
-      <div class="p-col-6 p-fluid">
+      <div class="p-col-6 p-fluid" style="margin: 40px 0 20px 0;">
         <Button label="Search" icon="pi pi-search"
                 class="p-button-raised p-button-rounded p-button-info" @click="search()"/>
       </div>
