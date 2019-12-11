@@ -94,23 +94,23 @@
 
                 // start for loop
 
-                let index = 0;  // todo for loop
-                result = result[index];
+                result.forEach(roomResult => {
 
-                // TODO
-                // call getSlotIdsByEvent for each result.busy_details object
-                /*"example@mhewedy.onmicrosoft.com": [
-                    {
-                        "start": "2019-12-11T11:15:00+03:00",
-                        "end": "2019-12-11T11:45:00+03:00",
-                        "busy_type": "Busy"
-                    },
-                    {
-                        "start": "2019-12-11T12:30:00+03:00",
-                        "end": "2019-12-11T13:30:00+03:00",
-                        "busy_type": "Busy"
+                    console.log("for room: ", roomResult.room);
+
+                    let details = roomResult.busy_details;
+                    for (let user in details){
+
+                        console.log("for user: ", user);
+
+                        let event = details[user];
+                        let slotIds = this.getSlotsIdsByEvent(event);
+
+                        console.log("event", event);
+                        console.log("slotIds", slotIds);
                     }
-                ],*/
+
+                });
             },
             getSlotsIdsByEvent(event) {
                 let eventStart = new Date(event.start).toLocaleTimeString('en-US', {hour12: false});
@@ -118,7 +118,9 @@
 
                 let slotsIds = [];
 
-                document.querySelector(".slot").forEach(it => {
+                let slots = document.getElementsByClassName("slot");
+                for (let i =0; i < slots.length; i++ ) {
+                    let it = slots[i];
                     let slotFrom = it.getAttribute("data-slot-from");
                     let slotTo = new Date(slotFrom);
                     slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
@@ -126,7 +128,7 @@
                     if (eventStart <= slotFrom && eventEnd >= slotTo) {
                         slotsIds.push(it.getAttribute("id"))
                     }
-                });
+                }
 
                 return slotsIds;
             },
