@@ -14,9 +14,13 @@
 
       <div v-for="r in rowsCount" :key="r" class="p-grid"> <!--  for each input.rooms-->
 
+        <span class="p-col-2">
+          Room
+        </span>
+
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
-              class="slot" :class="'slot-' + r" :style="{width: 100/timeSlotCount + '%'}"
+              class="slot" :class="'slot-' + r" :style="{width: 80/timeSlotCount + '%'}"
               :data-slot-from="buildSlotData(t)"
               @click="clickMe('slot-'+ r +'-'+t)">
 
