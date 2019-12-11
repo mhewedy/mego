@@ -97,16 +97,17 @@
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
-                        console.log("for room: ", roomResult.room);
-
                         let details = roomResult.busy_details;
                         for (let userEventsKey in details) {
-                            console.log("for userEventsKey: ", userEventsKey);
 
                             details[userEventsKey].forEach(event => {
                                 let slotIds = that.getSlotsIdsByEvent(event, rowId + 1);
-                                console.log("event", event);
-                                console.log("slotIds", slotIds);
+
+                                for (let slotId of slotIds){
+                                    let div = document.createElement("div");
+                                    document.getElementById(slotId).append(div)
+                                }
+
                             });
                         }
                     }
