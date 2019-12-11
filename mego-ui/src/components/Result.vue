@@ -97,17 +97,19 @@
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
-                        let details = roomResult.busy_details;
-                        for (let userEventsKey in details) {
+                        let busyDetails = roomResult.busy_details;
+                        for (let key in busyDetails) {
 
-                            details[userEventsKey].forEach(event => {
+                            let detail = busyDetails[key];
+                            detail.forEach(event => {
                                 let slotIds = that.getSlotsIdsByEvent(event, rowId + 1);
 
-                                for (let slotId of slotIds){
+                                for (let slotId of slotIds) {
                                     let div = document.createElement("div");
+                                    div.classList.add(event.busy_type);
+                                    div.setAttribute("style", "height: " + 100/detail.length + "%");
                                     document.getElementById(slotId).append(div)
                                 }
-
                             });
                         }
                     }
@@ -146,6 +148,6 @@
 
   .slot {
     border: 1px groove #2c3e50;
-    min-height: 60px
+    height: 100px
   }
 </style>
