@@ -95,8 +95,7 @@
                     that.loadingResult = false;
                     that.$emit("resultLoad", false);
                 });
-            },
-            draw(input, result) {
+            }, draw(input, result) {
                 let that = this;
                 this.rowsCount = result.length;
 
@@ -114,7 +113,6 @@
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
-
                         document.getElementsByClassName("row-" + (rowId + 1))[0].innerText = roomResult.room;
 
                         let busyDetails = roomResult.busy_details;
@@ -137,7 +135,6 @@
                             });
                         }
                     }
-
                     // set style
                     let slots = document.getElementsByClassName("slot");
                     for (let i = 0; i < slots.length; i++) {
@@ -151,29 +148,9 @@
                             slot.classList.add("slot-left");
                         }
 
+                        this.handleEvents(input, slots, i);
+
                         let divs = slot.getElementsByTagName("div");
-
-
-                        slot.addEventListener("mousemove", () => {
-                            if (divs.length === 0) {
-                                let numSlots = input.duration / slotIntervalInMinutes;
-
-                                for (let x = 0; x < numSlots; x++) {
-                                    if (i + x < slots.length) {
-                                        slots[i + x].style.backgroundColor = "#ffcc00";
-                                    }
-                                }
-                            }
-                        });
-                        slot.addEventListener("mouseout", () => {
-                            if (divs.length === 0) {
-                                for (let s of slots) {
-                                    s.style.backgroundColor = "transparent";
-                                }
-                            }
-                        });
-
-
                         // style divs, set height
                         for (let j = 0; j < divs.length; j++) {
                             let div = divs[j];
@@ -203,6 +180,29 @@
                 }
 
                 return slotsIds;
+            },
+            handleEvents: function (input, slots, i) {
+                let slot = slots[i];
+                let divs = slot.getElementsByTagName("div");
+
+                slot.addEventListener("mousemove", () => {
+                    if (divs.length === 0) {
+                        let numSlots = input.duration / slotIntervalInMinutes;
+
+                        for (let x = 0; x < numSlots; x++) {
+                            if (i + x < slots.length) {
+                                slots[i + x].style.backgroundColor = "#ffcc00";
+                            }
+                        }
+                    }
+                });
+                slot.addEventListener("mouseout", () => {
+                    if (divs.length === 0) {
+                        for (let s of slots) {
+                            s.style.backgroundColor = "transparent";
+                        }
+                    }
+                });
             },
             clickMe: function (ref) {
                 console.log(this.$refs[ref][0].getAttribute("data-slot-from"))
