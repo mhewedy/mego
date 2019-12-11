@@ -12,12 +12,18 @@
 
     <div v-if="!loadingResult" id="result">
 
-      <div v-for="r in rowsCount" :key="r" class="p-grid"> <!--  for each input.rooms-->
+      <div class="p-grid row">
+        <span class="p-col-2">
+        </span>
+        <span v-for="t in timeSlotCount" :key="t" :style="{width: (80/timeSlotCount) + '%'}">
+          {{buildHeaderTime(t)}}
+        </span>
+      </div>
 
+      <div v-for="r in rowsCount" :key="r" class="p-grid row"> <!--  for each input.rooms-->
         <span class="p-col-2">
           Room
         </span>
-
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
               class="slot" :class="'slot-' + r" :style="{width: 80/timeSlotCount + '%'}"
@@ -67,6 +73,13 @@
                 from.setMinutes(from.getMinutes() + ((slotId - 1) * slotIntervalInMinutes));
                 from.setSeconds(0);
                 return from;
+            },
+            buildHeaderTime: function (slotId) {
+                let slotDate = this.buildSlotData(slotId);
+                return slotDate.getMinutes() === 0 ? slotDate.toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }) : ""
             },
             search: function (input) {
                 const that = this;
@@ -174,6 +187,10 @@
     border-top: 1px groove #2c3e50;
     border-bottom: 1px groove #2c3e50;
     height: 150px
+  }
+
+  .row {
+    padding-bottom: 7px;
   }
 
 </style>
