@@ -107,12 +107,20 @@
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
                                     div.classList.add(event.busy_type);
-                                    div.setAttribute("style", "height: " + 100/detail.length + "%");
                                     document.getElementById(slotId).append(div)
                                 }
                             });
                         }
                     }
+
+                    let slots = document.getElementsByClassName("slot");
+                    for (let slot of slots){
+                        let divs = slot.getElementsByTagName("div");
+                        for (let div of divs){
+                            div.setAttribute("style", "height: " + 100/divs.length + "%")
+                        }
+                    }
+
                 }, 10);
             },
             getSlotsIdsByEvent(event, rowId) {
