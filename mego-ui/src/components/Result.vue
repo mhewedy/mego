@@ -15,7 +15,7 @@
       <div v-for="(t, i) in timeSlotCount" :key="t" class="p-grid">
 
         <span v-for="tt in t" :key="tt" :id="'slot-'+i+'-'+tt" :ref="'slot-'+i+'-'+tt"
-              :style="{width: 100/t + '%'}"  style="border: 1px groove #2c3e50; min-height: 60px"
+              :style="{width: 100/t + '%'}" style="border: 1px groove #2c3e50; min-height: 60px"
               :data-slot="buildSlotData(i, tt)"
 
               @click="clickMe('slot-'+i+'-'+tt)"
@@ -35,7 +35,7 @@
     import EventService from '../services/events'
     import MessageService from '../services/messages'
 
-    const slotsInterval = 15;
+    const slotsIntervalInMinutes = 15;
 
     export default {
         name: "Result",
@@ -95,17 +95,17 @@
                 let from = new Date(input.from);
                 let to = new Date(getTo());
                 this.timeSlotCount[index] =
-                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / slotsInterval);  // 15 min solt each
+                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / slotsIntervalInMinutes);
 
                 this.start = from;
                 this.end = to;
             },
-            buildSlotData: function (rowId, slotId){
-                console.log(rowId, slotId, (slotId-1) * slotsInterval);
-                let from  =  new Date(this.start);
-                from.setMinutes(from.getMinutes()+((slotId-1) * slotsInterval));
+            buildSlotData: function (rowId, slotId) {
+                console.log(rowId, slotId, (slotId - 1) * slotsIntervalInMinutes);
+                let from = new Date(this.start);
+                from.setMinutes(from.getMinutes() + ((slotId - 1) * slotsIntervalInMinutes));
                 from.setSeconds(0);
-                return 'from='+from.toLocaleTimeString('en-US',{ hour12: false })+','
+                return 'from=' + from.toLocaleTimeString('en-US', {hour12: false}) + ','
             },
             clickMe: function (ref) {
                 console.log(this.$refs[ref][0].getAttribute("data-slot"))
