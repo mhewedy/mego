@@ -99,6 +99,21 @@
 
                 this.start = from;
                 this.end = to;
+
+                // TODO
+                // call getSlotIdsByEvent for each result.busy_details object
+                /*"example@mhewedy.onmicrosoft.com": [
+                    {
+                        "start": "2019-12-11T11:15:00+03:00",
+                        "end": "2019-12-11T11:45:00+03:00",
+                        "busy_type": "Busy"
+                    },
+                    {
+                        "start": "2019-12-11T12:30:00+03:00",
+                        "end": "2019-12-11T13:30:00+03:00",
+                        "busy_type": "Busy"
+                    }
+                ],*/
             },
             buildSlotData: function (rowId, slotId) {
                 console.log(rowId, slotId, (slotId - 1) * slotsIntervalInMinutes);
@@ -106,6 +121,21 @@
                 from.setMinutes(from.getMinutes() + ((slotId - 1) * slotsIntervalInMinutes));
                 from.setSeconds(0);
                 return 'from=' + from.toLocaleTimeString('en-US', {hour12: false}) + ','
+            },
+            getSlotIdsByEvent(event) {
+                /*
+                event obj looks like:
+                {
+                  "start": "2019-12-11T11:15:00+03:00",
+                  "end": "2019-12-11T11:45:00+03:00",
+                   "busy_type": "Busy"
+                }
+               */
+
+                return {
+                    ids: [1, 2],
+                    busyType: event.busy_type
+                }
             },
             clickMe: function (ref) {
                 console.log(this.$refs[ref][0].getAttribute("data-slot"))
