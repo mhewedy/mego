@@ -6,6 +6,10 @@
     background-color: #ececec;
 }
 
+.RoomBusy {
+    background-color: #f8756d;
+}
+
 .slot-left {
     border-left: 1px groove #2c3e50;
 }

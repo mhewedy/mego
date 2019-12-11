@@ -115,7 +115,7 @@
 
                         let roomResult = result[rowId];
 
-                        document.getElementsByClassName("row-" + (rowId+1))[0].innerText =roomResult.room;
+                        document.getElementsByClassName("row-" + (rowId + 1))[0].innerText = roomResult.room;
 
                         let busyDetails = roomResult.busy_details;
                         for (let key in busyDetails) {
@@ -126,7 +126,12 @@
 
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
-                                    div.classList.add(event.busy_type);
+                                    div.setAttribute("title", key + "(" + event.busy_type + ")");
+                                    if (key === roomResult.room && event.busy_type === "Busy"){
+                                        div.classList.add("RoomBusy");
+                                    }else {
+                                        div.classList.add(event.busy_type);
+                                    }
                                     document.getElementById(slotId).append(div)
                                 }
                             });
