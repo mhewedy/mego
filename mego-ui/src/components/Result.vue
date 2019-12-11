@@ -169,7 +169,7 @@
   .slot {
     border-top: 1px groove #2c3e50;
     border-bottom: 1px groove #2c3e50;
-    height: 100px
+    height: 150px
   }
 
 </style>
