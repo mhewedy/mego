@@ -127,9 +127,9 @@
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
                                     div.setAttribute("title", key + "(" + event.busy_type + ")");
-                                    if (key === roomResult.room && event.busy_type === "Busy"){
+                                    if (key === roomResult.room && event.busy_type === "Busy") {
                                         div.classList.add("RoomBusy");
-                                    }else {
+                                    } else {
                                         div.classList.add(event.busy_type);
                                     }
                                     document.getElementById(slotId).append(div)
@@ -143,6 +143,7 @@
                     for (let i = 0; i < slots.length; i++) {
                         let slot = slots[i];
 
+                        // style slot
                         if (i === 0) slot.classList.add("slot-left");
                         if (i === slots.length - 1) slot.classList.add("slot-right");
 
@@ -151,6 +152,7 @@
                         }
 
                         let divs = slot.getElementsByTagName("div");
+                        // style divs, set height
                         for (let j = 0; j < divs.length; j++) {
                             let div = divs[j];
                             div.setAttribute("style", "height: " + 100 / divs.length + "%")
@@ -193,7 +195,8 @@
   .slot {
     border-top: 1px groove #2c3e50;
     border-bottom: 1px groove #2c3e50;
-    height: 150px
+    height: 150px;
+    cursor: pointer;
   }
 
   .row {
