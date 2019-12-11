@@ -152,6 +152,28 @@
                         }
 
                         let divs = slot.getElementsByTagName("div");
+
+
+                        slot.addEventListener("mousemove", () => {
+                            if (divs.length === 0) {
+                                let numSlots = input.duration / slotIntervalInMinutes;
+
+                                for (let x = 0; x < numSlots; x++) {
+                                    if (i + x < slots.length) {
+                                        slots[i + x].style.backgroundColor = "#ffcc00";
+                                    }
+                                }
+                            }
+                        });
+                        slot.addEventListener("mouseout", () => {
+                            if (divs.length === 0) {
+                                for (let s of slots) {
+                                    s.style.backgroundColor = "transparent";
+                                }
+                            }
+                        });
+
+
                         // style divs, set height
                         for (let j = 0; j < divs.length; j++) {
                             let div = divs[j];
