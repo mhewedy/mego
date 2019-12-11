@@ -14,10 +14,10 @@
 
       <div v-for="(t, i) in timeSlotCount" :key="t" class="p-grid">
 
-        <span v-for="tt in t" :key="tt" :id="'slot-'+i+'-'+tt" :ref="'slot-'+i+'-'+tt"
-              :style="{width: 100/t + '%'}" style="border: 1px groove #2c3e50; min-height: 60px"
-              :data-slot="buildSlotData(i, tt)"
-
+        <span v-for="tt in t" :key="tt"
+              :id="'slot-'+i+'-'+tt" :ref="'slot-'+i+'-'+tt"
+              class="slot" :style="{width: 100/t + '%'}"
+              :data-slot-from="buildSlotData(i, tt)"
               @click="clickMe('slot-'+i+'-'+tt)"
         >
 
@@ -35,7 +35,7 @@
     import EventService from '../services/events'
     import MessageService from '../services/messages'
 
-    const slotsIntervalInMinutes = 15;
+    const slotIntervalInMinutes = 15;
 
     export default {
         name: "Result",
@@ -59,6 +59,12 @@
             }
         },
         methods: {
+            buildSlotData: function (rowId, slotId) {
+                let from = new Date(this.start);
+                from.setMinutes(from.getMinutes() + ((slotId - 1) * slotIntervalInMinutes));
+                from.setSeconds(0);
+                return from.toLocaleTimeString('en-US', {hour12: false});
+            },
             search: function (input) {
                 const that = this;
                 this.loadingResult = true;
@@ -79,6 +85,7 @@
                 let index = 0;  // todo for loop
                 result = result[index];
 
+                // TODO replace by value returned from server
                 let getTo = function () {
                     if (result.busy.length > 0 && result.free.length > 0) {
                         return Math.max(
@@ -95,7 +102,7 @@
                 let from = new Date(input.from);
                 let to = new Date(getTo());
                 this.timeSlotCount[index] =
-                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / slotsIntervalInMinutes);
+                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / slotIntervalInMinutes);
 
                 this.start = from;
                 this.end = to;
@@ -115,30 +122,26 @@
                     }
                 ],*/
             },
-            buildSlotData: function (rowId, slotId) {
-                console.log(rowId, slotId, (slotId - 1) * slotsIntervalInMinutes);
-                let from = new Date(this.start);
-                from.setMinutes(from.getMinutes() + ((slotId - 1) * slotsIntervalInMinutes));
-                from.setSeconds(0);
-                return 'from=' + from.toLocaleTimeString('en-US', {hour12: false}) + ','
-            },
-            getSlotIdsByEvent(event) {
-                /*
-                event obj looks like:
-                {
-                  "start": "2019-12-11T11:15:00+03:00",
-                  "end": "2019-12-11T11:45:00+03:00",
-                   "busy_type": "Busy"
-                }
-               */
+            getSlotsIdsByEvent(event) {
+                let eventStart = new Date(event.start).toLocaleTimeString('en-US', {hour12: false});
+                let eventEnd = new Date(event.end).toLocaleTimeString('en-US', {hour12: false});
 
-                return {
-                    ids: [1, 2],
-                    busyType: event.busy_type
-                }
+                let slotsIds = [];
+
+                document.querySelector(".slot").forEach(it => {
+                    let slotFrom = it.getAttribute("data-slot-from");
+                    let slotTo = new Date(slotFrom);
+                    slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
+
+                    if (eventStart <= slotFrom && eventEnd >= slotTo ) {
+                        slotsIds.push(it.getAttribute("id"))
+                    }
+                });
+
+                return slotsIds;
             },
             clickMe: function (ref) {
-                console.log(this.$refs[ref][0].getAttribute("data-slot"))
+                console.log(this.$refs[ref][0].getAttribute("data-slot-from"))
 
             }
         }
@@ -147,4 +150,7 @@
 
 <style scoped>
 
+  .slot{
+    border: 1px groove #2c3e50; min-height: 60px
+  }
 </style>
