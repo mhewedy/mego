@@ -6,8 +6,8 @@
     </div>
 
     <div>
-      <Search @searched="sentSearchInput"></Search>
-      <Result v-if="searchInput" :search-input="searchInput"></Result>
+      <Search @search="search" :isResultLoading="isResultLoading"></Search>
+      <Result @resultLoad="resultLoad" v-if="searchInput" :search-input="searchInput"></Result>
     </div>
   </div>
 </template>
@@ -21,12 +21,16 @@ export default {
     data() {
         return {
             searchInput: null,
+            isResultLoading: false,
             messages: MessageService.messages
         }
     },
     methods: {
-        sentSearchInput: function (searchInput) {
+        search: function (searchInput) {
             this.searchInput = searchInput
+        },
+        resultLoad: function (isResultLoading) {
+            this.isResultLoading = isResultLoading
         }
     },
     components: {

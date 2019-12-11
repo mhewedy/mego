@@ -74,7 +74,9 @@
       <div class="p-col-3"></div>
       <div class="p-col-6 p-fluid" style="margin: 40px 0 20px 0;">
         <Button label="Search" icon="pi pi-search"
-                class="p-button-raised p-button-rounded p-button-info" @click="search()"/>
+                class="p-button-raised p-button-rounded p-button-info" @click="search()"
+                :disabled="isResultLoading"
+        />
       </div>
       <div class="p-col-3"></div>
     </div>
@@ -91,6 +93,9 @@
 
     export default {
         name: "Search",
+        props: {
+            isResultLoading: null
+        },
         data: function () {
             return {
                 selectedReqAttendees: [],
@@ -187,7 +192,7 @@
                 emails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
                 if (this.validate(input)) {
-                    this.$emit("searched", input);
+                    this.$emit("search", input);
                 }
             },
             validate: function (input) {

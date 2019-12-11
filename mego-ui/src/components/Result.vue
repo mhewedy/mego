@@ -10,7 +10,7 @@
       <div class="p-col-5"></div>
     </div>
 
-    <div>
+    <div v-if="!loadingResult" id="result">
 
       <div v-for="t in timeSlotCount" :key="t" class="p-grid">
 
@@ -54,14 +54,17 @@
             search: function (input) {
                 const that = this;
                 this.loadingResult = true;
+                this.$emit("resultLoad", true);
 
                 EventService.search(input, function (data) {
                     that.draw(input, data);
                     that.loadingResult = false;
+                    that.$emit("resultLoad", false);
                 }, function (err) {
                     MessageService.error(err);
                     console.log('error:', err);
                     that.loadingResult = false;
+                    that.$emit("resultLoad", false);
                 });
             },
             draw(input, result) {
@@ -84,7 +87,7 @@
                 let from = new Date(input.from);
                 let to = new Date(getTo());
                 this.timeSlotCount[index] =
-                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / input.duration);
+                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / 15);  // 15 min solt each
 
             }
         }
