@@ -21,8 +21,7 @@
       </div>
 
       <div v-for="r in rowsCount" :key="r" class="p-grid row"> <!--  for each input.rooms-->
-        <span class="p-col-2">
-          Room
+        <span class="p-col-2" :class="'row-'+r">
         </span>
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
@@ -115,6 +114,9 @@
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
+
+                        document.getElementsByClassName("row-" + (rowId+1))[0].innerText =roomResult.room;
+
                         let busyDetails = roomResult.busy_details;
                         for (let key in busyDetails) {
 
