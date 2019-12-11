@@ -94,6 +94,7 @@
 
 
                 setTimeout(() => {
+                    // set busy
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
@@ -113,11 +114,18 @@
                         }
                     }
 
+                    // set style
                     let slots = document.getElementsByClassName("slot");
-                    for (let slot of slots){
+                    for (let slot of slots) {
+
+                        if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0){
+                            slot.classList.add("slot-left");
+                        }
+
                         let divs = slot.getElementsByTagName("div");
-                        for (let div of divs){
-                            div.setAttribute("style", "height: " + 100/divs.length + "%")
+                        for (let i = 0; i < divs.length; i++) {
+                            let div = divs[i];
+                            div.setAttribute("style", "height: " + 100 / divs.length + "%")
                         }
                     }
 
@@ -155,7 +163,9 @@
 <style scoped>
 
   .slot {
-    border: 1px groove #2c3e50;
+    border-top: 1px groove #2c3e50;
+    border-bottom: 1px groove #2c3e50;
     height: 100px
   }
+
 </style>

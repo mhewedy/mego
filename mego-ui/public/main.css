@@ -1,7 +1,11 @@
 .Busy {
-    background-color: #305dff;
+    background-color: #deedf8;
 }
 
 .Tentative {
     background-color: gray;
+}
+
+.slot-left {
+    border-left: 1px groove #2c3e50;
 }
