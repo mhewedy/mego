@@ -16,7 +16,7 @@
 
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
-              class="slot" :style="{width: 100/timeSlotCount + '%'}"
+              class="slot" :class="'slot-' + r" :style="{width: 100/timeSlotCount + '%'}"
               :data-slot-from="buildSlotData(t)"
               @click="clickMe('slot-'+ r +'-'+t)">
 
@@ -82,19 +82,19 @@
             },
             draw(input, result) {
 
-                this.rowsCount = input.rooms.length;
+                this.rowsCount = result.length;
 
                 this.start = new Date(input.from);
                 this.end = new Date(this.start);
-                this.end.setHours(18);
+                this.end.setHours(18);    // TODO read from server
                 this.end.setMinutes(0);
 
                 this.timeSlotCount =
                     Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);
 
-                // start for loop
+                for (let rowId =0; rowId < result.length; rowId++){
 
-                result.forEach(roomResult => {
+                    let roomResult = result[rowId];
 
                     console.log("for room: ", roomResult.room);
 
@@ -104,29 +104,32 @@
                         console.log("for user: ", user);
 
                         let event = details[user];
-                        let slotIds = this.getSlotsIdsByEvent(event);
+                        let slotIds = this.getSlotsIdsByEvent(event, rowId+1);
 
                         console.log("event", event);
                         console.log("slotIds", slotIds);
                     }
+                }
 
-                });
             },
-            getSlotsIdsByEvent(event) {
+            getSlotsIdsByEvent(event, rowId) {
                 let eventStart = new Date(event.start).toLocaleTimeString('en-US', {hour12: false});
                 let eventEnd = new Date(event.end).toLocaleTimeString('en-US', {hour12: false});
 
                 let slotsIds = [];
 
-                let slots = document.getElementsByClassName("slot");
-                for (let i =0; i < slots.length; i++ ) {
-                    let it = slots[i];
-                    let slotFrom = it.getAttribute("data-slot-from");
-                    let slotTo = new Date(slotFrom);
+                let list = document.getElementsByClassName("slot-"+rowId);
+
+                for (let i=0; i < list.length; i++){
+                    let slot = list[i];
+
+                    let slotFrom = slot.getAttribute("data-slot-from").toLocaleTimeString('en-US', {hour12: false});
+                    let slotTo = new Date(slotFrom).toLocaleTimeString('en-US', {hour12: false});
+
                     slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
 
                     if (eventStart <= slotFrom && eventEnd >= slotTo) {
-                        slotsIds.push(it.getAttribute("id"))
+                        slotsIds.push(slot.getAttribute("id"))
                     }
                 }
 
