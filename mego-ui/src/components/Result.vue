@@ -62,7 +62,7 @@
                 let from = new Date(this.start);
                 from.setMinutes(from.getMinutes() + ((slotId - 1) * slotIntervalInMinutes));
                 from.setSeconds(0);
-                return from.toLocaleTimeString('en-US', {hour12: false});
+                return from;
             },
             search: function (input) {
                 const that = this;
@@ -81,7 +81,7 @@
                 });
             },
             draw(input, result) {
-
+                let that = this;
                 this.rowsCount = result.length;
 
                 this.start = new Date(input.from);
@@ -92,40 +92,38 @@
                 this.timeSlotCount =
                     Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);
 
-                for (let rowId =0; rowId < result.length; rowId++){
 
-                    let roomResult = result[rowId];
+                setTimeout(() => {
+                    for (let rowId = 0; rowId < result.length; rowId++) {
 
-                    console.log("for room: ", roomResult.room);
+                        let roomResult = result[rowId];
+                        console.log("for room: ", roomResult.room);
 
-                    let details = roomResult.busy_details;
-                    for (let user in details){
+                        let details = roomResult.busy_details;
+                        for (let userEventsKey in details) {
+                            console.log("for userEventsKey: ", userEventsKey);
 
-                        console.log("for user: ", user);
-
-                        let event = details[user];
-                        let slotIds = this.getSlotsIdsByEvent(event, rowId+1);
-
-                        console.log("event", event);
-                        console.log("slotIds", slotIds);
+                            details[userEventsKey].forEach(event => {
+                                let slotIds = that.getSlotsIdsByEvent(event, rowId + 1);
+                                console.log("event", event);
+                                console.log("slotIds", slotIds);
+                            });
+                        }
                     }
-                }
-
+                }, 10);
             },
             getSlotsIdsByEvent(event, rowId) {
-                let eventStart = new Date(event.start).toLocaleTimeString('en-US', {hour12: false});
-                let eventEnd = new Date(event.end).toLocaleTimeString('en-US', {hour12: false});
+                let eventStart = new Date(event.start);
+                let eventEnd = new Date(event.end);
 
                 let slotsIds = [];
 
-                let list = document.getElementsByClassName("slot-"+rowId);
-
-                for (let i=0; i < list.length; i++){
+                let list = document.getElementsByClassName("slot-" + rowId);
+                for (let i = 0; i < list.length; i++) {
                     let slot = list[i];
 
-                    let slotFrom = slot.getAttribute("data-slot-from").toLocaleTimeString('en-US', {hour12: false});
-                    let slotTo = new Date(slotFrom).toLocaleTimeString('en-US', {hour12: false});
-
+                    let slotFrom = new Date(slot.getAttribute("data-slot-from"));
+                    let slotTo = new Date(slot.getAttribute("data-slot-from"));
                     slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
 
                     if (eventStart <= slotFrom && eventEnd >= slotTo) {
