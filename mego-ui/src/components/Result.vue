@@ -12,17 +12,15 @@
 
     <div v-if="!loadingResult" id="result">
 
-      <div v-for="(t, i) in timeSlotCount" :key="t" class="p-grid">
+      <div class="p-grid"> <!--  for each input.rooms-->
 
-        <span v-for="tt in t" :key="tt"
-              :id="'slot-'+i+'-'+tt" :ref="'slot-'+i+'-'+tt"
-              class="slot" :style="{width: 100/t + '%'}"
-              :data-slot-from="buildSlotData(i, tt)"
-              @click="clickMe('slot-'+i+'-'+tt)"
-        >
+        <span v-for="t in timeSlotCount" :key="t"
+              :id="'slot-'+t" :ref="'slot-'+t"
+              class="slot" :style="{width: 100/timeSlotCount + '%'}"
+              :data-slot-from="buildSlotData(t)"
+              @click="clickMe('slot-'+t)">
 
         </span>
-
       </div>
 
     </div>
@@ -47,7 +45,7 @@
                 loadingResult: false,
                 start: null,
                 end: null,
-                timeSlotCount: []
+                timeSlotCount: null
             }
         },
         mounted() {
@@ -59,7 +57,7 @@
             }
         },
         methods: {
-            buildSlotData: function (rowId, slotId) {
+            buildSlotData: function (slotId) {
                 let from = new Date(this.start);
                 from.setMinutes(from.getMinutes() + ((slotId - 1) * slotIntervalInMinutes));
                 from.setSeconds(0);
@@ -82,30 +80,23 @@
                 });
             },
             draw(input, result) {
+
+                this.start = new Date(input.from);
+                this.end = new Date(this.start);
+                this.end.setHours(18);
+                this.end.setMinutes(0);
+
+                this.timeSlotCount =
+                    Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);
+
+                console.log(this.start)
+                console.log(this.end)
+                console.log(this.timeSlotCount)
+
+                // start for loop
+
                 let index = 0;  // todo for loop
                 result = result[index];
-
-                // TODO replace by value returned from server
-                let getTo = function () {
-                    if (result.busy.length > 0 && result.free.length > 0) {
-                        return Math.max(
-                            new Date(result.busy[result.busy.length - 1].end).getTime(),
-                            new Date(result.free[result.free.length - 1].end).getTime(),
-                        )
-                    } else if (result.busy.length > 0) {
-                        return result.busy[result.busy.length - 1].end
-                    } else if (result.free.length > 0) {
-                        return result.free[result.free.length - 1].end
-                    }
-                };
-
-                let from = new Date(input.from);
-                let to = new Date(getTo());
-                this.timeSlotCount[index] =
-                    Math.ceil(Math.floor((Math.abs(to - from) / 1000) / 60) / slotIntervalInMinutes);
-
-                this.start = from;
-                this.end = to;
 
                 // TODO
                 // call getSlotIdsByEvent for each result.busy_details object
