@@ -12,13 +12,13 @@
 
     <div v-if="!loadingResult" id="result">
 
-      <div class="p-grid"> <!--  for each input.rooms-->
+      <div v-for="r in rowsCount" :key="r" class="p-grid"> <!--  for each input.rooms-->
 
         <span v-for="t in timeSlotCount" :key="t"
-              :id="'slot-'+t" :ref="'slot-'+t"
+              :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
               class="slot" :style="{width: 100/timeSlotCount + '%'}"
               :data-slot-from="buildSlotData(t)"
-              @click="clickMe('slot-'+t)">
+              @click="clickMe('slot-'+ r +'-'+t)">
 
         </span>
       </div>
@@ -45,6 +45,7 @@
                 loadingResult: false,
                 start: null,
                 end: null,
+                rowsCount: null,
                 timeSlotCount: null
             }
         },
@@ -81,6 +82,8 @@
             },
             draw(input, result) {
 
+                this.rowsCount = input.rooms.length;
+
                 this.start = new Date(input.from);
                 this.end = new Date(this.start);
                 this.end.setHours(18);
@@ -88,10 +91,6 @@
 
                 this.timeSlotCount =
                     Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);
-
-                console.log(this.start)
-                console.log(this.end)
-                console.log(this.timeSlotCount)
 
                 // start for loop
 
@@ -124,7 +123,7 @@
                     let slotTo = new Date(slotFrom);
                     slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
 
-                    if (eventStart <= slotFrom && eventEnd >= slotTo ) {
+                    if (eventStart <= slotFrom && eventEnd >= slotTo) {
                         slotsIds.push(it.getAttribute("id"))
                     }
                 });
@@ -141,7 +140,8 @@
 
 <style scoped>
 
-  .slot{
-    border: 1px groove #2c3e50; min-height: 60px
+  .slot {
+    border: 1px groove #2c3e50;
+    min-height: 60px
   }
 </style>
