@@ -9,3 +9,7 @@
 .slot-left {
     border-left: 1px groove #2c3e50;
 }
+
+.slot-right {
+    border-right: 1px groove #2c3e50;
+}

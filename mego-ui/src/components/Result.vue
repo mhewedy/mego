@@ -116,15 +116,19 @@
 
                     // set style
                     let slots = document.getElementsByClassName("slot");
-                    for (let slot of slots) {
+                    for (let i = 0; i < slots.length; i++) {
+                        let slot = slots[i];
 
-                        if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0){
+                        if (i === 0) slot.classList.add("slot-left");
+                        if (i === slots.length - 1) slot.classList.add("slot-right");
+
+                        if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0) {
                             slot.classList.add("slot-left");
                         }
 
                         let divs = slot.getElementsByTagName("div");
-                        for (let i = 0; i < divs.length; i++) {
-                            let div = divs[i];
+                        for (let j = 0; j < divs.length; j++) {
+                            let div = divs[j];
                             div.setAttribute("style", "height: " + 100 / divs.length + "%")
                         }
                     }
