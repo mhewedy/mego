@@ -82,13 +82,13 @@
                 let getTo = function () {
                     if (result.busy.length > 0 && result.free.length > 0) {
                         return Math.max(
-                            result.busy[result.busy.length - 1],
-                            result.free[result.free.length - 1],
-                        )["end"]
+                            new Date(result.busy[result.busy.length - 1].end).getTime(),
+                            new Date(result.free[result.free.length - 1].end).getTime(),
+                        )
                     } else if (result.busy.length > 0) {
-                        return result.busy[result.busy.length - 1]["end"]
+                        return result.busy[result.busy.length - 1].end
                     } else if (result.free.length > 0) {
-                        return result.free[result.free.length - 1]["end"]
+                        return result.free[result.free.length - 1].end
                     }
                 };
 
