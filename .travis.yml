@@ -1,0 +1,26 @@
+language: go
+
+sudo: required
+
+go:
+  - 1.13.x
+  
+before_install:
+  - sudo apt-get update -y && sudo apt-get isntall -y nodejs && sudo apt-get install -y npm
+
+before_deploy:
+  - "GOOS=linux GOARCH=amd64 make" && tar czf mego-linux.tar.gz mego && rm -rf mego
+  - "GOOS=darwin GOARCH=amd64 make" && tar czf mego-mac.tar.gz mego && rm -rf mego
+  - GOOS=windows go get ./...        #https://github.com/sirupsen/logrus/issues/824
+  - "GOOS=windows GOARCH=amd64 make" && tar czf mego-win.tar.gz mego.exe && rm -rf mego.exe
+
+deploy:
+  provider: releases
+  api_key: ${GITHUB_API_KEY}
+  file:
+    - "release/mego-linux.tar.gz"
+    - "release/mego-win.tar.gz"
+    - "release/mego-mac.tar.gz"
+  skip_cleanup: true
+  on:
+    tags: true
