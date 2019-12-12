@@ -123,10 +123,12 @@
 
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
-                                    div.setAttribute("title", key + "(" + event.busy_type + ")");
+
                                     if (key === roomResult.room && event.busy_type === "Busy") {
+                                        div.setAttribute("title", key + "(RoomBusy)");
                                         div.classList.add("RoomBusy");
                                     } else {
+                                        div.setAttribute("title", key + "(" + event.busy_type + ")");
                                         div.classList.add(event.busy_type);
                                     }
                                     document.getElementById(slotId).append(div)
