@@ -58,11 +58,14 @@
             }
         },
         mounted() {
-            this.search(this.searchInput)
+            this.search()
         },
         watch: {
-            searchInput: function (newSearchInput) {
-                this.search(newSearchInput)
+            searchInput: function () {
+                if (this.searchInput.noServerCallNeeded) {
+                    return;
+                }
+                this.search()
             }
         },
         methods: {
@@ -79,13 +82,13 @@
                     minute: "2-digit"
                 }) : ""
             },
-            search: function (input) {
+            search: function () {
                 const that = this;
                 this.loadingResult = true;
                 this.$emit("resultLoad", true);
 
-                EventService.search(input, function (data) {
-                    that.draw(input, data);
+                EventService.search(this.searchInput, function (data) {
+                    that.draw(data);
                     that.loadingResult = false;
                     that.$emit("resultLoad", false);
                 }, function (err) {
@@ -95,11 +98,11 @@
                     that.$emit("resultLoad", false);
                 });
             },
-            draw(input, result) {
+            draw(result) {
                 let that = this;
                 this.rowsCount = result.length;
 
-                this.start = new Date(input.from);
+                this.start = new Date(this.searchInput.from);
                 this.end = new Date(this.start);
                 this.end.setHours(18);    // TODO read from server
                 this.end.setMinutes(0);
@@ -150,7 +153,7 @@
                             slot.classList.add("slot-left");
                         }
 
-                        this.handleEvents(input, slots, i);
+                        this.handleEvents(slots, i);
 
                         let divs = slot.getElementsByTagName("div");
                         // style divs, set height
@@ -183,17 +186,17 @@
 
                 return slotsIds;
             },
-            handleEvents: function (input, slots, i) {
+            handleEvents: function (slots, i) {
                 let slot = slots[i];
                 let divs = slot.getElementsByTagName("div");
 
                 let clickHandler = (evt) => {
-                    console.log(evt.target, input)
+                    console.log(evt.target, this.searchInput)
                 };
 
                 slot.addEventListener("mousemove", () => {
                     if (divs.length === 0) {
-                        let numSlots = input.duration / slotIntervalInMinutes;
+                        let numSlots = this.searchInput.duration / slotIntervalInMinutes;
 
                         let truth = [];
                         for (let x = 0; x < numSlots; x++) {

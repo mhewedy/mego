@@ -7,7 +7,7 @@
 
     <div>
       <Search @search="search" :isResultLoading="isResultLoading"></Search>
-      <Result @resultLoad="resultLoad" v-if="searchInput" :search-input="searchInput"></Result>
+      <Result @resultLoad="resultLoad" v-if="searchInput" :search-input.sync="searchInput"></Result>
     </div>
   </div>
 </template>

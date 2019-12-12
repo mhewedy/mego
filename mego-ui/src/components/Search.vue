@@ -65,7 +65,7 @@
       <div class="p-col-1">Duration</div>
       <div class="p-col-3">
       <span class="p-fluid">
-      <Spinner v-model="duration" :step="30" :min="30" :readonly="true"/>
+      <Spinner v-model="duration" :step="30" :min="30" :readonly="true" :onchange="updateInput()"/>
       </span>
       </div>
     </div>
@@ -106,7 +106,8 @@
                 roomsList: null,
                 selectedRooms: null,
                 startTime: this.getNextMeetingTime(),
-                duration: 30
+                duration: 30,
+                input: null
             }
         },
         mounted() {
@@ -191,6 +192,8 @@
                 emails.push(...this.selectedReqAttendees.map(it => it.email_address));
                 emails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
+                this.input = input;
+
                 if (this.validate(input)) {
                     this.$emit("search", input);
                 }
@@ -205,6 +208,13 @@
                     return false
                 }
                 return true
+            },
+            updateInput: function () {
+                if (this.input) {
+                    this.input.duration = this.duration;
+                    this.input.noServerCallNeeded = true;
+                    this.$emit("search", this.input);
+                }
             }
         }
     }
