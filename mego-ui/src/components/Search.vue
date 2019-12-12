@@ -1,6 +1,8 @@
 <template>
   <div id="search-panel">
 
+    <h2 style="text-align: center">Mego The Meeting Organizer </h2>
+
     <div class="p-grid">
       <div class="p-col-2">Required Attendees</div>
       <div class="p-col-10">
@@ -20,27 +22,6 @@
         </template>
       </AutoComplete>
       </span>
-      </div>
-    </div>
-
-    <div class="p-grid">
-      <div class="p-col-2">Optional Attendees</div>
-      <div class="p-col-10">
-      <span class="p-fluid">
-      <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
-                    @complete="searchOptAttendees($event)" field="name">
-         <template #item="slotProps">
-          <div class="p-clearfix p-autocomplete-brand-item">
-            <img v-if="slotProps.item.image" alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
-            <div style="display: flex">
-            <span>{{slotProps.item.email_address}}</span>
-            <span><b>{{slotProps.item.display_name}}</b></span>
-            <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
-            </div>
-          </div>
-        </template>
-      </AutoComplete>
-    </span>
       </div>
     </div>
 
@@ -100,8 +81,6 @@
             return {
                 selectedReqAttendees: [],
                 filteredReqAttendees: null,
-                selectedOptAttendees: [],
-                filteredOptAttendees: null,
                 roomsTree: null,
                 roomsList: null,
                 selectedRooms: null,
@@ -125,28 +104,6 @@
                         });
 
                         that.filteredReqAttendees.map(it => {
-                            if (!it.image) {
-                                AttendeesService.getPhoto(it.email_address, function (data) {
-                                    it.image = data.base64
-                                })
-                            }
-                        })
-
-                    }, function (err) {
-                        // eslint-disable-next-line
-                        console.log(err)
-                    })
-            },
-            searchOptAttendees: function (event) {
-                const that = this;
-                AttendeesService.search(event.query,
-                    function (data) {
-                        that.filteredOptAttendees = data.map(it => {
-                            it["name"] = it.email_address;
-                            return it
-                        });
-
-                        that.filteredOptAttendees.map(it => {
                             if (!it.image) {
                                 AttendeesService.getPhoto(it.email_address, function (data) {
                                     it.image = data.base64
@@ -190,7 +147,6 @@
                 }
 
                 emails.push(...this.selectedReqAttendees.map(it => it.email_address));
-                emails.push(...this.selectedOptAttendees.map(it => it.email_address));
 
                 this.input = input;
 
