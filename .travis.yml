@@ -12,6 +12,7 @@ before_deploy:
   - "GOOS=darwin GOARCH=amd64 make && tar czf mego-mac.tar.gz mego-api/mego && rm -rf mego-api/mego"
   - GOOS=windows go get ./...        #https://github.com/sirupsen/logrus/issues/824
   - "GOOS=windows GOARCH=amd64 make && tar czf mego-win.tar.gz mego-api/mego.exe && rm -rf mego-api/mego.exe"
+  - ls -lt mego-api/
 
 deploy:
   provider: releases
