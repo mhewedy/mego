@@ -8,7 +8,7 @@ build:
 	mv mego-ui/dist/* mego-api/public/
 	#build the api
 	cd mego-api && go build
-	ls -lt
+	ls -lt mego-api
 
 clean:
 	rm -rf mego-ui/dist/
