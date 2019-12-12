@@ -1,4 +1,4 @@
-code                           ,building  ,zone  ,size,display_name
+email                          ,building  ,zone  ,size,display_name
 room001@mhewedy.onmicrosoft.com,building 1,Zone10,8   ,Hobby
 room002@mhewedy.onmicrosoft.com,building 1,Zone10,9   ,XHobby
 PAX-Floppy-10                  ,building 1,Zone2 ,10  ,Floppy

@@ -212,7 +212,6 @@
             updateInput: function () {
                 if (this.input) {
                     this.input.duration = this.duration;
-                    this.input.noServerCallNeeded = true;
                     this.$emit("search", this.input);
                 }
             }

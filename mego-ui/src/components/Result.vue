@@ -62,9 +62,6 @@
         },
         watch: {
             searchInput: function () {
-                if (this.searchInput.noServerCallNeeded) {
-                    return;
-                }
                 this.search()
             }
         },
@@ -116,7 +113,7 @@
                     for (let rowId = 0; rowId < result.length; rowId++) {
 
                         let roomResult = result[rowId];
-                        document.getElementsByClassName("row-" + (rowId + 1))[0].innerText = roomResult.room;
+                        document.getElementsByClassName("row-" + (rowId + 1))[0].innerText = roomResult.room_name;
 
                         let busyDetails = roomResult.busy_details;
                         for (let key in busyDetails) {

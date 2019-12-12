@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	code = iota
+	email = iota
 	building
 	zone
 	size
@@ -37,7 +37,7 @@ func ListRooms(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		if i == 0 {
 			continue // skip header
 		}
-		roomCodes = append(roomCodes, rr[code])
+		roomCodes = append(roomCodes, rr[email])
 	}
 
 	return roomCodes, nil
@@ -71,6 +71,20 @@ func loadRoomList() {
 	}
 
 	buildRoomTree()
+}
+
+func FindByEmail(toFound string) (string, error) {
+	once.Do(loadRoomList)
+
+	for i, rr := range roomList {
+		if i == 0 {
+			continue // skip header
+		}
+		if rr[email] == toFound {
+			return rr[displayName], nil
+		}
+	}
+	return "", fmt.Errorf("no such room found: %s", toFound)
 }
 
 func buildRoomTree() {
@@ -121,7 +135,7 @@ func buildRoomTree() {
 				z := get(b.Children, zoneKey)
 				sizeKey := fmt.Sprintf("%s-%s", buildingKey, row[j-1])
 				s := get(z.Children, sizeKey)
-				key := row[code]
+				key := row[email]
 				if !contains(s.Children, key) {
 					s.Children = append(s.Children, Node{
 						Key:   key,

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/mego/rooms"
 	"time"
 )
 
@@ -22,14 +23,23 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 
 			m, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
 
+			email := ee[roomIndex].Email
+			name, err := rooms.FindByEmail(email)
+			if err != nil {
+				fmt.Println(err)
+				name = email
+			}
+
 			if err != nil {
 				ch <- roomEvents{
-					Room:  ee[roomIndex].Email,
-					Error: err.Error(),
+					Room:     email,
+					RoomName: name,
+					Error:    err.Error(),
 				}
 			} else {
 				ch <- roomEvents{
-					Room:        ee[roomIndex].Email,
+					Room:        email,
+					RoomName:    name,
 					BusyDetails: wrap(m),
 				}
 			}

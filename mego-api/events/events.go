@@ -17,6 +17,7 @@ type input struct {
 
 type roomEvents struct {
 	Room        string             `json:"room"`
+	RoomName    string             `json:"room_name"`
 	BusyDetails map[string][]event `json:"busy_details"`
 	Error       string             `json:"error"`
 }
