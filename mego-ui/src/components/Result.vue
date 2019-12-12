@@ -186,6 +186,10 @@
                 let slot = slots[i];
                 let divs = slot.getElementsByTagName("div");
 
+                let clickHandler = (evt) => {
+                    console.log(evt.target, input)
+                };
+
                 slot.addEventListener("mousemove", () => {
                     if (divs.length === 0) {
                         let numSlots = input.duration / slotIntervalInMinutes;
@@ -205,10 +209,7 @@
                                 slots[i + x].style.backgroundColor = "#ffcc00";
                                 slots[i + x].style.cursor = "pointer";
                             }
-
-                            slot.addEventListener("click", () => {
-                                console.log(input, slot)
-                            })
+                            slot.addEventListener("click", clickHandler)
                         }
                     }
                 });
@@ -218,6 +219,7 @@
                             s.style.backgroundColor = "transparent";
                             s.style.cursor = "not-allowed";
                         }
+                        slot.removeEventListener("click", clickHandler);
                     }
                 });
             }
