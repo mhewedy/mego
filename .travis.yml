@@ -2,12 +2,11 @@ language: go
 
 go:
   - 1.13.x
-  
+
 before_install:
   - npm install -g @vue/cli@latest
   - GO111MODULE=off go get github.com/markbates/pkger/cmd/pkger
-  - cd mego-api && pkger
-  
+
 before_deploy:
   - "GOOS=linux GOARCH=amd64 make && tar czf mego-linux.tar.gz mego && rm -rf mego"
   - "GOOS=darwin GOARCH=amd64 make && tar czf mego-mac.tar.gz mego && rm -rf mego"
