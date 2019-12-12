@@ -4,16 +4,12 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
-	"sort"
 	"time"
 )
 
-func doSearch(
-	eventUsers [][]ewsutil.EventUser, from time.Time, duration time.Duration,
-) []roomEvents {
+func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
 
 	roomEvents := returnBusyTime(eventUsers, from)
-	calculateFreeTimeSlots(roomEvents, from, duration)
 	return roomEvents
 }
 
@@ -26,15 +22,6 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 
 			m, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
 
-			e := toSlice(m)
-			events := make([]event, len(e))
-			for i := range e {
-				events[i] = event{
-					Start: e[i].Start,
-					End:   e[i].End,
-				}
-			}
-
 			if err != nil {
 				ch <- roomEvents{
 					Room:  ee[roomIndex].Email,
@@ -43,7 +30,6 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 			} else {
 				ch <- roomEvents{
 					Room:        ee[roomIndex].Email,
-					Busy:        events,
 					BusyDetails: wrap(m),
 				}
 			}
@@ -67,7 +53,7 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 		}
 	}
 
-	return removeBusyDup(result)
+	return result
 }
 
 // use json type instead of non-json types
@@ -82,103 +68,6 @@ func wrap(events map[ewsutil.EventUser][]ewsutil.Event) map[string][]event {
 		m[k.Email] = s
 	}
 	return m
-}
-
-func toSlice(events map[ewsutil.EventUser][]ewsutil.Event) []ewsutil.Event {
-	s := make([]ewsutil.Event, 0)
-	for _, v := range events {
-		s = append(s, v...)
-	}
-	return s
-}
-
-func removeBusyDup(roomEvents []roomEvents) []roomEvents {
-
-	contains := func(ee []event, ex event) bool {
-		for _, e := range ee {
-			if ex.Start == e.Start && ex.End == e.End {
-				return true
-			}
-		}
-		return false
-	}
-
-	for i, rr := range roomEvents {
-		events := make([]event, 0)
-		for _, ee := range rr.Busy {
-			if !contains(events, ee) {
-				events = append(events, ee)
-			}
-		}
-		roomEvents[i].Busy = events
-	}
-
-	return roomEvents
-}
-
-func calculateFreeTimeSlots(roomEvents []roomEvents, from time.Time, duration time.Duration) {
-
-	splitTime := func(start, end time.Time, duration time.Duration) []event {
-		events := make([]event, 0)
-
-		for {
-			if start.Add(duration).After(end) {
-				break
-			}
-			event := event{
-				Start: start,
-				End:   start.Add(duration),
-			}
-			events = append(events, event)
-
-			start = event.End
-		}
-		return events
-	}
-
-	for i, roomEvent := range roomEvents {
-
-		if len(roomEvent.Error) != 0 { // skip in case of error busy time
-			roomEvents[i].Free = make([]event, 0)
-			continue
-		}
-
-		// if no busy time, then split the whole time in durations
-		if len(roomEvent.Busy) == 0 {
-			f := splitTime(from, getLatestSlot(from), duration)
-			roomEvents[i].Free = f
-			continue
-		}
-
-		free := make([]event, 0)
-		// sort the busy events on start time
-		sort.Slice(roomEvent.Busy, func(i, j int) bool {
-			return roomEvent.Busy[i].Start.Before(roomEvent.Busy[j].Start)
-		})
-
-		// if there's time slots before the first event
-		if from.Before(roomEvent.Busy[0].Start) {
-			f := splitTime(from, roomEvent.Busy[0].Start, duration)
-			free = append(free, f...)
-		}
-
-		for j, curr := range roomEvent.Busy {
-			var nextStart time.Time
-
-			if j < len(roomEvent.Busy)-1 {
-				nextStart = roomEvent.Busy[j+1].Start
-			} else {
-				nextStart = getLatestSlot(from)
-			}
-
-			if curr.End.Before(nextStart) {
-				f := splitTime(curr.End, nextStart, duration)
-				free = append(free, f...)
-			}
-		}
-
-		roomEvents[i].Free = free
-	}
 }
 
 func getDuration(from time.Time) time.Duration {

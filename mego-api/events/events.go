@@ -10,17 +10,14 @@ import (
 )
 
 type input struct {
-	Emails   []string  `json:"emails"`
-	Rooms    []string  `json:"rooms"`
-	From     time.Time `json:"from"`
-	Duration int       `json:"duration"`
+	Emails []string  `json:"emails"`
+	Rooms  []string  `json:"rooms"`
+	From   time.Time `json:"from"`
 }
 
 type roomEvents struct {
 	Room        string             `json:"room"`
-	Busy        []event            `json:"busy"`
 	BusyDetails map[string][]event `json:"busy_details"`
-	Free        []event            `json:"free"`
 	Error       string             `json:"error"`
 }
 
@@ -41,7 +38,7 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	eventUsers := buildEventUserSlices(input)
-	events := doSearch(eventUsers, input.From, time.Duration(input.Duration)*time.Minute)
+	events := doSearch(eventUsers, input.From)
 
 	return events, nil
 }
@@ -57,9 +54,6 @@ func parseAndValidate(r *http.Request) (*input, error) {
 	}
 	if len(i.Rooms) == 0 {
 		return nil, commons.NewClientError("empty rooms")
-	}
-	if i.Duration == 0 || i.Duration%30 != 0 {
-		return nil, commons.NewClientError("duration should be multiple of 30")
 	}
 
 	return &i, nil
