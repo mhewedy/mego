@@ -3,7 +3,7 @@ all: clean build
 build:
 	# build the ui
 	npm --prefix mego-ui install mego-ui
-	cd mego-ui && npm run build
+	cd mego-ui && npm run build && cd -
 	mkdir -p mego-api/public
 	mv mego-ui/dist/* mego-api/public/
 	#build the api
