@@ -1,7 +1,7 @@
 <template>
   <div id="search-panel">
 
-    <h2 style="text-align: center">Mego The Meeting Organizer </h2>
+    <h2 style="text-align: center">MEGO The Meeting Organizer </h2>
 
     <div class="p-grid">
       <div class="p-col-2">Required Attendees</div>
@@ -148,9 +148,8 @@
 
                 emails.push(...this.selectedReqAttendees.map(it => it.email_address));
 
-                this.input = input;
-
                 if (this.validate(input)) {
+                    this.input = input;
                     this.$emit("search", input);
                 }
             },

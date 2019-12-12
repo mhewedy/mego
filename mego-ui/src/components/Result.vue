@@ -126,13 +126,24 @@
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
 
+                                    let tooltip = key + "(" + event.busy_type + ")";
+                                    let busyType = event.busy_type;
+
                                     if (key === roomResult.room && event.busy_type === "Busy") {
-                                        div.setAttribute("title", key + "(RoomBusy)");
-                                        div.classList.add("RoomBusy");
-                                    } else {
-                                        div.setAttribute("title", key + "(" + event.busy_type + ")");
-                                        div.classList.add(event.busy_type);
+                                        tooltip = key + "(Busy Room)";
+                                        busyType = 'RoomBusy'
                                     }
+
+                                    // div.setAttribute("title", tooltip);
+
+                                    div.classList.add(busyType);
+                                    div.classList.add("tooltip");
+
+                                    let spanTooltip = document.createElement("span");
+                                    spanTooltip.innerText = tooltip;
+                                    spanTooltip.classList.add("tooltiptext");
+                                    div.append(spanTooltip);
+
                                     document.getElementById(slotId).append(div)
                                 }
                             });
