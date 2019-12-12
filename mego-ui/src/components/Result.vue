@@ -94,7 +94,8 @@
                     that.loadingResult = false;
                     that.$emit("resultLoad", false);
                 });
-            }, draw(input, result) {
+            },
+            draw(input, result) {
                 let that = this;
                 this.rowsCount = result.length;
 
