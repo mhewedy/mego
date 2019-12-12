@@ -5,6 +5,7 @@ import (
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
+	"github.com/mhewedy/mego/conf"
 	"net/http"
 	"time"
 )
@@ -13,6 +14,11 @@ type input struct {
 	Emails []string  `json:"emails"`
 	Rooms  []string  `json:"rooms"`
 	From   time.Time `json:"from"`
+}
+
+type resp struct {
+	EndOFDayHours int          `json:"end_of_day_hours"`
+	RoomEvents    []roomEvents `json:"room_events"`
 }
 
 type roomEvents struct {
@@ -41,7 +47,10 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	eventUsers := buildEventUserSlices(input)
 	events := doSearch(eventUsers, input.From)
 
-	return events, nil
+	return &resp{
+		EndOFDayHours: conf.GetInt("calendar.end_of_day_hours", 18),
+		RoomEvents:    events,
+	}, nil
 }
 
 func parseAndValidate(r *http.Request) (*input, error) {

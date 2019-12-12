@@ -87,6 +87,6 @@ func getDuration(from time.Time) time.Duration {
 func getLatestSlot(from time.Time) time.Time {
 	year, month, day := from.Date()
 	to := time.Date(year, month, day,
-		conf.GetInt("calendar.to_hour", 18), 0, 0, 0, time.Now().Location())
+		conf.GetInt("calendar.end_of_day_hours", 18), 0, 0, 0, time.Now().Location())
 	return to
 }

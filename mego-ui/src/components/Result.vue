@@ -95,13 +95,14 @@
                     that.$emit("resultLoad", false);
                 });
             },
-            draw(result) {
+            draw(data) {
                 let that = this;
+                let result = data.room_events;
                 this.rowsCount = result.length;
 
                 this.start = new Date(this.searchInput.from);
                 this.end = new Date(this.start);
-                this.end.setHours(18);    // TODO read from server
+                this.end.setHours(data.end_of_day_hours);
                 this.end.setMinutes(0);
 
                 this.timeSlotCount =
