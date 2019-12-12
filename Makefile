@@ -7,7 +7,9 @@ build:
 	mkdir -p mego-api/public
 	mv mego-ui/dist/* mego-api/public/
 	#build the api
-	cd mego-api && ${GOPATH}/bin/pkger && go build
+	cd mego-api
+	${GOPATH}/bin/pkger
+	go build
 
 clean:
 	rm -rf mego-ui/dist/
