@@ -4,7 +4,7 @@
     <h2 style="text-align: center">MEGO The Meeting Organizer </h2>
 
     <div class="p-grid">
-      <div class="p-col-2">Required Attendees</div>
+      <div class="p-col-2">Attendees</div>
       <div class="p-col-10">
       <span class="p-fluid">
       <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
