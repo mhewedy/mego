@@ -26,8 +26,7 @@
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
               class="slot" :class="'slot-' + r" :style="{width: 80/timeSlotCount + '%'}"
-              :data-slot-from="buildSlotData(t)"
-              @click="clickMe('slot-'+ r +'-'+t)">
+              :data-slot-from="buildSlotData(t)">
 
         </span>
       </div>
@@ -189,10 +188,25 @@
                     if (divs.length === 0) {
                         let numSlots = input.duration / slotIntervalInMinutes;
 
+                        let truth = [];
                         for (let x = 0; x < numSlots; x++) {
-                            if (i + x < slots.length) {
-                                slots[i + x].style.backgroundColor = "#ffcc00";
+                            if (i + x < slots.length &&
+                                slots[i + x].getElementsByTagName("div").length === 0) {
+                                truth.push(true)
+                            } else {
+                                truth.push(false)
                             }
+                        }
+
+                        if (truth.every(it => it === true)) {
+                            for (let x = 0; x < numSlots; x++) {
+                                slots[i + x].style.backgroundColor = "#ffcc00";
+                                slots[i + x].style.cursor = "pointer";
+                            }
+
+                            slot.addEventListener("click", () => {
+                                console.log(input, slot)
+                            })
                         }
                     }
                 });
@@ -200,13 +214,10 @@
                     if (divs.length === 0) {
                         for (let s of slots) {
                             s.style.backgroundColor = "transparent";
+                            s.style.cursor = "not-allowed";
                         }
                     }
                 });
-            },
-            clickMe: function (ref) {
-                console.log(this.$refs[ref][0].getAttribute("data-slot-from"))
-
             }
         }
     }
@@ -218,7 +229,7 @@
     border-top: 1px groove #2c3e50;
     border-bottom: 1px groove #2c3e50;
     height: 150px;
-    cursor: pointer;
+    cursor: not-allowed;
   }
 
   .row {
