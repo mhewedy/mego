@@ -17,9 +17,9 @@ deploy:
   provider: releases
   api_key: ${GITHUB_API_KEY}
   file:
-    - "release/mego-linux.tar.gz"
-    - "release/mego-win.tar.gz"
-    - "release/mego-mac.tar.gz"
+    - "mego-linux.tar.gz"
+    - "mego-win.tar.gz"
+    - "mego-mac.tar.gz"
   skip_cleanup: true
   on:
     tags: true
