@@ -137,27 +137,28 @@
                                 }
                             });
                         }
-                    }
-                    // set style
-                    let slots = document.getElementsByClassName("slot");
-                    for (let i = 0; i < slots.length; i++) {
-                        let slot = slots[i];
 
-                        // style slot
-                        if (i === 0) slot.classList.add("slot-left");
-                        if (i === slots.length - 1) slot.classList.add("slot-right");
+                        // set style
+                        let slots = document.getElementsByClassName("slot-" + (rowId + 1));
+                        for (let i = 0; i < slots.length; i++) {
+                            let slot = slots[i];
 
-                        if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0) {
-                            slot.classList.add("slot-left");
-                        }
+                            // style slot
+                            if (i === 0) slot.classList.add("slot-left");
+                            if (i === slots.length - 1) slot.classList.add("slot-right");
 
-                        this.handleEvents(slots, i);
+                            if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0) {
+                                slot.classList.add("slot-left");
+                            }
 
-                        let divs = slot.getElementsByTagName("div");
-                        // style divs, set height
-                        for (let j = 0; j < divs.length; j++) {
-                            let div = divs[j];
-                            div.setAttribute("style", "height: " + 100 / divs.length + "%")
+                            this.handleEvents(slots, i);
+
+                            let divs = slot.getElementsByTagName("div");
+                            // style divs, set height
+                            for (let j = 0; j < divs.length; j++) {
+                                let div = divs[j];
+                                div.setAttribute("style", "height: " + 100 / divs.length + "%")
+                            }
                         }
                     }
 
@@ -193,7 +194,7 @@
                 };
 
                 slot.addEventListener("mousemove", () => {
-                    if (divs.length === 0) {
+                    if (divs.length === 0) {    // no sub divs added (no events)
                         let numSlots = this.searchInput.duration / slotIntervalInMinutes;
 
                         let truth = [];
