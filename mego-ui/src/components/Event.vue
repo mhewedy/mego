@@ -48,14 +48,14 @@
         <div class="p-col-2">Start time</div>
         <div class="p-col-3">
       <span class="p-fluid">
-      <Calendar v-model="eventDetails.start" :showTime="true" hourFormat="12" :showIcon="false" :disabled="true"/>
+      <Calendar v-model="start" :showTime="true" hourFormat="12" :showIcon="false" :disabled="true"/>
       </span>
         </div>
         <div class="p-col-2"></div>
         <div class="p-col-1">Duration</div>
         <div class="p-col-3">
       <span class="p-fluid">
-      <Spinner v-model="eventDetails.duration" :disabled="true"/>
+      <Spinner v-model="duration" :disabled="true"/>
       </span>
         </div>
       </div>
@@ -75,9 +75,18 @@
         watch: {
             eventDetails: function () {
                 this.display = this.eventDetails != null;
-                this.selectedReqAttendees = this.eventDetails.emails;
-                this.selectedRooms = [];
-                this.selectedRooms.push(this.eventDetails.room);
+
+                if (this.eventDetails != null){
+                    this.start = this.eventDetails.start;
+                    this.duration = this.eventDetails.duration;
+                    this.selectedReqAttendees = this.eventDetails.emails;
+                    this.selectedRooms = [];
+                    this.selectedRooms.push(this.eventDetails.room);
+
+                    for (let autocomplete of document.getElementsByClassName("p-autocomplete-token")) {
+                        console.log(autocomplete);
+                    }
+                }
             }
         },
         data() {
@@ -87,6 +96,8 @@
                 selectedRooms: [],
                 selectedOptAttendees: [],
                 filteredOptAttendees: null,
+                start: null,
+                duration: null
             }
         },
         methods: {
@@ -99,7 +110,7 @@
 
 <style scoped>
 
-  .p-dialog{
+  .p-dialog {
     width: 50%;
   }
 
