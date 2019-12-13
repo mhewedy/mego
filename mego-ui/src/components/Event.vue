@@ -19,9 +19,17 @@
 <script>
     export default {
         name: "Event",
+        props: {
+            eventDetails: null
+        },
+        watch: {
+            eventDetails: function () {
+                this.display = this.eventDetails != null;
+            }
+        },
         data() {
             return {
-                display: false
+                display: this.eventDetails != null
             }
         }
     }

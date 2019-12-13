@@ -33,6 +33,8 @@
 
     </div>
 
+    <Event :eventDetails="eventDetails"></Event>
+
   </div>
 
 </template>
@@ -40,11 +42,13 @@
 <script>
     import EventService from '../services/events'
     import MessageService from '../services/messages'
+    import Event from "./Event";
 
     const slotIntervalInMinutes = 15;
 
     export default {
         name: "Result",
+        components: {Event},
         props: {
             searchInput: null
         },
@@ -54,7 +58,8 @@
                 start: null,
                 end: null,
                 rowsCount: null,
-                timeSlotCount: null
+                timeSlotCount: null,
+                eventDetails: null
             }
         },
         mounted() {
@@ -209,7 +214,7 @@
                     eventDetails.start = new Date(evt.target.getAttribute("data-slot-from"));
                     eventDetails.room = this.searchInput.rooms[rowId-1];
 
-                    console.log(eventDetails);
+                    this.eventDetails = eventDetails;
                 };
 
                 slot.addEventListener("mousemove", () => {
