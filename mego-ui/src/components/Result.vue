@@ -331,6 +331,8 @@
   }
 
   #result-duration .p-spinner-input {
+    font-weight: bold;
+    background-color: #e7ffee;
     width: 70px !important;
   }
 
