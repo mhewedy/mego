@@ -12,6 +12,15 @@
 
     <div v-if="!loadingResult" id="result">
 
+      <div id="result-duration" class="p-grid" style="padding-bottom: 20px">
+        <div class="p-col-12">
+          <div style="float: right">
+            <span style="font-weight: bold">Duration</span>
+            <Spinner v-model="duration" :step="30" :min="30" :readonly="true" style="padding-left: 10px"/>
+          </div>
+        </div>
+      </div>
+
       <div class="p-grid row">
         <span class="p-col-1">
         </span>
@@ -59,7 +68,8 @@
                 end: null,
                 rowsCount: null,
                 timeSlotCount: null,
-                eventDetails: null
+                eventDetails: null,
+                duration: 30,
             }
         },
         mounted() {
@@ -209,7 +219,7 @@
 
                     let rowId = /-([0-9]+)-/.exec(evt.target.getAttribute("id"))[1];
 
-                    eventDetails.duration = this.searchInput.duration;
+                    eventDetails.duration = this.duration;
                     eventDetails.emails = this.searchInput.emails;
                     eventDetails.start = new Date(evt.target.getAttribute("data-slot-from"));
                     eventDetails.room = this.searchInput.rooms[rowId - 1];
@@ -219,7 +229,7 @@
 
                 slot.addEventListener("mousemove", () => {
                     if (divs.length === 0) {    // no sub divs added (no events)
-                        let numSlots = this.searchInput.duration / slotIntervalInMinutes;
+                        let numSlots = this.duration / slotIntervalInMinutes;
 
                         let truth = [];
                         for (let x = 0; x < numSlots; x++) {
@@ -318,6 +328,10 @@
 
   .tooltip:hover .tooltiptext {
     visibility: visible;
+  }
+
+  #result-duration .p-spinner-input {
+    width: 70px !important;
   }
 
 </style>

@@ -42,13 +42,7 @@
                 :showButtonBar="true" :stepMinute="30" :manualInput="false"/>
       </span>
       </div>
-      <div class="p-col-2"></div>
-      <div class="p-col-1">Duration</div>
-      <div class="p-col-3">
-      <span class="p-fluid">
-      <Spinner v-model="duration" :step="30" :min="30" :readonly="true" :onchange="updateInput()"/>
-      </span>
-      </div>
+      <div class="p-col-6"></div>
     </div>
 
     <div class="p-grid">
@@ -85,7 +79,6 @@
                 roomsList: null,
                 selectedRooms: null,
                 startTime: this.getNextMeetingTime(),
-                duration: 30,
                 input: null
             }
         },
@@ -133,8 +126,7 @@
                 let input = {
                     rooms: rooms,
                     emails: emails,
-                    from: this.startTime.toISOString(),
-                    duration: this.duration
+                    from: this.startTime.toISOString()
                 };
 
                 for (const key in this.selectedRooms) {
@@ -165,12 +157,6 @@
                     return false
                 }
                 return true
-            },
-            updateInput: function () {
-                if (this.input) {
-                    this.input.duration = this.duration;
-                    this.$emit("search", this.input);
-                }
             }
         }
     }
