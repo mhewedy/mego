@@ -108,7 +108,6 @@
                 this.timeSlotCount =
                     Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);
 
-
                 setTimeout(() => {
                     // set busy
                     for (let rowId = 0; rowId < result.length; rowId++) {

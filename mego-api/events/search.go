@@ -5,16 +5,11 @@ import (
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/rooms"
+	"sort"
 	"time"
 )
 
 func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
-
-	roomEvents := returnBusyTime(eventUsers, from)
-	return roomEvents
-}
-
-func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
 
 	ch := make(chan roomEvents, len(eventUsers))
 
@@ -62,8 +57,25 @@ func returnBusyTime(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEven
 			break
 		}
 	}
-
+	sortResult(result)
 	return result
+}
+
+func sortResult(result []roomEvents) {
+
+	indexOf := func(emails []string, email string) int {
+		for i, ee := range emails {
+			if ee == email {
+				return i
+			}
+		}
+		return -1
+	}
+
+	emails := rooms.ListRoomEmails()
+	sort.Slice(result, func(i, j int) bool {
+		return indexOf(emails, result[i].Room) < indexOf(emails, result[j].Room)
+	})
 }
 
 // use json type instead of non-json types

@@ -32,6 +32,18 @@ var once sync.Once
 func ListRooms(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	once.Do(loadRoomList)
 
+	return ListRoomEmails(), nil
+}
+
+func ListRoomsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	once.Do(loadRoomList)
+
+	return roomTree, nil
+}
+
+func ListRoomEmails() []string {
+	once.Do(loadRoomList)
+
 	roomCodes := make([]string, 0)
 	for i, rr := range roomList {
 		if i == 0 {
@@ -40,13 +52,7 @@ func ListRooms(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		roomCodes = append(roomCodes, rr[email])
 	}
 
-	return roomCodes, nil
-}
-
-func ListRoomsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	once.Do(loadRoomList)
-
-	return roomTree, nil
+	return roomCodes
 }
 
 func loadRoomList() {
