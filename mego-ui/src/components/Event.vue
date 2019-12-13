@@ -125,8 +125,4 @@
     width: 65%;
   }
 
-  .event-req-attendees {
-
-  }
-
 </style>
