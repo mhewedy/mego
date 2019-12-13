@@ -263,3 +263,56 @@
   }
 
 </style>
+
+<!--not scoped-->
+<style>
+
+  .Busy {
+    color: white;
+    background-color: #465298;
+  }
+
+  .Tentative {
+    color: white;
+    /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
+    background-color: #deedf8;
+  }
+
+  .RoomBusy {
+    background-color: #f8756d;
+  }
+
+  .slot-left {
+    border-left: 1px groove #2c3e50;
+  }
+
+  .slot-right {
+    border-right: 1px groove #2c3e50;
+  }
+
+  .tooltip {
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*border-bottom: 1px dotted black;*/
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    /*width: 120px;*/
+    background-color: black;
+    color: #fff;
+    display: inline-block;
+    /*text-align: center;*/
+    border-radius: 4px;
+    padding: 5px 5px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+</style>

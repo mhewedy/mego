@@ -10,6 +10,7 @@ import Calendar from 'primevue/calendar';
 import Spinner from 'primevue/spinner';
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
+import Dialog from 'primevue/dialog';
 
 Vue.use(ToastService);
 
@@ -22,6 +23,7 @@ Vue.component('Calendar', Calendar);
 Vue.component('Spinner', Spinner);
 Vue.component('ProgressSpinner', ProgressSpinner);
 Vue.component('Message', Message);
+Vue.component('Dialog', Dialog);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';
