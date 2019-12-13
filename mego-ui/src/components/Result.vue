@@ -200,7 +200,16 @@
                 let divs = slot.getElementsByTagName("div");
 
                 let clickHandler = (evt) => {
-                    console.log(evt.target, this.searchInput)
+                    let eventDetails = {};
+
+                    let rowId = /-([0-9]+)-/.exec(evt.target.getAttribute("id"))[1];
+
+                    eventDetails.duration = this.searchInput.duration;
+                    eventDetails.emails = this.searchInput.emails;
+                    eventDetails.start = new Date(evt.target.getAttribute("data-slot-from"));
+                    eventDetails.room = this.searchInput.rooms[rowId-1];
+
+                    console.log(eventDetails);
                 };
 
                 slot.addEventListener("mousemove", () => {
