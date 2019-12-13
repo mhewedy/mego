@@ -11,6 +11,7 @@ import Spinner from 'primevue/spinner';
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import Dialog from 'primevue/dialog';
+import Textarea from 'primevue/textarea';
 
 Vue.use(ToastService);
 
@@ -24,6 +25,7 @@ Vue.component('Spinner', Spinner);
 Vue.component('ProgressSpinner', ProgressSpinner);
 Vue.component('Message', Message);
 Vue.component('Dialog', Dialog);
+Vue.component('Textarea', Textarea);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';

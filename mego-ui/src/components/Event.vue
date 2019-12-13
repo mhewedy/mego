@@ -60,6 +60,29 @@
         </div>
       </div>
 
+      <div class="p-grid">
+        <div class="p-col-2">Title</div>
+        <div class="p-col-10">
+          <span class="p-fluid">
+          <InputText v-model="title"></InputText>
+          </span>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12">
+          <span class="p-fluid">
+          <Textarea v-model="body" :autoResize="true" rows="10"></Textarea>
+          </span>
+        </div>
+      </div>
+
+      <template #footer>
+        <Button label="Send" icon="pi pi-external-link"
+                class="p-button-raised p-button-info" @click="createEvent()"
+                :disabled="isSending"/>
+      </template>
+
     </Dialog>
 
   </div>
@@ -71,6 +94,20 @@
         name: "Event",
         props: {
             eventDetails: null
+        },
+        data() {
+            return {
+                display: this.eventDetails != null,
+                selectedReqAttendees: [],
+                selectedRooms: [],
+                selectedOptAttendees: [],
+                filteredOptAttendees: null,
+                start: null,
+                duration: null,
+                title: null,
+                body: null,
+                isSending: false
+            }
         },
         watch: {
             eventDetails: function () {
@@ -100,20 +137,12 @@
                 }
             }
         },
-        data() {
-            return {
-                display: this.eventDetails != null,
-                selectedReqAttendees: [],
-                selectedRooms: [],
-                selectedOptAttendees: [],
-                filteredOptAttendees: null,
-                start: null,
-                duration: null
-            }
-        },
         methods: {
             searchOptAttendees: function (event) {
                 console.log(event);
+            },
+            createEvent: function () {
+
             }
         }
     }
