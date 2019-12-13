@@ -212,7 +212,7 @@
                     eventDetails.duration = this.searchInput.duration;
                     eventDetails.emails = this.searchInput.emails;
                     eventDetails.start = new Date(evt.target.getAttribute("data-slot-from"));
-                    eventDetails.room = this.searchInput.rooms[rowId-1];
+                    eventDetails.room = this.searchInput.rooms[rowId - 1];
 
                     this.eventDetails = eventDetails;
                 };

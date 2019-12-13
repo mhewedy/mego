@@ -2,14 +2,64 @@
 
   <div>
 
-    <Dialog header="Godfather I" :visible.sync="display">
-      The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-      His beloved son Michael has just come home from the war, but does not intend to become part of his father's
-      business.
-      Through Michael's life the nature of the family business becomes clear. The business of the family is just like
-      the head of the family,
-      kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the
-      good of the family.
+    <Dialog header="Meeting Request" :visible.sync="display" :modal="true">
+
+      <div class="p-grid">
+        <div class="p-col-2">Required Attendees</div>
+        <div class="p-col-10">
+      <span class="p-fluid">
+      <AutoComplete :multiple="true" v-model="selectedReqAttendees" :disabled="true"></AutoComplete>
+      </span>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-2">Optional Attendees</div>
+        <div class="p-col-10">
+        <span class="p-fluid">
+        <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
+                      @complete="searchOptAttendees($event)" field="name">
+           <template #item="slotProps">
+            <div class="p-clearfix p-autocomplete-brand-item">
+              <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
+                   alt="" :src="'data:image/png;base64,' + slotProps.item.image"/>
+              <div style="display: flex">
+              <span>{{slotProps.item.email_address}}</span>
+              <span><b>{{slotProps.item.display_name}}</b></span>
+              <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+              </div>
+            </div>
+          </template>
+        </AutoComplete>
+        </span>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-2">Room</div>
+        <div class="p-col-10">
+      <span class="p-fluid">
+      <AutoComplete v-model="selectedRooms" :disabled="true"></AutoComplete>
+      </span>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-2">Start time</div>
+        <div class="p-col-3">
+      <span class="p-fluid">
+      <Calendar v-model="eventDetails.start" :showTime="true" hourFormat="12" :showIcon="false" :disabled="true"/>
+      </span>
+        </div>
+        <div class="p-col-2"></div>
+        <div class="p-col-1">Duration</div>
+        <div class="p-col-3">
+      <span class="p-fluid">
+      <Spinner v-model="eventDetails.duration" :disabled="true"/>
+      </span>
+        </div>
+      </div>
+
     </Dialog>
 
   </div>
@@ -25,16 +75,32 @@
         watch: {
             eventDetails: function () {
                 this.display = this.eventDetails != null;
+                this.selectedReqAttendees = this.eventDetails.emails;
+                this.selectedRooms = [];
+                this.selectedRooms.push(this.eventDetails.room);
             }
         },
         data() {
             return {
-                display: this.eventDetails != null
+                display: this.eventDetails != null,
+                selectedReqAttendees: [],
+                selectedRooms: [],
+                selectedOptAttendees: [],
+                filteredOptAttendees: null,
+            }
+        },
+        methods: {
+            searchOptAttendees: function (event) {
+                console.log(event);
             }
         }
     }
 </script>
 
 <style scoped>
+
+  .p-dialog{
+    width: 50%;
+  }
 
 </style>
