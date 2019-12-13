@@ -146,6 +146,8 @@
                     }
                 }
 
+                rooms.sort((r1, r2) => this.roomsList.indexOf(r1) - this.roomsList.indexOf(r2));
+
                 emails.push(...this.selectedReqAttendees.map(it => it.email_address));
 
                 if (this.validate(input)) {
