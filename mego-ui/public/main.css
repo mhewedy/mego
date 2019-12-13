@@ -1,9 +1,12 @@
 .Busy {
-    background-color: #deedf8;
+    color: white;
+    background-color: #465298;
 }
 
 .Tentative {
-    background-color: #ececec;
+    color: white;
+    /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
+    background-color: #deedf8;
 }
 
 .RoomBusy {
