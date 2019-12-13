@@ -15,7 +15,7 @@
       <div class="p-grid row">
         <span class="p-col-1">
         </span>
-        <span v-for="t in timeSlotCount" :key="t" :style="{width: (80/timeSlotCount) + '%'}">
+        <span v-for="t in timeSlotCount" :key="t" :style="{width: (90/timeSlotCount) + '%'}">
           {{buildHeaderTime(t)}}
         </span>
       </div>
