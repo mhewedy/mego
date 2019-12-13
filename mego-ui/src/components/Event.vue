@@ -4,7 +4,7 @@
 
     <Dialog header="Meeting Request" :visible.sync="display" :modal="true">
 
-      <div class="p-grid">
+      <div class="p-grid" id="req-autocomplete">
         <div class="p-col-2">Required Attendees</div>
         <div class="p-col-10">
       <span class="p-fluid">
@@ -76,16 +76,27 @@
             eventDetails: function () {
                 this.display = this.eventDetails != null;
 
-                if (this.eventDetails != null){
+                if (this.eventDetails != null) {
                     this.start = this.eventDetails.start;
                     this.duration = this.eventDetails.duration;
                     this.selectedReqAttendees = this.eventDetails.emails;
                     this.selectedRooms = [];
                     this.selectedRooms.push(this.eventDetails.room);
 
-                    for (let autocomplete of document.getElementsByClassName("p-autocomplete-token")) {
-                        console.log(autocomplete);
-                    }
+                    setTimeout(() => {
+                        let reqEmailsTimes = document.getElementById("req-autocomplete")
+                            .getElementsByClassName("pi-times");
+                        for (let reqEmailTimes of reqEmailsTimes) {
+                            reqEmailTimes.setAttribute("style", "display: none;")
+                        }
+
+                        let reqEmailsLabel = document.getElementById("req-autocomplete")
+                            .getElementsByClassName("p-autocomplete-token-label");
+                        for (let reqEmailLabel of reqEmailsLabel) {
+                            reqEmailLabel.setAttribute("style", "margin-right: 0em !important;")
+                        }
+
+                    }, 10)
                 }
             }
         },
@@ -112,6 +123,10 @@
 
   .p-dialog {
     width: 65%;
+  }
+
+  .event-req-attendees {
+
   }
 
 </style>
