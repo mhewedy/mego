@@ -4,8 +4,8 @@
     <h2 style="text-align: center">MEGO The Meeting Organizer </h2>
 
     <div class="p-grid">
-      <div class="p-col-2">Attendees</div>
-      <div class="p-col-10">
+      <div class="p-col-1">Attendees</div>
+      <div class="p-col-11">
       <span class="p-fluid">
       <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
                     @complete="searchReqAttendees($event)" field="name">
@@ -26,8 +26,8 @@
     </div>
 
     <div class="p-grid">
-      <div class="p-col-2">Rooms</div>
-      <div class="p-col-10">
+      <div class="p-col-1">Rooms</div>
+      <div class="p-col-11">
       <span class="p-fluid">
       <Tree :value="roomsTree" selectionMode="checkbox" :selectionKeys.sync="selectedRooms"></Tree>
     </span>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="p-grid">
-      <div class="p-col-2">Start time</div>
+      <div class="p-col-1">Start time</div>
       <div class="p-col-3">
       <span class="p-fluid">
       <Calendar v-model="startTime" :showTime="true" hourFormat="12" :showIcon="true"
@@ -187,5 +187,19 @@
       font-size: 16px;
       margin: 10px 10px 0 0;
     }
+  }
+
+
+  .p-treenode-content.p-highlight {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+  }
+
+  body .p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight .p-tree-toggler {
+    color: #848484 !important;
+  }
+
+  .p-treenode-children {
+    padding-left: 40px !important;
   }
 </style>

@@ -111,7 +111,7 @@
 <style scoped>
 
   .p-dialog {
-    width: 50%;
+    width: 65%;
   }
 
 </style>

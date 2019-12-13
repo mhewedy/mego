@@ -13,7 +13,7 @@
     <div v-if="!loadingResult" id="result">
 
       <div class="p-grid row">
-        <span class="p-col-2">
+        <span class="p-col-1">
         </span>
         <span v-for="t in timeSlotCount" :key="t" :style="{width: (80/timeSlotCount) + '%'}">
           {{buildHeaderTime(t)}}
@@ -21,11 +21,11 @@
       </div>
 
       <div v-for="r in rowsCount" :key="r" class="p-grid row"> <!--  for each input.rooms-->
-        <span class="p-col-2" :class="'row-'+r">
+        <span class="p-col-1" :class="'row-'+r">
         </span>
         <span v-for="t in timeSlotCount" :key="t"
               :id="'slot-'+ r +'-'+t" :ref="'slot-'+ r +'-'+t"
-              class="slot" :class="'slot-' + r" :style="{width: 80/timeSlotCount + '%'}"
+              class="slot" :class="'slot-' + r" :style="{width: 90/timeSlotCount + '%'}"
               :data-slot-from="buildSlotData(t)">
 
         </span>
