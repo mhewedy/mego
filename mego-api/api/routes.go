@@ -9,12 +9,16 @@ import (
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/events"
 	"github.com/mhewedy/mego/rooms"
+	"github.com/mhewedy/mego/user"
 	"net/http"
 	"os"
 )
 
 func Route() *mux.Router {
 	router := mux.NewRouter()
+
+	router.HandleFunc("/api/v1/login", handle(user.Login)).Methods("POST")
+	router.HandleFunc("/api/v1/logout", handle(user.Logout)).Methods("POST")
 
 	router.HandleFunc("/api/v1/attendees", handle(attendess.ListAttendees)).Methods("GET")
 	router.HandleFunc("/api/v1/attendees/search", handle(attendess.SearchAttendees)).Methods("POST")

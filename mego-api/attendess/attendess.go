@@ -35,7 +35,7 @@ func GetPhoto(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	email := mux.Vars(r)["email"]
 	base64, _ := getAttendeePhoto(EWSClient, email)
 
-	return struct {
+	return &struct {
 		Base64 string `json:"base64"`
 	}{Base64: base64}, nil
 }

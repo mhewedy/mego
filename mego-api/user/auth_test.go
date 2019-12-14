@@ -47,8 +47,8 @@ func Test_loginInCaseOf401(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 
 	_, login := login(&user{
-		username: "unauthenticatedUser",
-		password: "efg",
+		Username: "unauthenticatedUser",
+		Password: "efg",
 	})
 
 	assert.Equal(t, false, login)
@@ -59,8 +59,8 @@ func Test_loginInCaseOf200(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 
 	token, login := login(&user{
-		username: "goodUser",
-		password: "efg",
+		Username: "goodUser",
+		Password: "efg",
 	})
 
 	assert.Equal(t, true, login)
@@ -72,8 +72,8 @@ func Test_loginInCaseOf500(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 
 	_, login := login(&user{
-		username: "500",
-		password: "efg",
+		Username: "500",
+		Password: "efg",
 	})
 
 	assert.Equal(t, true, login)
@@ -85,8 +85,8 @@ func Test_GetUser(t *testing.T) {
 	usersDB = make(map[string]string)
 
 	token, login := login(&user{
-		username: "goodUser",
-		password: "hisPassword",
+		Username: "goodUser",
+		Password: "hisPassword",
 	})
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
@@ -95,8 +95,8 @@ func Test_GetUser(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Len(t, usersDB, 1)
-	assert.Equal(t, "goodUser", user.username)
-	assert.Equal(t, "hisPassword", user.password)
+	assert.Equal(t, "goodUser", user.Username)
+	assert.Equal(t, "hisPassword", user.Password)
 }
 
 func Test_GetUserWithInvalidUsername(t *testing.T) {
@@ -105,8 +105,8 @@ func Test_GetUserWithInvalidUsername(t *testing.T) {
 	usersDB = make(map[string]string)
 
 	token, login := login(&user{
-		username: "goodUser",
-		password: "hisPassword",
+		Username: "goodUser",
+		Password: "hisPassword",
 	})
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
@@ -123,13 +123,16 @@ func Test_Logout(t *testing.T) {
 	usersDB = make(map[string]string)
 
 	token, login := login(&user{
-		username: "goodUser",
-		password: "hisPassword",
+		Username: "goodUser",
+		Password: "hisPassword",
 	})
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
 
-	logout(token)
+	logout(&user{
+		Username: "goodUser",
+		Password: "hisPassword",
+	})
 
 	assert.Len(t, usersDB, 0)
 }

@@ -29,33 +29,29 @@ var usersDB = make(map[string]string) //username->password
 
 type token string
 
-type user struct {
-	username, password string
-}
-
 func login(u *user) (token, bool) {
 
-	ewsClient := commons.NewEWSClient(u.username, u.password)
-	_, err := ewsutil.GetUserPhotoBase64(ewsClient, u.username) // check ews auth
+	ewsClient := commons.NewEWSClient(u.Username, u.Password)
+	_, err := ewsutil.GetUserPhotoBase64(ewsClient, u.Username) // check ews auth
 
 	herr, ok := err.(*ews.HTTPError)
 	if ok && herr.StatusCode == http.StatusUnauthorized {
 		return "", false
 	}
 
-	t, err := createToken(u.username)
+	t, err := createToken(u.Username)
 	if err != nil {
 		log.Println(err)
 		return "", false
 	}
 
 	// insert user into our database
-	enc, err := encrypt(u.password)
+	enc, err := encrypt(u.Password)
 	if err != nil {
 		log.Println(err)
 		return "", false
 	}
-	usersDB[u.username] = enc
+	usersDB[u.Username] = enc
 
 	return t, true
 }
@@ -76,14 +72,13 @@ func getUser(t token) (*user, error) {
 	}
 
 	return &user{
-		username: username,
-		password: dec,
+		Username: username,
+		Password: dec,
 	}, nil
 }
 
-func logout(t token) {
-	username, _ := getUsernameFromToken(t)
-	delete(usersDB, username)
+func logout(u *user) {
+	delete(usersDB, u.Username)
 }
 
 func createToken(username string) (token, error) {
