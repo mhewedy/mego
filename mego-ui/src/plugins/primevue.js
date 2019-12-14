@@ -13,6 +13,7 @@ import Message from 'primevue/message';
 import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import ProgressBar from 'primevue/progressbar';
+import Password from 'primevue/password'
 
 Vue.use(ToastService);
 
@@ -28,6 +29,7 @@ Vue.component('Message', Message);
 Vue.component('Dialog', Dialog);
 Vue.component('Textarea', Textarea);
 Vue.component('ProgressBar', ProgressBar);
+Vue.component('Password', Password);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';

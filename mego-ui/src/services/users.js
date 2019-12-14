@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 export default {
-    search: function (q, exclude, successFn, failFn) {
-        axios.post("/api/v1/attendees/search?q=" + q, exclude)
+    login: function (user, successFn, failFn) {
+        axios.post("/api/v1/login", user)
             .then(it => successFn(it.data))
             .catch(it => failFn && failFn(it.response.data.error))
     },
-    getPhoto: function (email, successFn, failFn) {
-        axios.get("/api/v1/attendees/" + email + "/photo")
+    logout: function (successFn, failFn) {
+        axios.get("/api/v1/logout")
             .then(it => successFn(it.data))
             .catch(it => failFn && failFn(it.response.data.error))
     }
