@@ -100,7 +100,7 @@ func getUsernameFromToken(t token) (string, error) {
 		if _, ok := tt.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", tt.Header["alg"])
 		}
-		return []byte(jwtSecret), nil
+		return jwtSecret, nil
 	})
 	if err != nil {
 		return "", err

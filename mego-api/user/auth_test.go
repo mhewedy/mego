@@ -99,6 +99,24 @@ func Test_GetUser(t *testing.T) {
 	assert.Equal(t, "hisPassword", user.password)
 }
 
+func Test_GetUserWithInvalidUsername(t *testing.T) {
+
+	commons.DefaultEWSClient = &mockEWSClient{}
+	usersDB = make(map[string]string)
+
+	token, login := login(&user{
+		username: "goodUser",
+		password: "hisPassword",
+	})
+	assert.Equal(t, true, login)
+	assert.NotEmpty(t, token)
+	assert.Len(t, usersDB, 1)
+
+	user, err := getUser("invalid token")
+	assert.Error(t, err)
+	assert.Nil(t, user)
+}
+
 func Test_Logout(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
