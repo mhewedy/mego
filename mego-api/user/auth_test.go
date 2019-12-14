@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/commons"
 	"github.com/stretchr/testify/assert"
@@ -66,7 +65,6 @@ func Test_loginInCaseOf200(t *testing.T) {
 
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
-	fmt.Println(token)
 }
 
 func Test_loginInCaseOf500(t *testing.T) {
@@ -84,6 +82,7 @@ func Test_loginInCaseOf500(t *testing.T) {
 func Test_GetUser(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
+	usersDB = make(map[string]string)
 
 	token, login := login(&user{
 		username: "goodUser",
@@ -103,6 +102,7 @@ func Test_GetUser(t *testing.T) {
 func Test_Logout(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
+	usersDB = make(map[string]string)
 
 	token, login := login(&user{
 		username: "goodUser",
