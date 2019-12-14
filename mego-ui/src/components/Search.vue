@@ -88,15 +88,16 @@
         },
         methods: {
             searchReqAttendees: function (event) {
-                const that = this;
-                AttendeesService.search(event.query,
-                    function (data) {
-                        that.filteredReqAttendees = data.map(it => {
+
+                let toExclude = this.selectedReqAttendees.map(it => it.email_address);
+                AttendeesService.search(event.query, toExclude,
+                    (data) => {
+                        this.filteredReqAttendees = data.map(it => {
                             it["name"] = it.email_address;
                             return it
                         });
 
-                        that.filteredReqAttendees.map(it => {
+                        this.filteredReqAttendees.map(it => {
                             if (!it.image) {
                                 AttendeesService.getPhoto(it.email_address, function (data) {
                                     it.image = data.base64

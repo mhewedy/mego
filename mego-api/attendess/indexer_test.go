@@ -166,7 +166,7 @@ func Test_searchAttendees(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := searchAttendees(tt.args.q); !reflect.DeepEqual(got, tt.want) {
+			if got := searchAttendees(tt.args.q, []string{}); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("searchAttendees() = %v, want %v", got, tt.want)
 			}
 		})

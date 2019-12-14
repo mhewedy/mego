@@ -17,7 +17,7 @@ func Route() *mux.Router {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/v1/attendees", handle(attendess.ListAttendees)).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/search", handle(attendess.SearchAttendees)).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/search", handle(attendess.SearchAttendees)).Methods("POST")
 	router.HandleFunc("/api/v1/attendees/{email}/photo", handle(attendess.GetPhoto)).Methods("GET")
 
 	router.HandleFunc("/api/v1/rooms", handle(rooms.ListRooms)).Methods("GET")

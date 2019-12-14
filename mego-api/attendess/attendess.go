@@ -1,6 +1,7 @@
 package attendess
 
 import (
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/ews"
 	"net/http"
@@ -19,7 +20,13 @@ func ListAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	attendOnce.Do(indexAttendees)
 
-	attendees := searchAttendees(r.URL.Query().Get("q"))
+	var exclude []string
+	err := json.NewDecoder(r.Body).Decode(&exclude)
+	if err != nil {
+		return nil, err
+	}
+
+	attendees := searchAttendees(r.URL.Query().Get("q"), exclude)
 	return attendees, nil
 }
 

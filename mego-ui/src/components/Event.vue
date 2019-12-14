@@ -148,15 +148,18 @@
         },
         methods: {
             searchOptAttendees: function (event) {
-                const that = this;
-                AttendeesService.search(event.query,
-                    function (data) {
-                        that.filteredOptAttendees = data.map(it => {
+
+                let toExclude = this.selectedOptAttendees.map(it => it.email_address);
+                toExclude.push(...this.selectedReqAttendees.map(it => it));
+
+                AttendeesService.search(event.query, toExclude,
+                    data => {
+                        this.filteredOptAttendees = data.map(it => {
                             it["name"] = it.email_address;
                             return it
                         });
 
-                        that.filteredOptAttendees.map(it => {
+                        this.filteredOptAttendees.map(it => {
                             if (!it.image) {
                                 AttendeesService.getPhoto(it.email_address, function (data) {
                                     it.image = data.base64

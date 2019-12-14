@@ -71,8 +71,7 @@ func indexAttendeesStartsWith(s string) []Attendee {
 // 2. display name starts with the query
 // 3. split display name on space and check each part star with the query
 // 4. email address or display name contains the query
-func searchAttendees(q string) []Attendee {
-
+func searchAttendees(q string, exclude []string) []Attendee {
 	attendees := make([]Attendee, 0)
 	attendeesP2 := make([]Attendee, 0)
 	attendeesP3 := make([]Attendee, 0)
@@ -80,9 +79,15 @@ func searchAttendees(q string) []Attendee {
 	q = strings.ToLower(q)
 
 	for _, aa := range attendeesIndex {
+
 		lowerEmailAddress := strings.ToLower(aa.EmailAddress)
 		lowerDisplayName := strings.ToLower(aa.DisplayName)
 
+		if emailsExists(exclude, lowerEmailAddress) {
+			continue
+		}
+
+		// start the algorithm
 		if strings.HasPrefix(lowerEmailAddress, q) {
 			attendees = append(attendees, aa)
 		}
@@ -143,6 +148,15 @@ func getAttendeePhoto(c ews.Client, email string) (string, error) {
 func contains(attendees []Attendee, attendee Attendee) bool {
 	for _, att := range attendees {
 		if att.EmailAddress == attendee.EmailAddress {
+			return true
+		}
+	}
+	return false
+}
+
+func emailsExists(emails []string, email string) bool {
+	for _, ee := range emails {
+		if email == ee {
 			return true
 		}
 	}
