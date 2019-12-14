@@ -50,7 +50,12 @@ func login(u *user) (token, bool) {
 	}
 
 	// insert user into our database
-	usersDB[u.username] = u.password
+	enc, err := encrypt(u.password)
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	usersDB[u.username] = enc
 
 	return t, true
 }
@@ -65,9 +70,14 @@ func getUser(t token) (*user, error) {
 	if !found {
 		return nil, errors.New("username not found")
 	}
+	dec, err := decrypt(p)
+	if err != nil {
+		return nil, err
+	}
+
 	return &user{
 		username: username,
-		password: p,
+		password: dec,
 	}, nil
 }
 
