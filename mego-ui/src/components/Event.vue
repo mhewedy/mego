@@ -167,10 +167,12 @@
                     this.isSending = false;
                     this.display = false;
                     MessagesService.success("Event created successfully!");
+                    window.scrollTo(0,0);
                 }, (error) => {
                     console.log(error);
                     this.isSending = false;
-                    MessagesService.error(error.response.data);
+                    MessagesService.error(error.response.data.error);
+                    window.scrollTo(0,0);
                 })
             }
         }
