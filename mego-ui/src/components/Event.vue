@@ -4,6 +4,10 @@
 
     <Dialog header="Meeting Request" :visible.sync="display" :modal="true">
 
+      <div v-if="isSending">
+        <ProgressBar mode="indeterminate" style="height: .5em; margin: -14px 0 15px 0;"/>
+      </div>
+
       <div class="p-grid" id="req-autocomplete">
         <div class="p-col-2">Required Attendees</div>
         <div class="p-col-10">
@@ -61,10 +65,10 @@
       </div>
 
       <div class="p-grid">
-        <div class="p-col-2">Title</div>
+        <div class="p-col-2">Subject</div>
         <div class="p-col-10">
           <span class="p-fluid">
-          <InputText v-model="title"></InputText>
+          <InputText v-model="subject"></InputText>
           </span>
         </div>
       </div>
@@ -90,6 +94,10 @@
 </template>
 
 <script>
+
+    import EventService from '../services/events'
+    import MessagesService from '../services/messages'
+
     export default {
         name: "Event",
         props: {
@@ -104,7 +112,7 @@
                 filteredOptAttendees: null,
                 start: null,
                 duration: null,
-                title: null,
+                subject: null,
                 body: null,
                 isSending: false
             }
@@ -143,6 +151,27 @@
             },
             createEvent: function () {
 
+                let input = {
+                    to: this.selectedReqAttendees,
+                    optional: this.selectedOptAttendees,
+                    subject: this.subject,
+                    body: this.body,
+                    room: this.selectedRooms[0],
+                    from: this.start,
+                    duration: this.duration
+                };
+
+                this.isSending = true;
+
+                EventService.create(input, () => {
+                    this.isSending = false;
+                    this.display = false;
+                    MessagesService.success("Event created successfully!");
+                }, (error) => {
+                    console.log(error);
+                    this.isSending = false;
+                    MessagesService.error(error.response.data);
+                })
             }
         }
     }

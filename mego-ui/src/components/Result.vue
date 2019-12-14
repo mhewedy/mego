@@ -287,6 +287,11 @@
     background-color: #465298;
   }
 
+  .Free {
+    color: white;
+    background-color: #f5faff;
+  }
+
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
