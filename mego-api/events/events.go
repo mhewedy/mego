@@ -1,9 +1,11 @@
 package events
 
 import (
+	"github.com/gorilla/context"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/mego/user"
 	"net/http"
 	"time"
 )
@@ -42,18 +44,18 @@ type event struct {
 	BusyType string    `json:"busy_type,omitempty"`
 }
 
-var EWSClient ews.Client
 var roomIndex = 0
 
 func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	u := context.Get(r, user.KEY).(*user.User)
 
 	input, err := parseAndValidateSearchInput(r)
 	if err != nil {
 		return nil, err
 	}
 
-	eventUsers := buildEventUserSlices(input)
-	events := doSearch(eventUsers, input.From)
+	eventUsers := buildEventUserSlices(input, u)
+	events := doSearch(eventUsers, input.From, u)
 
 	return &resp{
 		EndOFDayHours: conf.GetInt("calendar.end_of_day_hours", 18),
@@ -62,13 +64,14 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 func Create(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	u := context.Get(r, user.KEY).(*user.User)
 
 	input, err := parseAndValidateCreateInput(r)
 	if err != nil {
 		return nil, err
 	}
 
-	err = doCreate(input)
+	err = doCreate(input, u)
 	if err != nil {
 		return nil, err
 	}
@@ -76,12 +79,12 @@ func Create(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	return nil, nil
 }
 
-func buildEventUserSlices(i *searchInput) [][]ewsutil.EventUser {
+func buildEventUserSlices(i *searchInput, u *user.User) [][]ewsutil.EventUser {
 
 	i.From = i.From.Truncate(1 * time.Minute)
 
 	me := ewsutil.EventUser{
-		Email:        EWSClient.GetUsername(),
+		Email:        u.Username,
 		AttendeeType: ews.AttendeeTypeOrganizer,
 	}
 	emails := make([]ewsutil.EventUser, len(i.Emails))

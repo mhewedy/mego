@@ -3,20 +3,23 @@ package events
 import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/rooms"
+	"github.com/mhewedy/mego/user"
 	"sort"
 	"time"
 )
 
-func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time) []roomEvents {
+func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []roomEvents {
 
+	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 	ch := make(chan roomEvents, len(eventUsers))
 
 	for _, ee := range eventUsers {
 		go func(ee []ewsutil.EventUser) {
 
-			m, err := ewsutil.ListUsersEvents(EWSClient, ee, from, getDuration(from))
+			m, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
 
 			email := ee[roomIndex].Email
 			name, err := rooms.FindByEmail(email)

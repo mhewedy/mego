@@ -29,7 +29,7 @@ var usersDB = make(map[string]string) //username->password
 
 type token string
 
-func login(u *user) (token, bool) {
+func login(u *User) (token, bool) {
 
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 	_, err := ewsutil.GetUserPhotoBase64(ewsClient, u.Username) // check ews auth
@@ -56,7 +56,7 @@ func login(u *user) (token, bool) {
 	return t, true
 }
 
-func GetUser(t string) (*user, error) {
+func GetUser(t string) (*User, error) {
 
 	if len(t) == 0 {
 		return nil, errors.New("missing token")
@@ -76,13 +76,13 @@ func GetUser(t string) (*user, error) {
 		return nil, err
 	}
 
-	return &user{
+	return &User{
 		Username: username,
 		Password: dec,
 	}, nil
 }
 
-func logout(u *user) {
+func logout(u *User) {
 	delete(usersDB, u.Username)
 }
 
@@ -96,15 +96,18 @@ func createToken(username string) (token, error) {
 }
 
 func getUsernameFromToken(t token) (string, error) {
+
 	tt, err := jwt.Parse(string(t), func(tt *jwt.Token) (i interface{}, e error) {
 		if _, ok := tt.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", tt.Header["alg"])
 		}
 		return jwtSecret, nil
 	})
+
 	if err != nil {
 		return "", err
 	}
+
 	claims, ok := tt.Claims.(jwt.MapClaims)
 	if !ok || !tt.Valid {
 		return "", errors.New("invalid token")

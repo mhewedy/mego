@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/mego/user"
 	"strings"
 	"time"
 )
@@ -18,14 +20,14 @@ type Attendee struct {
 
 var attendeesIndex map[string]Attendee
 
-func indexAttendees() {
+func indexAttendees(u *user.User) {
 	const chars = "abcdefghijklmnopqrstuvwxyz"
 	ch := make(chan []Attendee, len(chars))
 
 	for _, c := range chars {
 		go func(c string) {
 			fmt.Println("indexing:", c)
-			ch <- indexAttendeesStartsWith(c)
+			ch <- indexAttendeesStartsWith(c, u)
 		}(string(c))
 	}
 
@@ -48,8 +50,9 @@ func indexAttendees() {
 	}
 }
 
-func indexAttendeesStartsWith(s string) []Attendee {
-	personas, err := ewsutil.FindPeople(EWSClient, s)
+func indexAttendeesStartsWith(s string, u *user.User) []Attendee {
+	ewsClient := commons.NewEWSClient(u.Username, u.Password)
+	personas, err := ewsutil.FindPeople(ewsClient, s)
 	if err != nil {
 		fmt.Println("error indexAttendeesStartsWith", s, err.Error())
 		return []Attendee{}

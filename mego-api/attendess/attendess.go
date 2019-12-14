@@ -2,23 +2,30 @@ package attendess
 
 import (
 	"encoding/json"
+	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
-	"github.com/mhewedy/ews"
+	"github.com/mhewedy/mego/commons"
+	"github.com/mhewedy/mego/user"
 	"net/http"
 	"sync"
 )
 
-var EWSClient ews.Client
 var attendOnce sync.Once
 
 func ListAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	attendOnce.Do(indexAttendees)
+	u := context.Get(r, user.KEY).(*user.User)
+	attendOnce.Do(func() {
+		indexAttendees(u)
+	})
 
 	return attendeesIndex, nil
 }
 
 func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	attendOnce.Do(indexAttendees)
+	u := context.Get(r, user.KEY).(*user.User)
+	attendOnce.Do(func() {
+		indexAttendees(u)
+	})
 
 	var exclude []string
 	err := json.NewDecoder(r.Body).Decode(&exclude)
@@ -31,9 +38,11 @@ func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error
 }
 
 func GetPhoto(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	u := context.Get(r, user.KEY).(*user.User)
+	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 
 	email := mux.Vars(r)["email"]
-	base64, _ := getAttendeePhoto(EWSClient, email)
+	base64, _ := getAttendeePhoto(ewsClient, email)
 
 	return &struct {
 		Base64 string `json:"base64"`

@@ -7,7 +7,9 @@ import (
 	"net/http"
 )
 
-type user struct {
+const KEY = "User"
+
+type User struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -32,12 +34,12 @@ func Login(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	logout(context.Get(r, "user").(*user))
+	logout(context.Get(r, KEY).(*User))
 	return nil, nil
 }
 
-func validateAndParseLoginInput(r *http.Request) (*user, error) {
-	var i user
+func validateAndParseLoginInput(r *http.Request) (*User, error) {
+	var i User
 	err := json.NewDecoder(r.Body).Decode(&i)
 	if err != nil {
 		return nil, err

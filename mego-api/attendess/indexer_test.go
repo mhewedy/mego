@@ -1,7 +1,9 @@
 package attendess
 
 import (
+	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/mego/user"
 	"github.com/stretchr/testify/assert"
 	"reflect"
 	"strings"
@@ -80,9 +82,11 @@ func init() {
 }
 
 func Test_indexAttendees(t *testing.T) {
-
-	EWSClient = &mockEWSClient{}
-	indexAttendees()
+	commons.DefaultEWSClient = &mockEWSClient{}
+	indexAttendees(&user.User{
+		Username: "",
+		Password: "",
+	})
 
 	assert.Equal(t, 2, len(attendeesIndex))
 	assert.Equal(t, attendeesIndex["terry@litwareinc.com"], Attendee{

@@ -2,29 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/api"
-	"github.com/mhewedy/mego/attendess"
-	"github.com/mhewedy/mego/commons"
-	"github.com/mhewedy/mego/conf"
-	"github.com/mhewedy/mego/events"
 	"log"
 	"net/http"
 	"os/exec"
 	"runtime"
 )
 
-var ewsClient ews.Client
-
 func main() {
-	// Test
-	ewsClient = commons.NewEWSClient(
-		conf.Get("ews.exchange_username"),
-		conf.Get("ews.exchange_password"),
-	)
-
-	events.EWSClient = ewsClient
-	attendess.EWSClient = ewsClient
 
 	go func() {
 		fmt.Println("Server start listening on port 3000")

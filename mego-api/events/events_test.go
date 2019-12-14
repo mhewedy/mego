@@ -4,29 +4,14 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/mego/user"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
 
-type ewsMock struct {
-}
-
-func (e ewsMock) SendAndReceive(body []byte) ([]byte, error) {
-	panic("implement me")
-}
-
-func (e ewsMock) GetEWSAddr() string {
-	panic("implement me")
-}
-
-func (e ewsMock) GetUsername() string {
-	return "mhewedy"
-}
-
 func Test_buildEventUserSlices(t *testing.T) {
 
-	EWSClient = ewsMock{}
 	actual := buildEventUserSlices(&searchInput{
 		Emails: []string{
 			"abc", "efg", "hij",
@@ -34,6 +19,9 @@ func Test_buildEventUserSlices(t *testing.T) {
 		Rooms: []string{
 			"rm1", "rm2", "rm3",
 		},
+	}, &user.User{
+		Username: "mhewedy",
+		Password: "",
 	})
 
 	fmt.Println(actual)

@@ -25,7 +25,7 @@ func AuthMiddleware() mux.MiddlewareFunc {
 				handleError(w, errors.New("invalid token"), http.StatusUnauthorized)
 				return
 			}
-			context.Set(r, "user", u)
+			context.Set(r, user.KEY, u)
 			next.ServeHTTP(w, r)
 		})
 	}

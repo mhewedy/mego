@@ -46,7 +46,7 @@ func Test_loginInCaseOf401(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
 
-	_, login := login(&user{
+	_, login := login(&User{
 		Username: "unauthenticatedUser",
 		Password: "efg",
 	})
@@ -58,7 +58,7 @@ func Test_loginInCaseOf200(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
 
-	token, login := login(&user{
+	token, login := login(&User{
 		Username: "goodUser",
 		Password: "efg",
 	})
@@ -71,7 +71,7 @@ func Test_loginInCaseOf500(t *testing.T) {
 
 	commons.DefaultEWSClient = &mockEWSClient{}
 
-	_, login := login(&user{
+	_, login := login(&User{
 		Username: "500",
 		Password: "efg",
 	})
@@ -84,14 +84,14 @@ func Test_GetUser(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 	usersDB = make(map[string]string)
 
-	token, login := login(&user{
+	token, login := login(&User{
 		Username: "goodUser",
 		Password: "hisPassword",
 	})
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
 
-	user, err := GetUser(token)
+	user, err := GetUser(string(token))
 
 	assert.NoError(t, err)
 	assert.Len(t, usersDB, 1)
@@ -104,7 +104,7 @@ func Test_GetUserWithInvalidUsername(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 	usersDB = make(map[string]string)
 
-	token, login := login(&user{
+	token, login := login(&User{
 		Username: "goodUser",
 		Password: "hisPassword",
 	})
@@ -122,14 +122,14 @@ func Test_Logout(t *testing.T) {
 	commons.DefaultEWSClient = &mockEWSClient{}
 	usersDB = make(map[string]string)
 
-	token, login := login(&user{
+	token, login := login(&User{
 		Username: "goodUser",
 		Password: "hisPassword",
 	})
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
 
-	logout(&user{
+	logout(&User{
 		Username: "goodUser",
 		Password: "hisPassword",
 	})
