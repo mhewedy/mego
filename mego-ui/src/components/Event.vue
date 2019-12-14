@@ -150,7 +150,7 @@
             searchOptAttendees: function (event) {
 
                 let toExclude = this.selectedOptAttendees.map(it => it.email_address);
-                toExclude.push(...this.selectedReqAttendees.map(it => it));
+                toExclude.push(...this.selectedReqAttendees);
 
                 AttendeesService.search(event.query, toExclude,
                     data => {
