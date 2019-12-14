@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/mego/commons"
-	"github.com/mhewedy/mego/conf"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"strings"
@@ -42,10 +41,6 @@ func (m mockEWSClient) GetEWSAddr() string {
 
 func (m mockEWSClient) GetUsername() string {
 	return ""
-}
-
-func init() {
-	conf.DefaultSource = conf.DummySource{}
 }
 
 func Test_loginInCaseOf401(t *testing.T) {
