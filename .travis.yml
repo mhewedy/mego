@@ -8,17 +8,17 @@ before_install:
   - GO111MODULE=off go get github.com/markbates/pkger/cmd/pkger
 
 before_deploy:
-  - "GOOS=linux GOARCH=amd64 make && tar czf mego-linux.tar.gz mego-api/mego && rm -rf mego-api/mego"
-  - "GOOS=darwin GOARCH=amd64 make && tar czf mego-mac.tar.gz mego-api/mego && rm -rf mego-api/mego"
-  - "GOOS=windows GOARCH=amd64 make && tar czf mego-win.tar.gz mego-api/mego.exe && rm -rf mego-api/mego.exe"
+  - "GOOS=linux GOARCH=amd64 make && cd mego-api && tar czf mego-linux.tar.gz mego && rm -rf mego && cd -"
+  - "GOOS=darwin GOARCH=amd64 make && cd mego-api && tar czf mego-mac.tar.gz mego && rm -rf mego && cd -"
+  - "GOOS=windows GOARCH=amd64 make && cd mego-api && tar czf mego-win.tar.gz mego.exe && rm -rf mego.exe && cd -"
 
 deploy:
   provider: releases
   api_key: ${GITHUB_API_KEY}
   file:
-    - "mego-linux.tar.gz"
-    - "mego-win.tar.gz"
-    - "mego-mac.tar.gz"
+    - "mego-api/mego-linux.tar.gz"
+    - "mego-api/mego-win.tar.gz"
+    - "mego-api/mego-mac.tar.gz"
   skip_cleanup: true
   on:
     tags: true
