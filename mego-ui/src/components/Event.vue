@@ -192,6 +192,7 @@
                     MessagesService.success("Event created successfully!");
                     window.scrollTo(0, 0);
                     this.resetInput();
+                    setTimeout(() => this.$parent.search(), 500);
                 }, (error) => {
                     console.log(error);
                     this.isSending = false;
@@ -204,6 +205,7 @@
                 this.subject = null;
                 this.body = null;
                 this.selectedOptAttendees = [];
+                this.filteredOptAttendees = null;
             }
         }
     }

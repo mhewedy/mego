@@ -10,7 +10,7 @@
       <div class="p-col-5"></div>
     </div>
 
-    <div v-if="!loadingResult" id="result">
+    <div v-if="!loadingResult" id="result" style="padding-bottom: 50px">
 
       <div id="result-duration" class="p-grid" style="padding-bottom: 20px">
         <div class="p-col-12">

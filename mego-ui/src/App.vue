@@ -2,7 +2,7 @@
   <div id="app">
 
     <div v-show="messages">
-      <Message v-for="msg of messages" :severity="msg.severity" :key="msg.key" :sticky="true">{{msg.content}}</Message>
+      <Message v-for="msg of messages" :severity="msg.severity" :key="msg.key" :sticky="false">{{msg.content}}</Message>
     </div>
 
     <div>
