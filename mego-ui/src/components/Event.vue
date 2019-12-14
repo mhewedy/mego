@@ -168,12 +168,18 @@
                     this.display = false;
                     MessagesService.success("Event created successfully!");
                     window.scrollTo(0,0);
+                    this.resetInput();
                 }, (error) => {
                     console.log(error);
                     this.isSending = false;
                     MessagesService.error(error.response.data.error);
                     window.scrollTo(0,0);
+                    this.resetInput();
                 })
+            },
+            resetInput: function () {
+                this.subject = null;
+                this.body = null;
             }
         }
     }
