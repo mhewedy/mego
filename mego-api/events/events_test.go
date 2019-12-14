@@ -27,7 +27,7 @@ func (e ewsMock) GetUsername() string {
 func Test_buildEventUserSlices(t *testing.T) {
 
 	EWSClient = ewsMock{}
-	actual := buildEventUserSlices(&input{
+	actual := buildEventUserSlices(&searchInput{
 		Emails: []string{
 			"abc", "efg", "hij",
 		},

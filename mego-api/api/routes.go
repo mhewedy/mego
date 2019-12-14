@@ -24,6 +24,7 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListRoomsTree)).Methods("GET")
 
 	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("POST")
+	router.HandleFunc("/api/v1/events/create", handle(events.Create)).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(pkger.Dir("/public")))
 

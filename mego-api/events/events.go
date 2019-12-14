@@ -1,19 +1,27 @@
 package events
 
 import (
-	"encoding/json"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
-	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"net/http"
 	"time"
 )
 
-type input struct {
+type searchInput struct {
 	Emails []string  `json:"emails"`
 	Rooms  []string  `json:"rooms"`
 	From   time.Time `json:"from"`
+}
+
+type createInput struct {
+	To       []string  `json:"to"`
+	Optional []string  `json:"optional"`
+	Subject  string    `json:"subject"`
+	Body     string    `json:"body"`
+	Room     string    `json:"room"`
+	From     time.Time `json:"from"`
+	Duration int       `json:"duration"`
 }
 
 type resp struct {
@@ -39,7 +47,7 @@ var roomIndex = 0
 
 func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
-	input, err := parseAndValidate(r)
+	input, err := parseAndValidateSearchInput(r)
 	if err != nil {
 		return nil, err
 	}
@@ -53,23 +61,22 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}, nil
 }
 
-func parseAndValidate(r *http.Request) (*input, error) {
-	var i input
-	err := json.NewDecoder(r.Body).Decode(&i)
+func Create(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+
+	input, err := parseAndValidateCreateInput(r)
 	if err != nil {
 		return nil, err
 	}
-	if len(i.Emails) == 0 {
-		return nil, commons.NewClientError("empty emails")
-	}
-	if len(i.Rooms) == 0 {
-		return nil, commons.NewClientError("empty rooms")
+
+	err = doCreate(input)
+	if err != nil {
+		return nil, err
 	}
 
-	return &i, nil
+	return nil, nil
 }
 
-func buildEventUserSlices(i *input) [][]ewsutil.EventUser {
+func buildEventUserSlices(i *searchInput) [][]ewsutil.EventUser {
 
 	i.From = i.From.Truncate(1 * time.Minute)
 
