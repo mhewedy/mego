@@ -97,6 +97,7 @@
 
     import EventService from '../services/events'
     import MessagesService from '../services/messages'
+    import AttendeesService from '../services/attendees'
 
     export default {
         name: "Event",
@@ -147,13 +148,35 @@
         },
         methods: {
             searchOptAttendees: function (event) {
-                console.log(event);
+                const that = this;
+                AttendeesService.search(event.query,
+                    function (data) {
+                        that.filteredOptAttendees = data.map(it => {
+                            it["name"] = it.email_address;
+                            return it
+                        });
+
+                        that.filteredOptAttendees.map(it => {
+                            if (!it.image) {
+                                AttendeesService.getPhoto(it.email_address, function (data) {
+                                    it.image = data.base64
+                                })
+                            }
+                        })
+
+                    }, function (err) {
+                        // eslint-disable-next-line
+                        console.log(err)
+                    })
             },
             createEvent: function () {
 
+                let opts = [];
+                opts.push(...this.selectedOptAttendees.map(it => it.email_address));
+
                 let input = {
                     to: this.selectedReqAttendees,
-                    optional: this.selectedOptAttendees,
+                    optional: opts,
                     subject: this.subject,
                     body: this.body,
                     room: this.selectedRooms[0],
@@ -167,19 +190,20 @@
                     this.isSending = false;
                     this.display = false;
                     MessagesService.success("Event created successfully!");
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                     this.resetInput();
                 }, (error) => {
                     console.log(error);
                     this.isSending = false;
                     MessagesService.error(error.response.data.error);
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                     this.resetInput();
                 })
             },
             resetInput: function () {
                 this.subject = null;
                 this.body = null;
+                this.selectedOptAttendees = [];
             }
         }
     }
