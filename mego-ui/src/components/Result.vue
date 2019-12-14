@@ -182,7 +182,8 @@
                             // style divs, set height
                             for (let j = 0; j < divs.length; j++) {
                                 let div = divs[j];
-                                div.setAttribute("style", "height: " + 100 / divs.length + "%")
+                                div.setAttribute("style", "height: " + 100 / (Math.max(6, divs.length))
+                                    + "%; border-bottom: white 3px solid;")
                             }
                         }
                     }
@@ -284,7 +285,7 @@
 
   .Busy {
     color: white;
-    background-color: #465298;
+    background-color: #03353e;
   }
 
   .Free {
@@ -295,11 +296,11 @@
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
-    background-color: #deedf8;
+    background-color: #a79c93;
   }
 
   .RoomBusy {
-    background-color: #f8756d;
+    background-color: #c1403d;
   }
 
   .slot-left {
@@ -311,9 +312,9 @@
   }
 
   .tooltip {
-    /*position: relative;*/
+    position: relative;
     /*display: inline-block;*/
-    /*border-bottom: 1px dotted black;*/
+    border-bottom: 1px dotted black;
   }
 
   .tooltip .tooltiptext {
@@ -329,6 +330,7 @@
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
+    margin: 20px 0 0 40px;
   }
 
   .tooltip:hover .tooltiptext {
@@ -337,7 +339,6 @@
 
   #result-duration .p-spinner-input {
     font-weight: bold;
-    background-color: #e7ffee;
     width: 70px !important;
   }
 
