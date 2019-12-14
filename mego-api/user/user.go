@@ -3,6 +3,7 @@ package user
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gorilla/context"
 	"net/http"
 )
 
@@ -31,7 +32,7 @@ func Login(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	logout(&user{}) // TODO get user from context
+	logout(context.Get(r, "user").(*user))
 	return nil, nil
 }
 

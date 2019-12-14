@@ -91,7 +91,7 @@ func Test_GetUser(t *testing.T) {
 	assert.Equal(t, true, login)
 	assert.NotEmpty(t, token)
 
-	user, err := getUser(token)
+	user, err := GetUser(token)
 
 	assert.NoError(t, err)
 	assert.Len(t, usersDB, 1)
@@ -112,7 +112,7 @@ func Test_GetUserWithInvalidUsername(t *testing.T) {
 	assert.NotEmpty(t, token)
 	assert.Len(t, usersDB, 1)
 
-	user, err := getUser("invalid token")
+	user, err := GetUser("invalid token")
 	assert.Error(t, err)
 	assert.Nil(t, user)
 }

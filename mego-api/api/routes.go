@@ -32,6 +32,8 @@ func Route() *mux.Router {
 
 	router.PathPrefix("/").Handler(http.FileServer(pkger.Dir("/public")))
 
+	router.Use(AuthMiddleware())
+
 	return router
 }
 
@@ -51,11 +53,15 @@ func handle(fn handlerFunc) http.HandlerFunc {
 			return
 		}
 
+		if i == nil {
+			return
+		}
 		json.NewEncoder(w).Encode(i)
 	}
 }
 
 func handleError(w http.ResponseWriter, err error, code int) {
+	w.Header().Add("Content-Type", "application/json")
 	fmt.Fprintln(os.Stderr, err.Error(), code)
 
 	w.WriteHeader(code)

@@ -56,8 +56,13 @@ func login(u *user) (token, bool) {
 	return t, true
 }
 
-func getUser(t token) (*user, error) {
-	username, err := getUsernameFromToken(t)
+func GetUser(t string) (*user, error) {
+
+	if len(t) == 0 {
+		return nil, errors.New("missing token")
+	}
+
+	username, err := getUsernameFromToken(token(t))
 	if err != nil {
 		return nil, err
 	}
