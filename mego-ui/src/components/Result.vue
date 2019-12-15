@@ -165,8 +165,6 @@
                                         busyType = 'RoomBusy'
                                     }
 
-                                    // div.setAttribute("title", tooltip);
-
                                     div.classList.add(busyType);
                                     div.classList.add("tooltip");
 
@@ -335,11 +333,11 @@
   }
 
   .tooltip .tooltiptext {
-    visibility: hidden;
+    /*visibility: hidden;*/
     /*width: 120px;*/
     background-color: black;
     color: #fff;
-    display: inline-block;
+    display: none;
     /*text-align: center;*/
     border-radius: 4px;
     padding: 5px 5px;
@@ -351,7 +349,8 @@
   }
 
   .tooltip:hover .tooltiptext {
-    visibility: visible;
+    /*visibility: visible;*/
+    display: inline-block;
   }
 
   #result-duration .p-spinner-input {
