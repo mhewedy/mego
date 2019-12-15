@@ -29,6 +29,17 @@ func indexAttendees(u *user.User) {
 	} else {
 		doIndexAttendees(u)
 	}
+
+	// grab photos asynchronously
+	if conf.GetBool("indexer.grab_photos", false) {
+		go func() {
+			for ee := range attendeesIndex {
+				ewsClient := commons.NewEWSClient(u.Username, u.Password)
+				_, _ = getAttendeePhoto(ewsClient, ee)
+				time.Sleep(time.Duration(rand.Intn(5000)) * time.Millisecond)
+			}
+		}()
+	}
 }
 func doIndexAttendees(u *user.User) {
 	attendeesIndex = make(map[string]Attendee)
