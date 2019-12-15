@@ -1,9 +1,9 @@
 package user
 
 import (
-	"encoding/json"
 	"errors"
 	"github.com/gorilla/context"
+	"github.com/mhewedy/mego/commons"
 	"net/http"
 )
 
@@ -40,7 +40,7 @@ func Logout(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 func validateAndParseLoginInput(r *http.Request) (*User, error) {
 	var i User
-	err := json.NewDecoder(r.Body).Decode(&i)
+	err := commons.JSONDecode(r.Body, &i)
 	if err != nil {
 		return nil, err
 	}

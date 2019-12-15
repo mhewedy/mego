@@ -1,14 +1,13 @@
 package events
 
 import (
-	"encoding/json"
 	"github.com/mhewedy/mego/commons"
 	"net/http"
 )
 
 func parseAndValidateSearchInput(r *http.Request) (*searchInput, error) {
 	var i searchInput
-	err := json.NewDecoder(r.Body).Decode(&i)
+	err := commons.JSONDecode(r.Body, &i)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +23,7 @@ func parseAndValidateSearchInput(r *http.Request) (*searchInput, error) {
 
 func parseAndValidateCreateInput(r *http.Request) (*createInput, error) {
 	var i createInput
-	err := json.NewDecoder(r.Body).Decode(&i)
+	err := commons.JSONDecode(r.Body, &i)
 	if err != nil {
 		return nil, err
 	}

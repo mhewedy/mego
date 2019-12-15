@@ -1,7 +1,6 @@
 package attendess
 
 import (
-	"encoding/json"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/commons"
@@ -28,7 +27,7 @@ func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error
 	})
 
 	var exclude []string
-	err := json.NewDecoder(r.Body).Decode(&exclude)
+	err := commons.JSONDecode(r.Body, &exclude)
 	if err != nil {
 		return nil, err
 	}
