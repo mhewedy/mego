@@ -40,6 +40,23 @@
         </span>
       </div>
 
+      <div style="padding-top: 40px" class="p-grid">
+        <div class="p-grid" style="width: 80%">
+          <div class="p-col-1">Busy</div>
+          <div class="Busy p-col-1" style="width: 20px; height: 20px"></div>
+        </div>
+
+        <div class="p-grid" style="width: 80%;">
+          <div class="p-col-1">Busy Room</div>
+          <div class="RoomBusy p-col-1" style="width: 20px; height: 20px"></div>
+        </div>
+
+        <div class="p-grid" style="width: 80%;">
+          <div class="p-col-1">Tentative</div>
+          <div class="Tentative p-col-1" style="width: 20px; height: 20px"></div>
+        </div>
+      </div>
+
     </div>
 
     <Event :eventDetails="eventDetails"></Event>
