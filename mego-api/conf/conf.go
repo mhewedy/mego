@@ -66,7 +66,7 @@ func Get(key string, defaultValue ...string) string {
 
 	v, found := props[key]
 	if !found || len(v) == 0 {
-		fmt.Fprintln(os.Stderr, "key", key, "not found")
+		log.Println("key", key, "not found", "using: ", defaultValue)
 		if len(defaultValue) > 0 {
 			return defaultValue[0]
 		}
@@ -80,7 +80,7 @@ func GetBool(key string, defaultValue bool) bool {
 
 	v, found := props[key]
 	if !found {
-		fmt.Fprintln(os.Stderr, "key", key, "not found")
+		log.Println("key", key, "not found", "using: ", defaultValue)
 		return defaultValue
 	}
 	b := v == "true" || v == "yes"
@@ -92,7 +92,7 @@ func GetInt(key string, defaultValue int) int {
 
 	v, found := props[key]
 	if !found {
-		fmt.Fprintln(os.Stderr, "key", key, "not found")
+		log.Println("key", key, "not found", "using: ", defaultValue)
 		return defaultValue
 	}
 
@@ -109,7 +109,7 @@ func GetDuration(key string, defaultValue time.Duration) time.Duration {
 
 	v, found := props[key]
 	if !found {
-		fmt.Fprintln(os.Stderr, "key", key, "not found")
+		log.Println("key", key, "not found", "using: ", defaultValue)
 		return defaultValue
 	}
 

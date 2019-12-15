@@ -14,7 +14,7 @@ import (
 func grabPhotosAsync(u *user.User) {
 
 	if conf.GetBool("indexer.grab_photos", false) {
-
+		log.Println("start grabbing photos.")
 		go func() {
 			for ee := range attendeesIndex {
 				ewsClient := commons.NewEWSClient(u.Username, u.Password)
