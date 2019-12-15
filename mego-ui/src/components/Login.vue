@@ -2,14 +2,14 @@
 
   <div>
 
-    <div style="padding: 20px 0 20px 39%; font-size: 30px">
+    <div style="padding: 20px 0 20px 36%; font-size: 30px">
       <span style="font-weight: bold">MEGO</span> <span> The Meeting Organizer</span>
     </div>
 
-    <div style="padding-left: 40%">
+    <div style="padding-left: 35%">
       <h3>Username</h3>
       <div class="p-grid p-fluid">
-        <div class="p-col-12 p-md-4">
+        <div class="p-col-12 p-md-5">
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon">
                 <i class="pi pi-user"></i>
@@ -21,10 +21,10 @@
       </div>
     </div>
 
-    <div style="padding-left: 40%">
+    <div style="padding-left: 35%">
       <h3>Password</h3>
       <div class="p-grid p-fluid">
-        <div class="p-col-12 p-md-4">
+        <div class="p-col-12 p-md-5">
           <div class="p-inputgroup">
             <span class="p-inputgroup-addon">
                 <i class="pi pi-key"></i>
@@ -35,20 +35,22 @@
       </div>
     </div>
 
-    <div style="padding: 20px 0 0 40%;">
+    <div style="padding: 20px 0 0 35%;">
       <div class="p-grid p-fluid">
-        <div class="p-col-12 p-md-4">
+        <div class="p-col-12 p-md-5">
           <Button label="Login" @click="login()"/>
         </div>
       </div>
     </div>
 
-    <div v-if="loadingResult" class="p-grid">
-      <div class="p-col-5"></div>
-      <div class="p-col-2" style="text-align: center;">
-        <ProgressSpinner mode="indeterminate"/>
+    <div v-if="loadingResult" style="padding-left: 35%">
+      <div class="p-grid p-fluid">
+        <div class="p-col-12 p-md-5">
+          <div class="p-inputgroup">
+            <ProgressSpinner mode="indeterminate"/>
+          </div>
+        </div>
       </div>
-      <div class="p-col-5"></div>
     </div>
 
   </div>
