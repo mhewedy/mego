@@ -7,9 +7,12 @@ import (
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
 	"log"
+	"math/rand"
 	"strings"
 	"time"
 )
+
+const chars = "abcdefghijklmnopqrstuvwxyz"
 
 type Attendee struct {
 	DisplayName  string `json:"display_name"`
@@ -21,7 +24,26 @@ type Attendee struct {
 var attendeesIndex map[string]Attendee
 
 func indexAttendees(u *user.User) {
-	const chars = "abcdefghijklmnopqrstuvwxyz"
+	if conf.GetBool("indexer.parallel", false) {
+		doIndexAttendeesParallel(u)
+	} else {
+		doIndexAttendees(u)
+	}
+}
+func doIndexAttendees(u *user.User) {
+	attendeesIndex = make(map[string]Attendee)
+	for _, c := range chars {
+		log.Println("indexing:", string(c))
+		atts := indexAttendeesStartsWith(string(c), u)
+		for _, att := range atts {
+			attendeesIndex[att.EmailAddress] = att
+		}
+
+		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+	}
+}
+
+func doIndexAttendeesParallel(u *user.User) {
 	ch := make(chan []Attendee, len(chars))
 
 	for _, c := range chars {
