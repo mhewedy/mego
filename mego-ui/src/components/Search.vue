@@ -1,7 +1,5 @@
 <template>
-  <div id="search-panel">
-
-    <h2 style="text-align: center">MEGO The Meeting Organizer </h2>
+  <div id="search-panel" style="padding-top: 25px">
 
     <div class="p-grid">
       <div class="p-col-1">Attendees</div>

@@ -14,6 +14,7 @@ import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import ProgressBar from 'primevue/progressbar';
 import Password from 'primevue/password'
+import Menubar from 'primevue/menubar'
 
 Vue.use(ToastService);
 
@@ -30,6 +31,7 @@ Vue.component('Dialog', Dialog);
 Vue.component('Textarea', Textarea);
 Vue.component('ProgressBar', ProgressBar);
 Vue.component('Password', Password);
+Vue.component('Menubar', Menubar);
 
 import 'primevue/resources/themes/nova-light/theme.css';
 import 'primevue/resources/primevue.min.css';

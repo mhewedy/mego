@@ -7,7 +7,7 @@ export default {
             .catch(it => failFn && failFn(it.response.data.error))
     },
     logout: function (successFn, failFn) {
-        axios.get("/api/v1/logout")
+        axios.post("/api/v1/logout")
             .then(it => successFn(it.data))
             .catch(it => failFn && failFn(it.response.data.error))
     }

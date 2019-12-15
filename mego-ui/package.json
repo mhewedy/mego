@@ -22,7 +22,7 @@
     "node-sass": "^4.13.0",
     "primeflex": "^1.0.0",
     "primeicons": "1.0.0",
-    "primevue": "1.0.0-beta.14",
+    "primevue": "1.0.0-rc.1",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-axios": "0.0.4",
     "vue-template-compiler": "^2.5.21"

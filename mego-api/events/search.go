@@ -1,12 +1,12 @@
 package events
 
 import (
-	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
+	"log"
 	"sort"
 	"time"
 )
@@ -24,7 +24,7 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []
 			email := ee[roomIndex].Email
 			name, err := rooms.FindByEmail(email)
 			if err != nil {
-				fmt.Println(err)
+				log.Println(err)
 				name = email
 			}
 
@@ -49,11 +49,11 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []
 	for {
 		select {
 		case re := <-ch:
-			fmt.Println("finish searching room:", re.Room)
+			log.Println("finish searching room:", re.Room)
 			result = append(result, re)
 			i++
 		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
-			fmt.Println("Timeout!")
+			log.Println("Timeout!")
 			i++
 		}
 		if i == len(eventUsers) {

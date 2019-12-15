@@ -1,12 +1,12 @@
 package attendess
 
 import (
-	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
+	"log"
 	"strings"
 	"time"
 )
@@ -26,7 +26,7 @@ func indexAttendees(u *user.User) {
 
 	for _, c := range chars {
 		go func(c string) {
-			fmt.Println("indexing:", c)
+			log.Println("indexing:", c)
 			ch <- indexAttendeesStartsWith(c, u)
 		}(string(c))
 	}
@@ -41,7 +41,7 @@ func indexAttendees(u *user.User) {
 			}
 			i++
 		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
-			fmt.Println("Timeout!")
+			log.Println("Timeout!")
 			i++
 		}
 		if i == len(chars) {
@@ -54,7 +54,7 @@ func indexAttendeesStartsWith(s string, u *user.User) []Attendee {
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 	personas, err := ewsutil.FindPeople(ewsClient, s)
 	if err != nil {
-		fmt.Println("error indexAttendeesStartsWith", s, err.Error())
+		log.Println("error indexAttendeesStartsWith", s, err.Error())
 		return []Attendee{}
 	}
 

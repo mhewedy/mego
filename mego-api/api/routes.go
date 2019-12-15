@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/markbates/pkger"
 	"github.com/mhewedy/mego/attendess"
@@ -10,8 +9,8 @@ import (
 	"github.com/mhewedy/mego/events"
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
+	"log"
 	"net/http"
-	"os"
 )
 
 func Route() *mux.Router {
@@ -62,7 +61,7 @@ func handle(fn handlerFunc) http.HandlerFunc {
 
 func handleError(w http.ResponseWriter, err error, code int) {
 	w.Header().Add("Content-Type", "application/json")
-	fmt.Fprintln(os.Stderr, err.Error(), code)
+	log.Println(err.Error(), code)
 
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(struct {

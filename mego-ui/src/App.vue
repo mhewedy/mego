@@ -10,6 +10,10 @@
     <Login v-if="token == null"></Login>
 
     <div v-if="token != null">
+      <Menubar>
+        <span style="font-weight: bold">MEGO</span> <span style="padding-right: 20px"> The Meeting Organizer</span>
+        <Button label="Logout" icon="pi pi-power-off" @click="logout"/>
+      </Menubar>
 
       <div>
         <Search @search="search" :isResultLoading="isResultLoading"></Search>
@@ -26,6 +30,7 @@
     import Login from "./components/Login";
 
     import MessageService from './services/messages'
+    import UsersService from './services/users'
 
     export default {
         data() {
@@ -42,6 +47,13 @@
             },
             resultLoad: function (isResultLoading) {
                 this.isResultLoading = isResultLoading
+            },
+            logout: function () {
+                UsersService.logout(() => {
+                    localStorage.removeItem("mego_token");
+                    this.token = null;
+                    this.$http.defaults.headers.common['Authorization'] = null;
+                });
             }
         },
         components: {

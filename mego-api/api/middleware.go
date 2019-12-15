@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/user"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -22,6 +23,7 @@ func AuthMiddleware() mux.MiddlewareFunc {
 			u, err := user.GetUser(t)
 
 			if err != nil {
+				log.Println(err)
 				handleError(w, errors.New("invalid token"), http.StatusUnauthorized)
 				return
 			}
