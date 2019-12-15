@@ -187,13 +187,3 @@ func emailsExists(emails []string, email string) bool {
 	}
 	return false
 }
-
-func attendeeMapToSlice(attendeesMap map[string]Attendee) []Attendee {
-	attendees := make([]Attendee, len(attendeesMap))
-	var i = 0
-	for _, v := range attendeesMap {
-		attendees[i] = v
-		i++
-	}
-	return attendees
-}
