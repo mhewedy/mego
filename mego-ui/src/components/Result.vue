@@ -51,6 +51,9 @@
 
         <span class="Tentative p-col-1 legend-block"></span>
         <span class="p-col-1 legend-key">Tentative</span>
+
+        <span class="error p-col-1 legend-block"></span>
+        <span class="p-col-1 legend-key">Error</span>
       </div>
 
     </div>
@@ -140,58 +143,82 @@
                         let roomResult = result[rowId];
                         document.getElementsByClassName("row-" + (rowId + 1))[0].innerText = roomResult.room_name;
 
-                        let busyDetails = roomResult.busy_details;
-                        for (let key in busyDetails) {
+                        if (roomResult.error) {
+                            // set style
+                            let slots = document.getElementsByClassName("slot-" + (rowId + 1));
+                            for (let i = 0; i < slots.length; i++) {
+                                let slot = slots[i];
 
-                            let detail = busyDetails[key];
-                            detail.forEach(event => {
-                                let slotIds = this.getSlotsIdsByEvent(event, rowId + 1);
+                                // style slot
+                                if (i === 0) slot.classList.add("slot-left");
+                                if (i === slots.length - 1) slot.classList.add("slot-right");
 
-                                for (let slotId of slotIds) {
-                                    let div = document.createElement("div");
+                                slot.classList.add("error");
 
-                                    let tooltip = key + "(" + event.busy_type + ")";
-                                    let busyType = event.busy_type;
+                                slot.classList.add("tooltip");
 
-                                    if (key === roomResult.room && event.busy_type === "Busy") {
-                                        tooltip = key + "(Busy Room)";
-                                        busyType = 'RoomBusy'
-                                    }
-
-                                    div.classList.add(busyType);
-                                    div.classList.add("tooltip");
-
-                                    let spanTooltip = document.createElement("span");
-                                    spanTooltip.innerText = tooltip;
-                                    spanTooltip.classList.add("tooltiptext");
-                                    div.append(spanTooltip);
-
-                                    document.getElementById(slotId).append(div)
-                                }
-                            });
-                        }
-
-                        // set style
-                        let slots = document.getElementsByClassName("slot-" + (rowId + 1));
-                        for (let i = 0; i < slots.length; i++) {
-                            let slot = slots[i];
-
-                            // style slot
-                            if (i === 0) slot.classList.add("slot-left");
-                            if (i === slots.length - 1) slot.classList.add("slot-right");
-
-                            if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0) {
-                                slot.classList.add("slot-left");
+                                let spanTooltip = document.createElement("span");
+                                spanTooltip.innerText = roomResult.error;
+                                spanTooltip.classList.add("tooltiptext");
+                                spanTooltip.classList.add("wide");
+                                slot.append(spanTooltip);
                             }
 
-                            this.handleEvents(slots, i);
+                        } else {
+                            let busyDetails = roomResult.busy_details;
+                            for (let key in busyDetails) {
 
-                            let divs = slot.getElementsByTagName("div");
-                            // style divs, set height
-                            for (let j = 0; j < divs.length; j++) {
-                                let div = divs[j];
-                                div.setAttribute("style", "height: " + 100 / (Math.max(6, divs.length))
-                                    + "%; border-bottom: white 3px solid;")
+                                let detail = busyDetails[key];
+                                detail.forEach(event => {
+                                    let slotIds = this.getSlotsIdsByEvent(event, rowId + 1);
+
+                                    for (let slotId of slotIds) {
+                                        let div = document.createElement("div");
+
+                                        let tooltip = key + "(" + event.busy_type + ")";
+                                        let busyType = event.busy_type;
+
+                                        if (key === roomResult.room && event.busy_type === "Busy") {
+                                            tooltip = key + "(Busy Room)";
+                                            busyType = 'RoomBusy'
+                                        }
+
+                                        div.classList.add(busyType);
+                                        div.classList.add("tooltip");
+
+                                        let spanTooltip = document.createElement("span");
+                                        spanTooltip.innerText = tooltip;
+                                        spanTooltip.classList.add("tooltiptext");
+                                        div.append(spanTooltip);
+
+                                        document.getElementById(slotId).append(div)
+
+                                    }
+                                });
+                            }
+
+                            // set style
+                            let slots = document.getElementsByClassName("slot-" + (rowId + 1));
+                            for (let i = 0; i < slots.length; i++) {
+                                let slot = slots[i];
+
+                                // style slot
+                                if (i === 0) slot.classList.add("slot-left");
+                                if (i === slots.length - 1) slot.classList.add("slot-right");
+
+                                if (new Date(slot.getAttribute("data-slot-from")).getMinutes() === 0) {
+                                    slot.classList.add("slot-left");
+                                }
+
+                                this.handleEvents(slots, i);
+
+                                // style divs, set height
+                                let divs = slot.getElementsByTagName("div");
+                                for (let j = 0; j < divs.length; j++) {
+                                    let div = divs[j];
+                                    div.setAttribute("style", "height: " + 100 / (Math.max(6, divs.length))
+                                        + "%; border-bottom: white 3px solid;")
+                                }
                             }
                         }
                     }
@@ -311,6 +338,10 @@
     background-color: #c1403d;
   }
 
+  .error {
+    background-color: rgba(83, 83, 83, 0.79);
+  }
+
   .slot-left {
     border-left: 1px groove #2c3e50;
   }
@@ -339,6 +370,10 @@
     position: absolute;
     z-index: 1;
     margin: 20px 0 0 40px;
+  }
+
+  .wide {
+    min-width: 500px;
   }
 
   .tooltip:hover .tooltiptext {
