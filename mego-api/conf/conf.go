@@ -28,7 +28,7 @@ type source struct {
 }
 
 func (s source) Read() (io.ReadCloser, error) {
-	f, err := os.Open("mego.conf")
+	f, err := os.Open("app.conf")
 	if err != nil {
 		return nil, err
 	}
