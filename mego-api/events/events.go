@@ -83,8 +83,13 @@ func buildEventUserSlices(i *searchInput, u *user.User) [][]ewsutil.EventUser {
 
 	i.From = i.From.Truncate(1 * time.Minute)
 
+	myUsername := u.Username
+	if dns := conf.Get("ews.dns_name", ""); len(dns) > 0 {
+		myUsername = myUsername + "@" + dns
+	}
+
 	me := ewsutil.EventUser{
-		Email:        u.Username,
+		Email:        myUsername,
 		AttendeeType: ews.AttendeeTypeOrganizer,
 	}
 	emails := make([]ewsutil.EventUser, len(i.Emails))

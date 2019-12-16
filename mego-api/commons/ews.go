@@ -14,6 +14,10 @@ func NewEWSClient(username, password string) ews.Client {
 		return DefaultEWSClient
 	}
 
+	if dn := conf.Get("ews.ad_domain_name", ""); len(dn) > 0 {
+		username = dn + "\\" + username
+	}
+
 	return ews.NewClient(
 		conf.Get("ews.exchange_url"),
 		username,
