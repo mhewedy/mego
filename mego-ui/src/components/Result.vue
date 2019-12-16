@@ -108,23 +108,20 @@
                 }) : ""
             },
             search: function () {
-                const that = this;
                 this.loadingResult = true;
                 this.$emit("resultLoad", true);
 
-                EventService.search(this.searchInput, function (data) {
-                    that.draw(data);
-                    that.loadingResult = false;
-                    that.$emit("resultLoad", false);
-                }, function (err) {
+                EventService.search(this.searchInput, data => {
+                    this.draw(data);
+                    this.loadingResult = false;
+                    this.$emit("resultLoad", false);
+                }, err => {
                     MessageService.error(err);
-                    console.log('error:', err);
-                    that.loadingResult = false;
-                    that.$emit("resultLoad", false);
+                    this.loadingResult = false;
+                    this.$emit("resultLoad", false);
                 });
             },
             draw(data) {
-                let that = this;
                 let result = data.room_events;
                 this.rowsCount = result.length;
 
@@ -148,7 +145,7 @@
 
                             let detail = busyDetails[key];
                             detail.forEach(event => {
-                                let slotIds = that.getSlotsIdsByEvent(event, rowId + 1);
+                                let slotIds = this.getSlotsIdsByEvent(event, rowId + 1);
 
                                 for (let slotId of slotIds) {
                                     let div = document.createElement("div");
