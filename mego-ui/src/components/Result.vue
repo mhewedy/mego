@@ -45,7 +45,6 @@
         <span class="Busy p-col-1 legend-block"></span>
         <span class="p-col-1 legend-key">Busy</span>
 
-
         <span class="RoomBusy p-col-1 legend-block"></span>
         <span class="p-col-1 legend-key">Busy Room</span>
 
@@ -331,15 +330,15 @@
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
-    background-color: #a79c93;
+    background-color: rgba(212, 203, 181, 0.53);
   }
 
   .RoomBusy {
-    background-color: #c1403d;
+    background-color: #6c88c1;
   }
 
   .error {
-    background-color: rgba(83, 83, 83, 0.79);
+    background-color: rgba(83, 2, 0, 0.79);
   }
 
   .slot-left {
@@ -388,6 +387,7 @@
 
   .legend-key {
     margin-top: -7px;
+    width: 7% !important;
   }
 
   .legend-block {

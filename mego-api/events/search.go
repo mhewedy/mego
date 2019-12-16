@@ -1,6 +1,7 @@
 package events
 
 import (
+	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
@@ -88,7 +89,9 @@ func wrap(events map[ewsutil.EventUser][]ewsutil.Event) map[string][]event {
 
 		s := make([]event, len(v))
 		for k, vv := range v {
-			s[k] = event{Start: vv.Start, End: vv.End, BusyType: string(vv.BusyType)}
+			if vv.BusyType != ews.BusyTypeFree {
+				s[k] = event{Start: vv.Start, End: vv.End, BusyType: string(vv.BusyType)}
+			}
 		}
 		m[k.Email] = s
 	}
