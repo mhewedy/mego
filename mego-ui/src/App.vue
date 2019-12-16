@@ -52,6 +52,7 @@
                 UsersService.logout(() => {
                     localStorage.removeItem("mego_token");
                     this.token = null;
+                    this.searchInput = null;
                     this.$http.defaults.headers.common['Authorization'] = null;
                 });
             }
