@@ -19,14 +19,14 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []
 	for _, ee := range eventUsers {
 		go func(ee []ewsutil.EventUser) {
 
-			m, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
-
 			email := ee[roomIndex].Email
 			name, err := rooms.FindByEmail(email)
 			if err != nil {
 				log.Println(err)
 				name = email
 			}
+
+			events, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
 
 			if err != nil {
 				ch <- roomEvents{
@@ -38,7 +38,7 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []
 				ch <- roomEvents{
 					Room:        email,
 					RoomName:    name,
-					BusyDetails: wrap(m),
+					BusyDetails: wrap(events),
 				}
 			}
 		}(ee)
