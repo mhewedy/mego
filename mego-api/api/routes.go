@@ -19,12 +19,12 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/login", handle(user.Login)).Methods("POST")
 	router.HandleFunc("/api/v1/logout", handle(user.Logout)).Methods("POST")
 
-	router.HandleFunc("/api/v1/attendees", handle(attendess.ListAttendees)).Methods("GET")
-	router.HandleFunc("/api/v1/attendees/search", handle(attendess.SearchAttendees)).Methods("POST")
+	router.HandleFunc("/api/v1/attendees", handle(attendess.List)).Methods("GET")
+	router.HandleFunc("/api/v1/attendees/search", handle(attendess.Search)).Methods("POST")
 	router.HandleFunc("/api/v1/attendees/{email}/photo", handle(attendess.GetPhoto)).Methods("GET")
 
-	router.HandleFunc("/api/v1/rooms", handle(rooms.ListRooms)).Methods("GET")
-	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListRoomsTree)).Methods("GET")
+	router.HandleFunc("/api/v1/rooms", handle(rooms.List)).Methods("GET")
+	router.HandleFunc("/api/v1/rooms/tree", handle(rooms.ListAsTree)).Methods("GET")
 
 	router.HandleFunc("/api/v1/events/search", handle(events.Search)).Methods("POST")
 	router.HandleFunc("/api/v1/events/create", handle(events.Create)).Methods("POST")

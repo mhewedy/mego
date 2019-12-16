@@ -29,13 +29,13 @@ type Node struct {
 
 var once sync.Once
 
-func ListRooms(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+func List(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	once.Do(loadRoomList)
 
 	return ListRoomEmails(), nil
 }
 
-func ListRoomsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+func ListAsTree(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	once.Do(loadRoomList)
 
 	return roomTree, nil

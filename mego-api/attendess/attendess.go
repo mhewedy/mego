@@ -11,7 +11,7 @@ import (
 
 var attendOnce sync.Once
 
-func ListAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+func List(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	u := context.Get(r, user.KEY).(*user.User)
 	attendOnce.Do(func() {
 		indexAttendees(u)
@@ -20,7 +20,7 @@ func ListAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 	return attendeesIndex, nil
 }
 
-func SearchAttendees(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	u := context.Get(r, user.KEY).(*user.User)
 	attendOnce.Do(func() {
 		indexAttendees(u)
