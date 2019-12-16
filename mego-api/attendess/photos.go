@@ -1,11 +1,13 @@
 package attendess
 
 import (
+	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
+	"github.com/schollz/progressbar/v2"
 	"log"
 	"math/rand"
 	"time"
@@ -14,15 +16,21 @@ import (
 func grabPhotosAsync(u *user.User) {
 
 	if conf.GetBool("indexer.grab_photos", false) {
-		log.Println("start grabbing photos.")
+
 		go func() {
+			log.Println("start grabbing photos...")
+			bar := progressbar.New(len(attendeesIndex))
+			bar.RenderBlank()
+
 			for ee := range attendeesIndex {
 				ewsClient := commons.NewEWSClient(u.Username, u.Password)
 				_, _ = getAttendeePhoto(ewsClient, ee)
-				time.Sleep(time.Duration(rand.Intn(5000)) * time.Millisecond)
-			}
+				time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
 
-			log.Printf("done grabbing %d photos\n", len(attendeesIndex))
+				bar.Add(1)
+			}
+			bar.Finish()
+			fmt.Println()
 		}()
 	}
 }

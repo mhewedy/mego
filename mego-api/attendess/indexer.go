@@ -1,10 +1,12 @@
 package attendess
 
 import (
+	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
+	"github.com/schollz/progressbar/v2"
 	"log"
 	"math/rand"
 	"strings"
@@ -34,23 +36,33 @@ func indexAttendees(u *user.User) {
 
 func doIndexAttendees(u *user.User) {
 	attendeesIndex = make(map[string]Attendee)
+
+	log.Println("start indexing...")
+	bar := progressbar.New(len(chars))
+	bar.RenderBlank()
+
 	for _, c := range chars {
-		log.Println("indexing:", string(c))
 		atts := indexAttendeesStartsWith(string(c), u)
 		for _, att := range atts {
 			attendeesIndex[att.EmailAddress] = att
 		}
-
 		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
+
+		bar.Add(1)
 	}
+	bar.Finish()
+	fmt.Println()
 }
 
 func doIndexAttendeesParallel(u *user.User) {
 	ch := make(chan []Attendee, len(chars))
 
+	log.Println("start indexing...")
+	bar := progressbar.New(len(chars))
+	bar.RenderBlank()
+
 	for _, c := range chars {
 		go func(c string) {
-			log.Println("indexing:", c)
 			ch <- indexAttendeesStartsWith(c, u)
 		}(string(c))
 	}
@@ -63,15 +75,19 @@ func doIndexAttendeesParallel(u *user.User) {
 			for _, att := range atts {
 				attendeesIndex[att.EmailAddress] = att
 			}
+			bar.Add(1)
 			i++
 		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
 			log.Println("Timeout!")
+			bar.Add(1)
 			i++
 		}
 		if i == len(chars) {
 			break
 		}
 	}
+	bar.Finish()
+	fmt.Println()
 }
 
 func indexAttendeesStartsWith(s string, u *user.User) []Attendee {
