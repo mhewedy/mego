@@ -3,8 +3,8 @@ package events
 import (
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/commons"
-	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
 	"log"

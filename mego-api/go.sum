@@ -19,6 +19,8 @@ github.com/markbates/pkger v0.12.8 h1:4mEUzWb1HzRnxPwUevBX8g8ntsQ4rWw2R8CRB2QdZV
 github.com/markbates/pkger v0.12.8/go.mod h1:C7e5A6bnWZT+nXkUwkvysGW7sxl/IGd63HEa6N/JY8s=
 github.com/mhewedy/ews v1.0.12 h1:1IGrK6iMzGGu3KnXHxpDUjR4SgeIghuW+Zwg6OTUUmQ=
 github.com/mhewedy/ews v1.0.12/go.mod h1:mBH4sbvnR8T4UMLxPGjsjv7nwqQBMQl59BiBXUpHsJk=
+github.com/mhewedy/go-conf v0.0.2 h1:9yg9VojrRYsRFzRJfKwLYIMX2l9hH8OIX6RNldiAHD8=
+github.com/mhewedy/go-conf v0.0.2/go.mod h1:kR0G8WzB8R6SCs76XLNSJU6umRx1e+ATYKYx1BJLXvY=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db h1:62I3jR2EmQ4l5rM/4FEfDWcRD+abF5XlKShorW5LRoQ=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db/go.mod h1:l0dey0ia/Uv7NcFFVbCLtqEBQbrT4OCwCSKTEv6enCw=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

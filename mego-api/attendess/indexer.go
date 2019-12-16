@@ -3,8 +3,8 @@ package attendess
 import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/commons"
-	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
 	"github.com/schollz/progressbar/v2"
 	"log"

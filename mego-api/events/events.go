@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/context"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
-	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/user"
 	"net/http"
 	"time"

@@ -3,8 +3,8 @@ package attendess
 import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
+	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/commons"
-	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
 	"math"
 	"net/http"

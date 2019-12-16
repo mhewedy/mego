@@ -2,7 +2,7 @@ package commons
 
 import (
 	"github.com/mhewedy/ews"
-	"github.com/mhewedy/mego/conf"
+	"github.com/mhewedy/go-conf"
 )
 
 // used for testing to be assigned by mocked value
