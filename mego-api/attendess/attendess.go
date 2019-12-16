@@ -4,7 +4,9 @@ import (
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 	"github.com/mhewedy/mego/commons"
+	"github.com/mhewedy/mego/conf"
 	"github.com/mhewedy/mego/user"
+	"math"
 	"net/http"
 	"sync"
 )
@@ -33,7 +35,11 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	attendees := searchAttendees(r.URL.Query().Get("q"), exclude)
-	return attendees, nil
+
+	sc := conf.GetInt("attendees.search_count", 20)
+	max := int(math.Min(float64(sc), float64(len(attendees))))
+
+	return attendees[:max], nil
 }
 
 func GetPhoto(w http.ResponseWriter, r *http.Request) (interface{}, error) {
