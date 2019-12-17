@@ -15,52 +15,34 @@ import (
 func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []roomEvents {
 
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
-	ch := make(chan roomEvents, len(eventUsers))
+	result := make([]roomEvents, len(eventUsers))
 
-	for _, ee := range eventUsers {
-		go func(ee []ewsutil.EventUser) {
+	for i, ee := range eventUsers {
 
-			email := ee[roomIndex].Email
-			name, err := rooms.FindByEmail(email)
-			if err != nil {
-				log.Println(err)
-				name = email
-			}
-
-			events, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
-
-			if err != nil {
-				ch <- roomEvents{
-					Room:     email,
-					RoomName: name,
-					Error:    err.Error(),
-				}
-			} else {
-				ch <- roomEvents{
-					Room:        email,
-					RoomName:    name,
-					BusyDetails: wrap(events),
-				}
-			}
-		}(ee)
-	}
-
-	var i int
-	var result []roomEvents
-	for {
-		select {
-		case re := <-ch:
-			log.Println("finish searching room:", re.Room)
-			result = append(result, re)
-			i++
-		case <-time.After(conf.GetDuration("client.timeout", 1*time.Minute)):
-			log.Println("Timeout!")
-			i++
+		email := ee[roomIndex].Email
+		name, err := rooms.FindByEmail(email)
+		if err != nil {
+			log.Println(err)
+			name = email
 		}
-		if i == len(eventUsers) {
-			break
+
+		events, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
+
+		if err != nil {
+			result[i] = roomEvents{
+				Room:     email,
+				RoomName: name,
+				Error:    err.Error(),
+			}
+		} else {
+			result[i] = roomEvents{
+				Room:        email,
+				RoomName:    name,
+				BusyDetails: wrap(events),
+			}
 		}
 	}
+
 	sortResult(result)
 	return result
 }
