@@ -21,7 +21,7 @@ type Attendee struct {
 	Title        string           `json:"title,omitempty"`
 	EmailAddress string           `json:"email_address"`
 	Image        string           `json:"image,omitempty"`
-	details      *AttendeeDetails `json:"-"`
+	details      *AttendeeDetails `json:"-"` // for caching only
 }
 
 type AttendeeDetails struct {
