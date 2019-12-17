@@ -128,6 +128,8 @@
                 this.rowsCount = result.length;
 
                 this.start = new Date(this.searchInput.from);
+                this.start.setHours(8);
+                this.start.setMinutes(0);
                 this.end = new Date(this.start);
                 this.end.setHours(data.end_of_day_hours);
                 this.end.setMinutes(0);
@@ -200,6 +202,8 @@
                             let slots = document.getElementsByClassName("slot-" + (rowId + 1));
                             for (let i = 0; i < slots.length; i++) {
                                 let slot = slots[i];
+
+                                this.setSlotBGColor(slot);
 
                                 // style slot
                                 if (i === 0) slot.classList.add("slot-left");
@@ -288,12 +292,21 @@
                 slot.addEventListener("mouseout", () => {
                     if (divs.length === 0) {
                         for (let s of slots) {
-                            s.style.backgroundColor = "transparent";
+                            this.setSlotBGColor(s);
                             s.style.cursor = "not-allowed";
                         }
                         slot.removeEventListener("click", clickHandler);
                     }
                 });
+            },
+            setSlotBGColor: function (slot) {
+                let slotTo  = new Date(slot.getAttribute("data-slot-from"));
+                slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
+                if (slotTo <= new Date(this.searchInput.from)) {
+                    slot.style.background = 'rgba(222,224,227,0.4)'
+                }else {
+                    slot.style.background = "transparent";
+                }
             }
         }
     }
