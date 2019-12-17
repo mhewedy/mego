@@ -22,7 +22,7 @@
         <div class="p-col-10">
         <span class="p-fluid">
         <AutoComplete :multiple="true" v-model="selectedOptAttendees" :suggestions="filteredOptAttendees"
-                      @complete="searchOptAttendees($event)" field="name">
+                      @complete="searchOptAttendees($event)" @select="getAttendeeDetails()" field="name">
            <template #item="slotProps">
             <div class="p-clearfix p-autocomplete-brand-item">
               <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
@@ -89,6 +89,10 @@
 
     </Dialog>
 
+    <OverlayPanel ref="op" style="width: 20%">
+      <AttendeeDetails :attendee-details="attendeeDetails"></AttendeeDetails>
+    </OverlayPanel>
+
   </div>
 
 </template>
@@ -98,6 +102,7 @@
     import EventService from '../services/events'
     import MessagesService from '../services/messages'
     import AttendeesService from '../services/attendees'
+    import AttendeeDetails from "./AttendeeDetails";
 
     export default {
         name: "Event",
@@ -115,7 +120,8 @@
                 duration: null,
                 subject: null,
                 body: null,
-                isSending: false
+                isSending: false,
+                attendeeDetails: null
             }
         },
         watch: {
@@ -200,7 +206,29 @@
                 this.body = null;
                 this.selectedOptAttendees = [];
                 this.filteredOptAttendees = null;
-            }
+            },
+            getAttendeeDetails: function () {
+                setTimeout(() => {
+                    let names = document.getElementsByClassName("p-autocomplete-token-label");
+                    for (let n of names) {
+                        n.style.cursor = 'pointer';
+                        n.onclick = (e) => {
+                            this.attendeeDetails = null;
+                            this.$refs.op.toggle({currentTarget: e.target});
+                            AttendeesService.getDetails(e.target.innerText,
+                                (data) => {
+                                    this.attendeeDetails = data;
+                                },
+                                (err) => {
+                                    MessagesService.error(err);
+                                });
+                        };
+                    }
+                }, 10)
+            },
+        },
+        components: {
+            AttendeeDetails
         }
     }
 </script>
