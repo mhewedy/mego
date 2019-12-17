@@ -42,14 +42,10 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	return attendees[:max], nil
 }
 
-func GetPhoto(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+func GetByEmail(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	u := context.Get(r, user.KEY).(*user.User)
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 
 	email := mux.Vars(r)["email"]
-	base64, _ := getAttendeePhoto(ewsClient, email)
-
-	return &struct {
-		Base64 string `json:"base64"`
-	}{Base64: base64}, nil
+	return getAttendeeDetails(ewsClient, email)
 }

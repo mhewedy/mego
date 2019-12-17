@@ -16,10 +16,15 @@ import (
 const chars = "abcdefghijklmnopqrstuvwxyz"
 
 type Attendee struct {
-	DisplayName  string `json:"display_name"`
-	Title        string `json:"title,omitempty"`
-	EmailAddress string `json:"email_address"`
-	Image        string `json:"image,omitempty"`
+	PersonaId           string `json:"-"`
+	DisplayName         string `json:"display_name"`
+	Title               string `json:"title,omitempty"`
+	EmailAddress        string `json:"email_address"`
+	Image               string `json:"image,omitempty"`
+	Department          string `json:"department,omitempty"`
+	BusinessPhoneNumber string `json:"business_phone_numbers,omitempty"`
+	MobilePhone         string `json:"mobile_phone,omitempty"`
+	OfficeLocation      string `json:"office_location,omitempty"`
 }
 
 var attendeesIndex map[string]Attendee
@@ -30,8 +35,6 @@ func indexAttendees(u *user.User) {
 	} else {
 		doIndexAttendees(u)
 	}
-
-	grabPhotosAsync(u)
 }
 
 func doIndexAttendees(u *user.User) {
@@ -104,6 +107,7 @@ func indexAttendeesStartsWith(s string, u *user.User) []Attendee {
 			DisplayName:  p.DisplayName,
 			Title:        p.Title,
 			EmailAddress: p.EmailAddress.EmailAddress,
+			PersonaId:    p.PersonaId.Id,
 		}
 	}
 	return attendees
