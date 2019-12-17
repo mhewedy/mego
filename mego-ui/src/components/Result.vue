@@ -317,7 +317,7 @@
   .slot {
     border-top: 1px groove #2c3e50;
     border-bottom: 1px groove #2c3e50;
-    height: 150px;
+    height: 100px;
     cursor: not-allowed;
   }
 
