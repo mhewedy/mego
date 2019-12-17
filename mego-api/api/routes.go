@@ -61,7 +61,7 @@ func handle(fn handlerFunc) http.HandlerFunc {
 
 func handleError(w http.ResponseWriter, err error, code int) {
 	w.Header().Add("Content-Type", "application/json")
-	log.Println(err.Error(), code)
+	log.Println(code, ":", err.Error())
 
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(struct {

@@ -16,11 +16,16 @@ import (
 const chars = "abcdefghijklmnopqrstuvwxyz"
 
 type Attendee struct {
-	PersonaId           string `json:"-"`
-	DisplayName         string `json:"display_name"`
-	Title               string `json:"title,omitempty"`
-	EmailAddress        string `json:"email_address"`
-	Image               string `json:"image,omitempty"`
+	PersonaId    string           `json:"-"`
+	DisplayName  string           `json:"display_name"`
+	Title        string           `json:"title,omitempty"`
+	EmailAddress string           `json:"email_address"`
+	Image        string           `json:"image,omitempty"`
+	details      *AttendeeDetails `json:"-"`
+}
+
+type AttendeeDetails struct {
+	Attendee
 	Department          string `json:"department,omitempty"`
 	BusinessPhoneNumber string `json:"business_phone_numbers,omitempty"`
 	MobilePhone         string `json:"mobile_phone,omitempty"`

@@ -1,17 +1,24 @@
 package attendess
 
 import (
+	"errors"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
 )
 
-// TODO do caching
-func getAttendeeDetails(c ews.Client, email string) (*Attendee, error) {
+func getAttendeeDetails(c ews.Client, email string) (*AttendeeDetails, error) {
+
+	if attendeesIndex == nil {
+		return nil, errors.New("index is empty, should run the index first")
+	}
 
 	attendee := attendeesIndex[email]
+	// check cache
+	if attendee.details != nil {
+		return attendee.details, nil
+	}
 
 	persona, err := ewsutil.GetPersona(c, attendee.PersonaId)
-
 	if err != nil {
 		return nil, err
 	}
@@ -21,20 +28,15 @@ func getAttendeeDetails(c ews.Client, email string) (*Attendee, error) {
 		base64 = "NA"
 	}
 
-	if attendeesIndex != nil {
-		attendee.Image = base64
-		attendeesIndex[email] = attendee
-	}
-
-	return &Attendee{
-		PersonaId:           attendee.PersonaId,
-		DisplayName:         attendee.DisplayName,
-		Title:               attendee.Title,
-		EmailAddress:        attendee.EmailAddress,
-		Image:               base64,
+	attendee.Image = base64
+	attendee.details = &AttendeeDetails{
+		Attendee:            attendee,
 		Department:          persona.Department,
 		BusinessPhoneNumber: persona.BusinessPhoneNumbers.PhoneNumberAttributedValue.Value.Number,
 		MobilePhone:         persona.MobilePhones.PhoneNumberAttributedValue.Value.Number,
 		OfficeLocation:      persona.OfficeLocations.StringAttributedValue.Value,
-	}, nil
+	}
+	attendeesIndex[email] = attendee // cache
+
+	return attendee.details, nil
 }
