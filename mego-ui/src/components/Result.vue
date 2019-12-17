@@ -317,29 +317,27 @@
 <!--not scoped-->
 <style>
 
+  /**/
   .Busy {
     color: white;
-    background-color: #03353e;
-  }
-
-  .Free {
-    color: white;
-    background-color: #f5faff;
+    background-color: #0057e7;
   }
 
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
-    background-color: rgba(212, 203, 181, 0.53);
+    background-color: #008744;
   }
 
   .RoomBusy {
-    background-color: #6c88c1;
+    background-color: #ffa700;
   }
 
   .error {
-    background-color: rgba(83, 2, 0, 0.79);
+    background-color: #d62d20;
   }
+
+  /**/
 
   .slot-left {
     border-left: 1px groove #2c3e50;

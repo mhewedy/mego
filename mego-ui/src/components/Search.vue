@@ -54,6 +54,17 @@
       <div class="p-col-3"></div>
     </div>
 
+    <OverlayPanel ref="op">
+
+      <div v-if="!attendeeDetails">
+        <ProgressSpinner style="width:20px;height:20px" strokeWidth="3" animationDuration=".5s"/>
+      </div>
+
+      <div v-if="attendeeDetails">
+        {{attendeeDetails.display_name}}
+      </div>
+    </OverlayPanel>
+
   </div>
 
 </template>
@@ -77,7 +88,8 @@
                 roomsList: null,
                 selectedRooms: null,
                 startTime: this.getNextMeetingTime(),
-                input: null
+                input: null,
+                attendeeDetails: null
             }
         },
         mounted() {
@@ -105,9 +117,11 @@
                     for (let n of names) {
                         n.style.cursor = 'pointer';
                         n.onclick = (e) => {
+                            this.attendeeDetails = null;
+                            this.$refs.op.toggle({currentTarget: e.target});
                             AttendeesService.getDetails(e.target.innerText,
                                 (data) => {
-                                    console.log(data);
+                                    this.attendeeDetails = data;
                                 },
                                 (err) => {
                                     MessageService.error(err);
