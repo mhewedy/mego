@@ -113,7 +113,11 @@
                 this.loadingResult = true;
                 this.$emit("resultLoad", true);
 
-                EventService.search(this.searchInput, data => {
+                EventService.search({
+                    rooms: this.searchInput.rooms,
+                    emails: this.searchInput.emails,
+                    from: this.calcStartDate()
+                }, data => {
                     this.draw(data);
                     this.loadingResult = false;
                     this.$emit("resultLoad", false);
@@ -127,9 +131,7 @@
                 let result = data.room_events;
                 this.rowsCount = result.length;
 
-                this.start = new Date(this.searchInput.from);
-                this.start.setHours(8);
-                this.start.setMinutes(0);
+                this.start = this.calcStartDate();
                 this.end = new Date(this.start);
                 this.end.setHours(data.end_of_day_hours);
                 this.end.setMinutes(0);
@@ -307,6 +309,12 @@
                 }else {
                     slot.style.background = "transparent";
                 }
+            },
+            calcStartDate: function () {
+                let start = new Date(this.searchInput.from);
+                start.setHours(8);
+                start.setMinutes(0);
+                return start;
             }
         }
     }
