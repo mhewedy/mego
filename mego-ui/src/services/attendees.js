@@ -9,14 +9,14 @@ export default {
                 errors.handle401(it);
                 failFn && failFn(it.response.data.error)
             })
-	
+
     },
-    getPhoto: function (email, successFn, failFn) {
-        /*axios.get("/api/v1/attendees/" + email + "/photo")
+    getDetails: function (email, successFn, failFn) {
+        axios.get("/api/v1/attendees/" + email)
             .then(it => successFn(it.data))
             .catch(it => {
                 errors.handle401(it);
                 failFn && failFn(it.response.data.error)
-            })*/
+            })
     }
 }

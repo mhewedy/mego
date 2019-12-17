@@ -158,15 +158,6 @@
                             it["name"] = it.email_address;
                             return it
                         });
-
-                        this.filteredOptAttendees.map(it => {
-                            if (!it.image) {
-                                AttendeesService.getPhoto(it.email_address, function (data) {
-                                    it.image = data.base64
-                                })
-                            }
-                        })
-
                     }, function (err) {
                         // eslint-disable-next-line
                         console.log(err)

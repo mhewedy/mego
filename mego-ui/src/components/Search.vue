@@ -6,7 +6,7 @@
       <div class="p-col-11">
       <span class="p-fluid">
       <AutoComplete :multiple="true" v-model="selectedReqAttendees" :suggestions="filteredReqAttendees"
-                    @complete="searchReqAttendees($event)" field="name">
+                    @complete="searchReqAttendees($event)" @select="getAttendeeDetails()" field="name">
          <template #item="slotProps">
           <div class="p-clearfix p-autocomplete-brand-item">
             <img v-if="slotProps.item.image && slotProps.item.image !== 'NA'"
@@ -86,7 +86,6 @@
         },
         methods: {
             searchReqAttendees: function (event) {
-
                 let toExclude = this.selectedReqAttendees.map(it => it.email_address);
                 AttendeesService.search(event.query, toExclude,
                     (data) => {
@@ -95,18 +94,27 @@
                             return it
                         });
 
-                        this.filteredReqAttendees.map(it => {
-                            if (!it.image) {
-                                AttendeesService.getPhoto(it.email_address, function (data) {
-                                    it.image = data.base64
-                                })
-                            }
-                        })
-
                     }, function (err) {
                         // eslint-disable-next-line
                         console.log(err)
-                    })
+                    });
+            },
+            getAttendeeDetails: function () {
+                setTimeout(() => {
+                    let names = document.getElementsByClassName("p-autocomplete-token-label");
+                    for (let n of names) {
+                        n.style.cursor = 'pointer';
+                        n.onclick = (e) => {
+                            AttendeesService.getDetails(e.target.innerText,
+                                (data) => {
+                                    console.log(data);
+                                },
+                                (err) => {
+                                    MessageService.error(err);
+                                });
+                        };
+                    }
+                }, 10)
             },
             getNextMeetingTime: function () {
                 let date = new Date();
