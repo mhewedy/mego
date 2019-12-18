@@ -39,8 +39,6 @@ func Search(input string) []interface{} {
 		return index[token]
 	})
 
-	// TODO get from temp the found on all []interface{}
-
 	sort.Slice(temp, func(i, j int) bool {
 		return len(temp[i]) < len(temp[j])
 	})
