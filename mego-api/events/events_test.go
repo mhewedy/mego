@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
+	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/user"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -11,6 +12,8 @@ import (
 )
 
 func Test_buildEventUserSlices(t *testing.T) {
+
+	conf.DefaultSource = conf.DummySource{}
 
 	actual := buildEventUserSlices(&searchInput{
 		Emails: []string{

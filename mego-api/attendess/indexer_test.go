@@ -92,6 +92,7 @@ func Test_indexAttendees(t *testing.T) {
 	assert.Equal(t, attendeesIndex["terry@litwareinc.com"], Attendee{
 		DisplayName:  "Terry Adams",
 		Title:        "",
+		PersonaId:    "some id",
 		EmailAddress: "terry@litwareinc.com",
 		Image:        "",
 	})
@@ -99,6 +100,7 @@ func Test_indexAttendees(t *testing.T) {
 	assert.Equal(t, attendeesIndex["abbas@litwareinc.com"], Attendee{
 		DisplayName:  "Abbas Adams",
 		Title:        "",
+		PersonaId:    "some id 2",
 		EmailAddress: "abbas@litwareinc.com",
 		Image:        "",
 	})
@@ -170,7 +172,7 @@ func Test_searchAttendees(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := doSearchAttendees(tt.args.q, []string{}); !reflect.DeepEqual(got, tt.want) {
+			if got := searchAttendees(tt.args.q, []string{}); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("searchAttendees() = %v, want %v", got, tt.want)
 			}
 		})
