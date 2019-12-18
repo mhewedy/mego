@@ -3,7 +3,6 @@ package events
 import (
 	"github.com/mhewedy/ews"
 	"github.com/mhewedy/ews/ewsutil"
-	"github.com/mhewedy/go-conf"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
@@ -12,7 +11,7 @@ import (
 	"time"
 )
 
-func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []roomEvents {
+func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, to time.Time, u *user.User) []roomEvents {
 
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 	result := make([]roomEvents, len(eventUsers))
@@ -26,7 +25,7 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, u *user.User) []
 			name = email
 		}
 
-		events, err := ewsutil.ListUsersEvents(ewsClient, ee, from, getDuration(from))
+		events, err := ewsutil.ListUsersEvents(ewsClient, ee, from, to.Sub(from))
 
 		if err != nil {
 			result[i] = roomEvents{
@@ -78,15 +77,4 @@ func wrap(events map[ewsutil.EventUser][]ewsutil.Event) map[string][]event {
 		m[k.Email] = s
 	}
 	return m
-}
-
-func getDuration(from time.Time) time.Duration {
-	return getLatestSlot(from).Sub(from)
-}
-
-func getLatestSlot(from time.Time) time.Time {
-	year, month, day := from.Date()
-	to := time.Date(year, month, day,
-		conf.GetInt("calendar.end_of_day_hours", 18), 0, 0, 0, time.Now().Location())
-	return to
 }

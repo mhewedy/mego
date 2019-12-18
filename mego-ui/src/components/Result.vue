@@ -113,10 +113,14 @@
                 this.loadingResult = true;
                 this.$emit("resultLoad", true);
 
+                this.start = this.calcStartDate();
+                this.end = this.searchInput.to;
+
                 EventService.search({
                     rooms: this.searchInput.rooms,
                     emails: this.searchInput.emails,
-                    from: this.calcStartDate()
+                    from: this.start,
+                    to: this.end
                 }, data => {
                     this.draw(data);
                     this.loadingResult = false;
@@ -127,14 +131,8 @@
                     this.$emit("resultLoad", false);
                 });
             },
-            draw(data) {
-                let result = data.room_events;
+            draw(result) {
                 this.rowsCount = result.length;
-
-                this.start = this.calcStartDate();
-                this.end = new Date(this.start);
-                this.end.setHours(data.end_of_day_hours);
-                this.end.setMinutes(0);
 
                 this.timeSlotCount =
                     Math.ceil(Math.floor((Math.abs(this.end - this.start) / 1000) / 60) / slotIntervalInMinutes);

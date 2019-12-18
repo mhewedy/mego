@@ -14,6 +14,7 @@ type searchInput struct {
 	Emails []string  `json:"emails"`
 	Rooms  []string  `json:"rooms"`
 	From   time.Time `json:"from"`
+	To     time.Time `json:"to"`
 }
 
 type createInput struct {
@@ -24,11 +25,6 @@ type createInput struct {
 	Room     string    `json:"room"`
 	From     time.Time `json:"from"`
 	Duration int       `json:"duration"`
-}
-
-type resp struct {
-	EndOFDayHours int          `json:"end_of_day_hours"`
-	RoomEvents    []roomEvents `json:"room_events"`
 }
 
 type roomEvents struct {
@@ -55,12 +51,9 @@ func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	}
 
 	eventUsers := buildEventUserSlices(input, u)
-	events := doSearch(eventUsers, input.From, u)
+	events := doSearch(eventUsers, input.From, input.To, u)
 
-	return &resp{
-		EndOFDayHours: conf.GetInt("calendar.end_of_day_hours", 18),
-		RoomEvents:    events,
-	}, nil
+	return events, nil
 }
 
 func Create(w http.ResponseWriter, r *http.Request) (interface{}, error) {
@@ -82,6 +75,7 @@ func Create(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 func buildEventUserSlices(i *searchInput, u *user.User) [][]ewsutil.EventUser {
 
 	i.From = i.From.Truncate(1 * time.Minute)
+	i.To = i.To.Truncate(1 * time.Minute)
 
 	myUsername := u.Username
 	if dns := conf.Get("ews.dns_name", ""); len(dns) > 0 {

@@ -138,10 +138,16 @@
 
                 let rooms = [];
                 let emails = [];
+
+                let endTime = new Date(this.startTime);
+                endTime.setHours(18);
+                endTime.setMinutes(0);
+
                 let input = {
                     rooms: rooms,
                     emails: emails,
-                    from: this.startTime.toISOString()
+                    from: this.startTime.toISOString(),
+                    to: endTime
                 };
 
                 for (const key in this.selectedRooms) {
