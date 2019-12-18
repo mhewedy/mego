@@ -20,7 +20,7 @@ func (d dsc) Close() error {
 }
 
 func (d ds) Read() (io.ReadCloser, error) {
-	return &dsc{strings.NewReader(`indexer.token_algo.token_size=4`)}, nil
+	return &dsc{strings.NewReader(`indexer.token_algo.token_size=3`)}, nil
 }
 func init() {
 
@@ -95,15 +95,18 @@ func Test_Search(t *testing.T) {
 		name string
 	}
 	Index([]Input{
+		{Field: "Mohammad Hewedy", Ref: myStruct{name: "Mohammad Hewedy"}},
 		{Field: "Asif Ahmed", Ref: myStruct{name: "Asif Ahmed"}},
 		{Field: "Saif Ibrahim", Ref: myStruct{name: "Saif Ibrahim"}},
 		{Field: "Asif Ali", Ref: myStruct{name: "Asif Ali"}},
 		{Field: "Rashad Saif", Ref: myStruct{name: "Rashad Saif"}},
+		{Field: "Ali Ibrahim", Ref: myStruct{name: "Ali Ibrahim"}},
+		{Field: "Ahmad Altihami", Ref: myStruct{name: "Ahmad Altihami"}},
 	})
 
 	fmt.Println(index)
 
-	result := Search("Rashad saif")
+	result := Search("ali")
 
 	fmt.Println(result)
 }
