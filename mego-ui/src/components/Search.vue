@@ -214,4 +214,8 @@
   .p-treenode-children {
     padding-left: 40px !important;
   }
+
+  .p-autocomplete-input-token input {
+    width: 300px !important;
+  }
 </style>
