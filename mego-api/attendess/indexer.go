@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/go-conf"
+	"github.com/mhewedy/mego/attendess/index"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/user"
 	"github.com/schollz/progressbar/v2"
@@ -40,6 +41,15 @@ func indexAttendees(u *user.User) {
 	} else {
 		doIndexAttendees(u)
 	}
+
+	input := make([]index.Input, 0)
+	for _, v := range attendeesIndex {
+		input = append(input, index.Input{
+			Field: v.DisplayName,
+			Ref:   &v,
+		})
+	}
+	index.Index(input)
 }
 
 func doIndexAttendees(u *user.User) {
@@ -118,12 +128,30 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 	return attendees
 }
 
+func searchAttendees(q string, exclude []string) []Attendee {
+	var attendees []Attendee
+	if conf.GetBool("indexer.token_algo", false) {
+		attendees = nil
+	} else {
+		attendees = doSearchAttendees(q)
+	}
+
+	// exclude
+	for i, aa := range attendees {
+		if emailsExists(exclude, strings.ToLower(aa.EmailAddress)) {
+			attendees = remove(attendees, i)
+		}
+	}
+
+	return attendees
+}
+
 // Priority based searching, it searches the query input as follows:
 // 1. email address starts with the query
 // 2. display name starts with the query
 // 3. split display name on space and check each part star with the query
 // 4. email address or display name contains the query
-func searchAttendees(q string, exclude []string) []Attendee {
+func doSearchAttendees(q string) []Attendee {
 	attendees := make([]Attendee, 0)
 	attendeesP2 := make([]Attendee, 0)
 	attendeesP3 := make([]Attendee, 0)
@@ -134,10 +162,6 @@ func searchAttendees(q string, exclude []string) []Attendee {
 
 		lowerEmailAddress := strings.ToLower(aa.EmailAddress)
 		lowerDisplayName := strings.ToLower(aa.DisplayName)
-
-		if emailsExists(exclude, lowerEmailAddress) {
-			continue
-		}
 
 		// start the algorithm
 		if strings.HasPrefix(lowerEmailAddress, q) {
@@ -192,4 +216,9 @@ func emailsExists(emails []string, email string) bool {
 		}
 	}
 	return false
+}
+
+func remove(s []Attendee, i int) []Attendee {
+	s[i] = s[len(s)-1]
+	return s[:len(s)-1]
 }
