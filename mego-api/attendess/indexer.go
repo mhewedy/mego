@@ -42,14 +42,16 @@ func indexAttendees(u *user.User) {
 		doIndexAttendees(u)
 	}
 
-	input := make([]index.Input, 0)
-	for _, v := range attendeesIndex {
-		input = append(input, index.Input{
-			Field: v.DisplayName,
-			Ref:   &v,
-		})
+	if conf.GetBool("indexer.token_algo", false) {
+		input := make([]index.Input, 0)
+		for _, v := range attendeesIndex {
+			input = append(input, index.Input{
+				Field: v.DisplayName,
+				Ref:   &v,
+			})
+		}
+		index.Index(input)
 	}
-	index.Index(input)
 }
 
 func doIndexAttendees(u *user.User) {
