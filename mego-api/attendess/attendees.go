@@ -131,14 +131,12 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 func searchAttendees(q string, exclude []string) []Attendee {
 
 	attendees := search(q)
-
 	// exclude
 	for i, aa := range attendees {
 		if emailsExists(exclude, strings.ToLower(aa.EmailAddress)) {
 			attendees = remove(attendees, i)
 		}
 	}
-
 	return attendees
 }
 
