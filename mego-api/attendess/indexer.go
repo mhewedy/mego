@@ -50,7 +50,7 @@ func doIndexAttendees(u *user.User) {
 	bar.RenderBlank()
 
 	for _, c := range chars {
-		atts := indexAttendeesStartsWith(string(c), u)
+		atts := getAttendeesStartsWith(string(c), u)
 		for _, att := range atts {
 			attendeesIndex[att.EmailAddress] = att
 		}
@@ -71,7 +71,7 @@ func doIndexAttendeesParallel(u *user.User) {
 
 	for _, c := range chars {
 		go func(c string) {
-			ch <- indexAttendeesStartsWith(c, u)
+			ch <- getAttendeesStartsWith(c, u)
 		}(string(c))
 	}
 
@@ -98,7 +98,7 @@ func doIndexAttendeesParallel(u *user.User) {
 	fmt.Println()
 }
 
-func indexAttendeesStartsWith(s string, u *user.User) []Attendee {
+func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 	personas, err := ewsutil.FindPeople(ewsClient, s)
 	if err != nil {
