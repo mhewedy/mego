@@ -6,11 +6,6 @@ import (
 	"strings"
 )
 
-type Input struct {
-	Field string
-	Ref   interface{}
-}
-
 var indexDB map[string][]Attendee
 
 func index(attendees []Attendee) {
