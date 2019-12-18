@@ -136,9 +136,11 @@ func searchAttendees(q string, exclude []string) []Attendee {
 	attendees = prependExactByEmail(attendeesIndex[email(q)], attendees)
 
 	// exclude
+	var removed = 0
 	for i, aa := range attendees {
 		if emailsExists(exclude, strings.ToLower(aa.EmailAddress)) {
-			attendees = remove(attendees, i)
+			attendees = remove(attendees, i-removed)
+			removed++
 		}
 	}
 	return attendees
