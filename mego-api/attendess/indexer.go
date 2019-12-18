@@ -61,7 +61,7 @@ func sortByOccurrence(temp [][]Attendee) []Attendee {
 
 	result := make([]Attendee, 0)
 	for _, s := range kvs {
-		if s.Value > conf.GetInt("indexer.min_occurrence", 1) {
+		if s.Value > conf.GetInt("indexer.min_occurrence", 0) {
 			result = append(result, s.Key)
 		}
 	}
