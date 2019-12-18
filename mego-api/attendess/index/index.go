@@ -1,18 +1,21 @@
 package index
 
-import "strings"
+import (
+	"fmt"
+	"github.com/mhewedy/go-conf"
+	"strings"
+)
 
 type Input struct {
 	Field string
 	Ref   interface{}
 }
 
-const tokenSize = 3
+var tokenSize = conf.GetInt("indexer.token_algo.token_size", 2)
 
 var index map[string][]interface{}
 
 func Index(inputs []Input) {
-
 	index = make(map[string][]interface{})
 
 	for _, input := range inputs {
@@ -37,6 +40,7 @@ func Index(inputs []Input) {
 			}
 		}
 	}
+	fmt.Println("Done indexing")
 }
 
 func Search(input string) []interface{} {

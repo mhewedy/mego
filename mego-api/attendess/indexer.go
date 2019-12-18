@@ -42,12 +42,13 @@ func indexAttendees(u *user.User) {
 		doIndexAttendees(u)
 	}
 
-	if conf.GetBool("indexer.token_algo", false) {
+	if conf.GetBool("indexer.token_algo.enabled", false) {
 		input := make([]index.Input, 0)
-		for _, v := range attendeesIndex {
+		for i, v := range attendeesIndex {
+			attendee := attendeesIndex[i]
 			input = append(input, index.Input{
 				Field: v.DisplayName,
-				Ref:   &v,
+				Ref:   &attendee,
 			})
 		}
 		index.Index(input)
@@ -132,8 +133,13 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 
 func searchAttendees(q string, exclude []string) []Attendee {
 	var attendees []Attendee
-	if conf.GetBool("indexer.token_algo", false) {
-		attendees = nil
+	if conf.GetBool("indexer.token_algo.enabled", false) {
+		attendees = make([]Attendee, 0)
+		result := index.Search(q)
+		for _, ii := range result {
+			attendee := ii.(*Attendee)
+			attendees = append(attendees, *attendee)
+		}
 	} else {
 		attendees = doSearchAttendees(q)
 	}
