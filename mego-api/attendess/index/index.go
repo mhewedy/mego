@@ -57,19 +57,14 @@ func Search(input string) []interface{} {
 
 		for _, tt := range tokens {
 			ii := index[tt]
+			fmt.Println("token", tt, "value", ii)
 			temp = append(temp, ii)
 		}
 	}
 
-
-	fmt.Println("temporary", temp)
-
 	sort.Slice(temp, func(i, j int) bool {
 		return len(temp[i]) < len(temp[j])
 	})
-
-
-	fmt.Println("temporary", temp)
 
 	result := make([]interface{}, 0)
 
@@ -80,9 +75,6 @@ func Search(input string) []interface{} {
 			}
 		}
 	}
-
-
-	fmt.Println("result", temp)
 
 	return result
 }
