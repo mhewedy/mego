@@ -2,9 +2,30 @@ package index
 
 import (
 	"fmt"
+	"github.com/mhewedy/go-conf"
+	"io"
 	"reflect"
+	"strings"
 	"testing"
 )
+
+type ds struct {
+}
+type dsc struct {
+	io.Reader
+}
+
+func (d dsc) Close() error {
+	return nil
+}
+
+func (d ds) Read() (io.ReadCloser, error) {
+	return &dsc{strings.NewReader(`indexer.token_algo.token_size=4`)}, nil
+}
+func init() {
+
+	conf.DefaultSource = ds{}
+}
 
 func Test_removeVowels(t *testing.T) {
 	type args struct {
@@ -71,20 +92,18 @@ func Test_tokenize(t *testing.T) {
 func Test_Search(t *testing.T) {
 
 	type myStruct struct {
-		mail string
+		name string
 	}
-
 	Index([]Input{
-		{
-			Field: "Abas Ahmad Fernas",
-			Ref:   &myStruct{mail: "abas@fernas.com"},
-		}, {
-			Field: "Mohammad Ahmad Ali",
-			Ref:   &myStruct{mail: "mali@fernas.com"},
-		},
+		{Field: "Asif Ahmed", Ref: myStruct{name: "Asif Ahmed"}},
+		{Field: "Saif Ibrahim", Ref: myStruct{name: "Saif Ibrahim"}},
+		{Field: "Asif Ali", Ref: myStruct{name: "Asif Ali"}},
+		{Field: "Rashad Saif", Ref: myStruct{name: "Rashad Saif"}},
 	})
 
-	result := Search("Ahmad")
+	fmt.Println(index)
+
+	result := Search("Rashad saif")
 
 	fmt.Println(result)
 }

@@ -1,7 +1,6 @@
 package index
 
 import (
-	"fmt"
 	"github.com/mhewedy/go-conf"
 	"sort"
 	"strings"
@@ -12,8 +11,6 @@ type Input struct {
 	Ref   interface{}
 }
 
-var tokenSize = conf.GetInt("indexer.token_algo.token_size", 2)
-
 var index map[string][]interface{}
 
 func Index(inputs []Input) {
@@ -21,53 +18,34 @@ func Index(inputs []Input) {
 
 	for _, input := range inputs {
 
-		lower := strings.ToLower(input.Field)
-		clear := removeVowels(lower)
-		fields := strings.Fields(clear)
-
-		for _, ff := range fields {
-			tokens := tokenize(ff, tokenSize)
-
-			for _, tt := range tokens {
-				ii, found := index[tt]
-				if !found {
-					ii = make([]interface{}, 0)
-				}
-
-				if !contains(ii, input.Ref) {
-					ii = append(ii, input.Ref)
-					index[tt] = ii
-				}
+		doOnToken(input.Field, func(token string) []interface{} {
+			refs, found := index[token]
+			if !found {
+				refs = make([]interface{}, 0)
 			}
-		}
+
+			if !contains(refs, input.Ref) {
+				refs = append(refs, input.Ref)
+				index[token] = refs
+			}
+			return nil
+		})
 	}
-	fmt.Println("Done indexing")
 }
 
 func Search(input string) []interface{} {
 
-	lower := strings.ToLower(input)
-	clear := removeVowels(lower)
-	fields := strings.Fields(clear)
+	temp := doOnToken(input, func(token string) []interface{} {
+		return index[token]
+	})
 
-	temp := make([][]interface{}, 0)
-
-	for _, ff := range fields {
-		tokens := tokenize(ff, tokenSize)
-
-		for _, tt := range tokens {
-			ii := index[tt]
-			fmt.Println("token", tt, "value", ii)
-			temp = append(temp, ii)
-		}
-	}
+	// TODO get from temp the found on all []interface{}
 
 	sort.Slice(temp, func(i, j int) bool {
 		return len(temp[i]) < len(temp[j])
 	})
 
 	result := make([]interface{}, 0)
-
 	for _, ii := range temp {
 		for _, iii := range ii {
 			if !contains(result, iii) {
@@ -75,8 +53,25 @@ func Search(input string) []interface{} {
 			}
 		}
 	}
-
 	return result
+}
+
+func doOnToken(input string, fn func(token string) []interface{}) [][]interface{} {
+
+	lower := strings.ToLower(input)
+	clear := removeVowels(lower)
+	fields := strings.Fields(clear)
+
+	ii := make([][]interface{}, 0)
+
+	for _, field := range fields {
+		tokens := tokenize(field, conf.GetInt("indexer.token_algo.token_size", 2))
+
+		for _, token := range tokens {
+			ii = append(ii, fn(token))
+		}
+	}
+	return ii
 }
 
 func removeVowels(s string) string {
@@ -98,6 +93,9 @@ func tokenize(s string, tokenSize int) []string {
 			break
 		}
 		tokens = append(tokens, s[i:i+tokenSize])
+	}
+	if len(tokens) == 0 {
+		tokens = append(tokens, s)
 	}
 	return tokens
 }
