@@ -13,15 +13,6 @@ import (
 
 var attendOnce sync.Once
 
-func List(w http.ResponseWriter, r *http.Request) (interface{}, error) {
-	u := context.Get(r, user.KEY).(*user.User)
-	attendOnce.Do(func() {
-		indexAttendees(u)
-	})
-
-	return attendeesIndex, nil
-}
-
 func Search(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	u := context.Get(r, user.KEY).(*user.User)
 	attendOnce.Do(func() {

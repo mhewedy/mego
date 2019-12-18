@@ -19,7 +19,6 @@ func Route() *mux.Router {
 	router.HandleFunc("/api/v1/login", handle(user.Login)).Methods("POST")
 	router.HandleFunc("/api/v1/logout", handle(user.Logout)).Methods("POST")
 
-	router.HandleFunc("/api/v1/attendees", handle(attendess.List)).Methods("GET")
 	router.HandleFunc("/api/v1/attendees/search", handle(attendess.Search)).Methods("POST")
 	router.HandleFunc("/api/v1/attendees/{email}", handle(attendess.GetByEmail)).Methods("GET")
 
