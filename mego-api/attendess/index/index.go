@@ -3,6 +3,7 @@ package index
 import (
 	"fmt"
 	"github.com/mhewedy/go-conf"
+	"sort"
 	"strings"
 )
 
@@ -45,25 +46,35 @@ func Index(inputs []Input) {
 
 func Search(input string) []interface{} {
 
-	result := make([]interface{}, 0)
-
 	lower := strings.ToLower(input)
 	clear := removeVowels(lower)
 	fields := strings.Fields(clear)
+
+	temp := make([][]interface{}, 0)
 
 	for _, ff := range fields {
 		tokens := tokenize(ff, tokenSize)
 
 		for _, tt := range tokens {
 			ii := index[tt]
+			temp = append(temp, ii)
+		}
+	}
 
-			for _, iii := range ii {
-				if !contains(result, iii) {
-					result = append(result, iii)
-				}
+	sort.Slice(temp, func(i, j int) bool {
+		return len(temp[i]) > len(temp[j])
+	})
+
+	result := make([]interface{}, 0)
+
+	for _, ii := range temp {
+		for _, iii := range ii {
+			if !contains(result, iii) {
+				result = append(result, iii)
 			}
 		}
 	}
+
 	return result
 }
 
