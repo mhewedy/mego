@@ -32,10 +32,12 @@ type AttendeeDetails struct {
 	OfficeLocation      string `json:"office_location,omitempty"`
 }
 
-var attendeesIndex map[string]Attendee
+type email string
+
+var attendeesIndex map[email]Attendee
 
 func indexAttendees(u *user.User) {
-	attendeesIndex = make(map[string]Attendee)
+	attendeesIndex = make(map[email]Attendee)
 
 	if conf.GetBool("indexer.parallel", false) {
 		attendeesIndex = getAttendeesParallel(u)
@@ -50,8 +52,8 @@ func indexAttendees(u *user.User) {
 	index(input)
 }
 
-func getAttendees(u *user.User) map[string]Attendee {
-	attendeesIndex := make(map[string]Attendee)
+func getAttendees(u *user.User) map[email]Attendee {
+	attendeesIndex := make(map[email]Attendee)
 
 	log.Println("start indexing...")
 	bar := progressbar.New(len(chars))
@@ -60,7 +62,7 @@ func getAttendees(u *user.User) map[string]Attendee {
 	for _, c := range chars {
 		atts := getAttendeesStartsWith(string(c), u)
 		for _, att := range atts {
-			attendeesIndex[att.EmailAddress] = att
+			attendeesIndex[email(att.EmailAddress)] = att
 		}
 		time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
 
@@ -71,7 +73,7 @@ func getAttendees(u *user.User) map[string]Attendee {
 	return attendeesIndex
 }
 
-func getAttendeesParallel(u *user.User) map[string]Attendee {
+func getAttendeesParallel(u *user.User) map[email]Attendee {
 	ch := make(chan []Attendee, len(chars))
 
 	log.Println("start indexing...")
@@ -85,12 +87,12 @@ func getAttendeesParallel(u *user.User) map[string]Attendee {
 	}
 
 	var i int
-	attendeesIndex := make(map[string]Attendee)
+	attendeesIndex := make(map[email]Attendee)
 	for {
 		select {
 		case atts := <-ch:
 			for _, att := range atts {
-				attendeesIndex[att.EmailAddress] = att
+				attendeesIndex[email(att.EmailAddress)] = att
 			}
 			bar.Add(1)
 			i++
@@ -131,12 +133,30 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 func searchAttendees(q string, exclude []string) []Attendee {
 
 	attendees := search(q)
+	attendees = prependExactByEmail(attendeesIndex[email(q)], attendees)
+
 	// exclude
 	for i, aa := range attendees {
 		if emailsExists(exclude, strings.ToLower(aa.EmailAddress)) {
 			attendees = remove(attendees, i)
 		}
 	}
+	return attendees
+}
+
+func prependExactByEmail(exact Attendee, temp []Attendee) []Attendee {
+	for i, aa := range temp {
+		if exact.EmailAddress == aa.EmailAddress {
+			temp = remove(temp, i)
+			break
+		}
+	}
+
+	attendees := make([]Attendee, 0)
+	if len(exact.EmailAddress) != 0 {
+		attendees = append(attendees, exact)
+	}
+	attendees = append(attendees, temp...)
 	return attendees
 }
 

@@ -6,13 +6,13 @@ import (
 	"github.com/mhewedy/ews/ewsutil"
 )
 
-func getAttendeeDetails(c ews.Client, email string) (*AttendeeDetails, error) {
+func getAttendeeDetails(c ews.Client, e string) (*AttendeeDetails, error) {
 
 	if attendeesIndex == nil {
 		return nil, errors.New("index is empty, should run the index first")
 	}
 
-	attendee := attendeesIndex[email]
+	attendee := attendeesIndex[email(e)]
 	// check cache
 	if attendee.details != nil {
 		return attendee.details, nil
@@ -23,7 +23,7 @@ func getAttendeeDetails(c ews.Client, email string) (*AttendeeDetails, error) {
 		return nil, err
 	}
 
-	base64, err := ewsutil.GetUserPhotoBase64(c, email)
+	base64, err := ewsutil.GetUserPhotoBase64(c, e)
 	if err != nil {
 		base64 = "NA"
 	}
@@ -36,7 +36,7 @@ func getAttendeeDetails(c ews.Client, email string) (*AttendeeDetails, error) {
 		MobilePhone:         persona.MobilePhones.PhoneNumberAttributedValue.Value.Number,
 		OfficeLocation:      persona.OfficeLocations.StringAttributedValue.Value,
 	}
-	attendeesIndex[email] = attendee // cache
+	attendeesIndex[email(e)] = attendee // cache
 
 	return attendee.details, nil
 }
