@@ -62,7 +62,7 @@ func Search(input string) []interface{} {
 	}
 
 	sort.Slice(temp, func(i, j int) bool {
-		return len(temp[i]) > len(temp[j])
+		return len(temp[i]) < len(temp[j])
 	})
 
 	result := make([]interface{}, 0)
