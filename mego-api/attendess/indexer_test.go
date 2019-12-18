@@ -92,18 +92,20 @@ func Test_tokenize(t *testing.T) {
 func Test_Search(t *testing.T) {
 
 	attendees := []Attendee{
-		{Title: "Mohammad Hewedy"},
-		{Title: "Asif Ahmed"},
-		{Title: "Saif Ibrahim"},
-		{Title: "Asif Ali"},
-		{Title: "Rashad Saif"},
-		{Title: "Ali Ibrahim"},
-		{Title: "Ahmad Altihami"},
+		{DisplayName: "Mohammad Hewedy"},
+		{DisplayName: "Asif Ahmed"},
+		{DisplayName: "Ibrahim Ahmed"},
+		{DisplayName: "Ibrahim Mostafa"},
+		{DisplayName: "Saif Ibrahim"},
+		{DisplayName: "Asif Ali"},
+		{DisplayName: "Rashad Saif"},
+		{DisplayName: "Ali Ibrahim"},
+		{DisplayName: "Ahmad Altihami"},
 	}
 
 	index(attendees)
 
-	result := search("rashad saif")
+	result := search("Ibrahim Ahmed")
 
 	fmt.Println(result)
 }

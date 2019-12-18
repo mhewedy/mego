@@ -61,7 +61,9 @@ func sortByOccurrence(temp [][]Attendee) []Attendee {
 
 	result := make([]Attendee, 0)
 	for _, s := range kvs {
-		result = append(result, s.Key)
+		if s.Value > 1 {
+			result = append(result, s.Key)
+		}
 	}
 	return result
 }
