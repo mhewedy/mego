@@ -61,9 +61,15 @@ func Search(input string) []interface{} {
 		}
 	}
 
+
+	fmt.Println("temporary", temp)
+
 	sort.Slice(temp, func(i, j int) bool {
 		return len(temp[i]) < len(temp[j])
 	})
+
+
+	fmt.Println("temporary", temp)
 
 	result := make([]interface{}, 0)
 
@@ -74,6 +80,9 @@ func Search(input string) []interface{} {
 			}
 		}
 	}
+
+
+	fmt.Println("result", temp)
 
 	return result
 }
