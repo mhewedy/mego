@@ -100,6 +100,12 @@
                             return it
                         });
 
+                        // scroll to top
+                        let panel = document.getElementsByClassName("p-autocomplete-panel");
+                        if (panel && panel[0]) {
+                            panel[0].scrollTop  = 0;
+                        }
+
                     }, function (err) {
                         // eslint-disable-next-line
                         console.log(err)
