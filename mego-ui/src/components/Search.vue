@@ -104,6 +104,13 @@
                         let panel = document.getElementsByClassName("p-autocomplete-panel");
                         if (panel && panel[0]) {
                             panel[0].scrollTop  = 0;
+                            let list = document.getElementsByClassName("p-autocomplete-list-item");
+                            if (list) {
+                                for (let i =0; i < list.length; i++){
+                                    if (i === 0) list[i].classList.add("p-highlight");
+                                    else list[i].classList.remove("p-highlight");
+                                }
+                            }
                         }
 
                     }, function (err) {
