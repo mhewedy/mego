@@ -71,7 +71,7 @@ func sortByOccurrence(temp [][]Attendee) []Attendee {
 func doOnToken(input string, fn func(token string) []Attendee) [][]Attendee {
 
 	lower := strings.ToLower(input)
-	clear := removeVowels(lower)
+	clear := substituteVowels(lower)
 	fields := strings.Fields(clear)
 
 	ii := make([][]Attendee, 0)
@@ -86,11 +86,15 @@ func doOnToken(input string, fn func(token string) []Attendee) [][]Attendee {
 	return ii
 }
 
-func removeVowels(s string) string {
+func substituteVowels(s string) string {
 
 	rr := make([]rune, 0)
 	for _, r := range s {
-		if !strings.ContainsRune("aieou", r) {
+		if strings.ContainsRune("aie", r) {
+			rr = append(rr, 'e')
+		} else if strings.ContainsRune("ou", r) {
+			rr = append(rr, 'o')
+		} else {
 			rr = append(rr, r)
 		}
 	}

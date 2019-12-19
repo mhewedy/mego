@@ -108,7 +108,7 @@ func Test_indexAttendees(t *testing.T) {
 
 func Test_searchAttendees(t *testing.T) {
 
-	attendeesIndex = map[string]Attendee{
+	attendeesIndex = map[email]Attendee{
 		"terry@litwareinc.com": {
 			DisplayName:  "Terry Adams",
 			Title:        "",

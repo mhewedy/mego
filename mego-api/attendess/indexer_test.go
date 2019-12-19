@@ -48,13 +48,25 @@ func Test_removeVowels(t *testing.T) {
 			args: args{
 				s: "mohammed",
 			},
-			want: "mhmmd",
+			want: "mohemmed",
+		}, {
+			name: "test with some vowels 2",
+			args: args{
+				s: "ali ahmed",
+			},
+			want: "ele ehmed",
+		}, {
+			name: "test with some vowels 2",
+			args: args{
+				s: "mahmoud",
+			},
+			want: "mehmood",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := removeVowels(tt.args.s); got != tt.want {
-				t.Errorf("removeVowels() = %v, want %v", got, tt.want)
+			if got := substituteVowels(tt.args.s); got != tt.want {
+				t.Errorf("substituteVowels() = %v, want %v", got, tt.want)
 			}
 		})
 	}
