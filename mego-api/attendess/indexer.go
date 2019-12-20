@@ -6,20 +6,22 @@ import (
 	"strings"
 )
 
-var indexDB map[string][]Attendee
+type token string
+
+var indexDB map[token][]Attendee
 
 func index(attendees []Attendee) {
-	indexDB = make(map[string][]Attendee)
+	indexDB = make(map[token][]Attendee)
 
 	for _, aa := range attendees {
-		doOnToken(aa.DisplayName, func(token string) []Attendee {
-			atts, found := indexDB[token]
+		doOnToken(aa.DisplayName, func(t token) []Attendee {
+			atts, found := indexDB[t]
 			if !found {
 				atts = make([]Attendee, 0)
 			}
 			if !contains(atts, aa) {
 				atts = append(atts, aa)
-				indexDB[token] = atts
+				indexDB[t] = atts
 			}
 			return nil
 		})
@@ -28,8 +30,8 @@ func index(attendees []Attendee) {
 
 func search(input string) []Attendee {
 
-	temp := doOnToken(input, func(token string) []Attendee {
-		return indexDB[token]
+	temp := doOnToken(input, func(t token) []Attendee {
+		return indexDB[t]
 	})
 
 	return sortByOccurrence(temp)
@@ -68,7 +70,7 @@ func sortByOccurrence(temp [][]Attendee) []Attendee {
 	return result
 }
 
-func doOnToken(input string, fn func(token string) []Attendee) [][]Attendee {
+func doOnToken(input string, fn func(t token) []Attendee) [][]Attendee {
 
 	lower := strings.ToLower(input)
 	clear := substituteVowels(lower)
@@ -79,8 +81,8 @@ func doOnToken(input string, fn func(token string) []Attendee) [][]Attendee {
 	for _, field := range fields {
 		tokens := tokenize(field, conf.GetInt("indexer.token_size", 2))
 
-		for _, token := range tokens {
-			ii = append(ii, fn(token))
+		for _, t := range tokens {
+			ii = append(ii, fn(t))
 		}
 	}
 	return ii
@@ -101,17 +103,17 @@ func substituteVowels(s string) string {
 	return string(rr)
 }
 
-func tokenize(s string, tokenSize int) []string {
-	tokens := make([]string, 0)
+func tokenize(s string, tokenSize int) []token {
+	tokens := make([]token, 0)
 
 	for i := range s {
 		if i+tokenSize > len(s) {
 			break
 		}
-		tokens = append(tokens, s[i:i+tokenSize])
+		tokens = append(tokens, token(s[i:i+tokenSize]))
 	}
 	if len(tokens) == 0 {
-		tokens = append(tokens, s)
+		tokens = append(tokens, token(s))
 	}
 	return tokens
 }
