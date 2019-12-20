@@ -8,7 +8,7 @@ import (
 
 func getAttendeeDetails(c ews.Client, e string) (*AttendeeDetails, error) {
 
-	if attendeesDB == nil {
+	if len(attendeesDB) == 0 {
 		return nil, errors.New("attendees db is empty, build the index first by invoking the search api")
 	}
 

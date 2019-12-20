@@ -8,19 +8,17 @@ import (
 
 type token string
 
-var indexDB map[token][]Attendee
+var indexDB = make(map[token][]*Attendee)
 
 func index(attendees []Attendee) {
-	indexDB = make(map[token][]Attendee)
-
-	for _, aa := range attendees {
+	for i, aa := range attendees {
 		doOnToken(aa.DisplayName, func(t token) []Attendee {
 			atts, found := indexDB[t]
 			if !found {
-				atts = make([]Attendee, 0)
+				atts = make([]*Attendee, 0)
 			}
 			if !contains(atts, aa) {
-				atts = append(atts, aa)
+				atts = append(atts, &attendees[i])
 				indexDB[t] = atts
 			}
 			return nil
@@ -31,7 +29,12 @@ func index(attendees []Attendee) {
 func search(input string) []Attendee {
 
 	temp := doOnToken(input, func(t token) []Attendee {
-		return indexDB[t]
+		attendees := indexDB[t]
+		result := make([]Attendee, len(attendees))
+		for i, a := range attendees {
+			result[i] = *a
+		}
+		return result
 	})
 
 	return sortByOccurrence(temp)
@@ -118,7 +121,7 @@ func tokenize(s string, tokenSize int) []token {
 	return tokens
 }
 
-func contains(attendees []Attendee, attendee Attendee) bool {
+func contains(attendees []*Attendee, attendee Attendee) bool {
 	for _, att := range attendees {
 		if att.DisplayName == attendee.DisplayName {
 			return true
