@@ -13,16 +13,20 @@ var indexDB = make(map[token][]*Attendee)
 func index(attendees []Attendee) {
 	for i, aa := range attendees {
 		doOnToken(aa.DisplayName, func(t token) []Attendee {
-			atts, found := indexDB[t]
-			if !found {
-				atts = make([]*Attendee, 0)
-			}
-			if !contains(atts, aa) {
-				atts = append(atts, &attendees[i])
-				indexDB[t] = atts
-			}
+			indexToken(t, &attendees[i])
 			return nil
 		})
+	}
+}
+
+func indexToken(t token, attendee *Attendee) {
+	atts, found := indexDB[t]
+	if !found {
+		atts = make([]*Attendee, 0)
+	}
+	if !contains(atts, *attendee) {
+		atts = append(atts, attendee)
+		indexDB[t] = atts
 	}
 }
 
