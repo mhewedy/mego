@@ -8,11 +8,11 @@ import (
 
 func getAttendeeDetails(c ews.Client, e string) (*AttendeeDetails, error) {
 
-	if attendeesIndex == nil {
-		return nil, errors.New("index is empty, should run the index first")
+	if attendeesDB == nil {
+		return nil, errors.New("attendees db is empty, build the index first by invoking the search api")
 	}
 
-	attendee := attendeesIndex[email(e)]
+	attendee := attendeesDB[email(e)]
 	// check cache
 	if attendee.details != nil {
 		return attendee.details, nil
@@ -36,7 +36,7 @@ func getAttendeeDetails(c ews.Client, e string) (*AttendeeDetails, error) {
 		MobilePhone:         persona.MobilePhones.PhoneNumberAttributedValue.Value.Number,
 		OfficeLocation:      persona.OfficeLocations.StringAttributedValue.Value,
 	}
-	attendeesIndex[email(e)] = attendee // cache
+	attendeesDB[email(e)] = attendee // cache
 
 	return attendee.details, nil
 }

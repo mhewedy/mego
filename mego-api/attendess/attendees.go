@@ -34,19 +34,18 @@ type AttendeeDetails struct {
 
 type email string
 
-var attendeesIndex map[email]Attendee
+var attendeesDB = make(map[email]Attendee)
 
 func indexAttendees(u *user.User) {
-	attendeesIndex = make(map[email]Attendee)
 
 	if conf.GetBool("indexer.parallel", false) {
-		attendeesIndex = getAttendeesParallel(u)
+		attendeesDB = getAttendeesParallel(u)
 	} else {
-		attendeesIndex = getAttendees(u)
+		attendeesDB = getAttendees(u)
 	}
 
 	input := make([]Attendee, 0)
-	for _, v := range attendeesIndex {
+	for _, v := range attendeesDB {
 		input = append(input, v)
 	}
 	index(input)
@@ -133,7 +132,7 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 func searchAttendees(q string, exclude []string) []Attendee {
 
 	attendees := search(q)
-	attendees = prependExactByEmail(attendeesIndex[email(q)], attendees)
+	attendees = prependExactByEmail(attendeesDB[email(q)], attendees)
 
 	// exclude
 	var removed = 0

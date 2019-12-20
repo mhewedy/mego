@@ -87,8 +87,8 @@ func Test_indexAttendees(t *testing.T) {
 		Password: "",
 	})
 
-	assert.Equal(t, 2, len(attendeesIndex))
-	assert.Equal(t, attendeesIndex["terry@litwareinc.com"], Attendee{
+	assert.Equal(t, 2, len(attendeesDB))
+	assert.Equal(t, attendeesDB["terry@litwareinc.com"], Attendee{
 		DisplayName:  "Terry Adams",
 		Title:        "",
 		PersonaId:    "some id",
@@ -96,7 +96,7 @@ func Test_indexAttendees(t *testing.T) {
 		Image:        "",
 	})
 
-	assert.Equal(t, attendeesIndex["abbas@litwareinc.com"], Attendee{
+	assert.Equal(t, attendeesDB["abbas@litwareinc.com"], Attendee{
 		DisplayName:  "Abbas Adams",
 		Title:        "",
 		PersonaId:    "some id 2",
