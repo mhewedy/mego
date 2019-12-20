@@ -16,6 +16,14 @@ func index(attendees []Attendee) {
 			indexToken(t, &attendees[i])
 			return nil
 		})
+
+		if conf.GetBool("indexer.secondary.enabled", false) {
+			email := strings.Split(aa.EmailAddress, "@")[0]
+			doOnToken(email, func(t token) []Attendee {
+				indexToken(t, &attendees[i])
+				return nil
+			})
+		}
 	}
 }
 
