@@ -7,6 +7,7 @@ import (
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
 	"log"
+	"math/rand"
 	"sort"
 	"time"
 )
@@ -40,6 +41,9 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, to time.Time, u 
 				BusyDetails: wrap(events),
 			}
 		}
+
+		// avoid block by exchange server
+		time.Sleep(time.Duration(rand.Intn(200)) * time.Millisecond)
 	}
 
 	sortResult(result)
