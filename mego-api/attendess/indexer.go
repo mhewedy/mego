@@ -94,7 +94,7 @@ func doOnToken(input string, fn func(t token) []Attendee) [][]Attendee {
 	ii := make([][]Attendee, 0)
 
 	for _, field := range fields {
-		tokens := tokenize(field, conf.GetInt("indexer.token_size", 2))
+		tokens := tokenize(field, conf.GetInt("indexer.token_size", 4))
 
 		for _, t := range tokens {
 			ii = append(ii, fn(t))
