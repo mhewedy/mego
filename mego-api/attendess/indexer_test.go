@@ -80,16 +80,16 @@ func Test_tokenize(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []string
+		want []token
 	}{
 		{
 			name: "token on 3 chars",
 			args: args{s: "hello", ts: 3},
-			want: []string{"hel", "ell", "llo"},
+			want: []token{"hel", "ell", "llo"},
 		}, {
 			name: "token on 2 chars",
 			args: args{s: "hello", ts: 2},
-			want: []string{"he", "el", "ll", "lo"},
+			want: []token{"he", "el", "ll", "lo"},
 		},
 	}
 	for _, tt := range tests {
