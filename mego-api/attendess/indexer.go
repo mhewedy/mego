@@ -6,9 +6,13 @@ import (
 	"strings"
 )
 
-type token string
+// ------------------------------------------
+// An inverted index based on in-memory hash
+// ------------------------------------------
 
 var indexDB = make(map[token][]*Attendee)
+
+type token string
 
 func index(attendees []Attendee) {
 	for i, aa := range attendees {
