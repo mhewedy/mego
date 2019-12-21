@@ -12,7 +12,7 @@ So when a request made to the server with the valid user token, then the token g
 ## Screenshots
 
 1. Search is done using some basic indexing and searching in-memory scheme.
-<img src="https://github.com/mhewedy/mego/raw/master/screenshots/1.png" width="70%" style="border: groove 1px;">
+<img src="https://github.com/mhewedy/mego/raw/master/screenshots/1.png" width="70%" style="max-width:100%;border: groove 1px;">
 
 2. Availabity is returned based on the user input
 <img src="https://github.com/mhewedy/mego/raw/master/screenshots/2.png" width="70%" style="border: groove 1px;">
