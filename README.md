@@ -12,13 +12,13 @@ So when a request made to the server with the valid user token, then the token g
 ## Screenshots
 
 1. Search is done using some basic indexing and searching in-memory scheme.
-<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/1.png" width="70%"> </kbd>
+<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/1.png"> </kbd>
 
 2. Availabity is returned based on the user input
-<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/2.png" width="70%" style="border: groove 1px;"></kbd>
+<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/2.png"></kbd>
 
 3. User can send meeting request and add optional attendees as well, where thier availabity time will not checked.
-<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/3.png" width="70%" style="border: groove 1px;"></kbd>
+<kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/3.png"></kbd>
 
 ## Download
 Download the latest release from [the releases section](https://github.com/mhewedy/mego/releases/latest) (Linux, mac and win releases available) 
