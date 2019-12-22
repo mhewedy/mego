@@ -304,7 +304,7 @@
                 let slotTo  = new Date(slot.getAttribute("data-slot-from"));
                 slotTo.setMinutes(slotTo.getMinutes() + slotIntervalInMinutes);
                 if (slotTo <= new Date(this.searchInput.from)) {
-                    slot.style.background = 'rgba(222,224,227,0.4)'
+                    slot.style.background = 'rgba(233,235,238,0.26)'
                 }else {
                     slot.style.background = "transparent";
                 }
@@ -340,17 +340,17 @@
   /**/
   .Busy {
     color: white;
-    background-color: #77c2e7;
+    background-color: #c2d6e9;
   }
 
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
-    background-color: #b0deca;
+    background-color: #c8dfc0;
   }
 
   .RoomBusy {
-    background-color: #ffec9d;
+    background-color: #fffae2;
   }
 
   .error {
