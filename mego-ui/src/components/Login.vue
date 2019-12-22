@@ -14,7 +14,7 @@
             <span class="p-inputgroup-addon">
                 <i class="pi pi-user"></i>
             </span>
-            <InputText placeholder="Username" v-model="username"/>
+            <InputText placeholder="Username" v-model="username" @keypress.enter="login()"/>
           </div>
         </div>
 
@@ -29,7 +29,7 @@
             <span class="p-inputgroup-addon">
                 <i class="pi pi-key"></i>
             </span>
-            <Password placeholder="Password" v-model="password" :feedback="false"/>
+            <Password placeholder="Password" v-model="password" :feedback="false" @keypress.enter="login()"/>
           </div>
         </div>
       </div>
