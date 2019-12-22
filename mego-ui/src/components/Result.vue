@@ -219,8 +219,9 @@
                                 let divs = slot.getElementsByTagName("div");
                                 for (let j = 0; j < divs.length; j++) {
                                     let div = divs[j];
-                                    div.setAttribute("style", "height: " + 100 / (Math.max(6, divs.length))
-                                        + "%; border-bottom: white 3px solid;")
+                                    let minRowsPerCell = 1;
+                                    let height = 100 / (Math.max(minRowsPerCell, divs.length));
+                                    div.setAttribute("style", "height: " + height + "%; border-bottom: white 0px solid;")
                                 }
                             }
                         }
@@ -339,21 +340,21 @@
   /**/
   .Busy {
     color: white;
-    background-color: #0057e7;
+    background-color: #77c2e7;
   }
 
   .Tentative {
     color: white;
     /*background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #deedf8 10px, #deedf8 20px);*/
-    background-color: #008744;
+    background-color: #b0deca;
   }
 
   .RoomBusy {
-    background-color: #ffa700;
+    background-color: #ffec9d;
   }
 
   .error {
-    background-color: #d62d20;
+    background-color: #d6685c;
   }
 
   /**/
