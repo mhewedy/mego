@@ -7,7 +7,7 @@ require (
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/mux v1.7.3
 	github.com/markbates/pkger v0.12.8
-	github.com/mhewedy/ews v1.0.13
+	github.com/mhewedy/ews v1.0.14
 	github.com/mhewedy/go-conf v0.0.2
 	github.com/schollz/progressbar/v2 v2.14.2
 	github.com/stretchr/testify v1.4.0

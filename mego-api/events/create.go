@@ -9,11 +9,17 @@ import (
 
 func doCreate(i *createInput, u *user.User) error {
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
-	return ewsutil.CreateEvent(ewsClient,
+
+	body := i.Body +
+		`<br/><br/><br/><div style="color: gray; font-size: x-small;"> 
+		Sent by <a style="color: gray; text-decoration: none;" href="https://github.com/mhewedy/mego" 
+		target="_blank"><span style="font-weight: bold;">MEGO</span></a> The Meeting Organizer</div>`
+
+	return ewsutil.CreateHTMLEvent(ewsClient,
 		i.To,
 		i.Optional,
 		i.Subject,
-		i.Body,
+		body,
 		i.Room,
 		i.From,
 		time.Duration(i.Duration)*time.Minute,
