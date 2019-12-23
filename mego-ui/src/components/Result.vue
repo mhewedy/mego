@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="p-grid row">
+      <div class="p-grid row" id="timeSlot-header">
         <span class="p-col-1">
         </span>
         <span v-for="t in timeSlotCount" :key="t" :style="{width: (90/timeSlotCount) + '%'}">
@@ -40,7 +40,7 @@
         </span>
       </div>
 
-      <div style="padding-top: 40px" class="p-grid">
+      <div id="legend" style="padding-top: 40px" class="p-grid">
 
         <span class="Busy p-col-1 legend-block"></span>
         <span class="p-col-1 legend-key">Busy</span>
@@ -125,6 +125,10 @@
                     this.draw(data);
                     this.loadingResult = false;
                     this.$emit("resultLoad", false);
+                    setTimeout(() => window.scrollTo({
+                        top: document.getElementById("timeSlot-header").offsetTop,
+                        behavior: "smooth"
+                    }), 10)
                 }, err => {
                     MessageService.error(err);
                     this.loadingResult = false;
