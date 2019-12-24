@@ -1,7 +1,7 @@
 # MEGO
 
 ## What?
-A meeting organizer for Exchange server.
+A meeting organizer for MS Exchange server.
 
 ## Why?
 Reserving a meeting with many people and many candidate rooms wasn't always an amusing activity. you need go by eye through the timeline of all people and all candidate rooms to see the most suitable one.
