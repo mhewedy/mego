@@ -10,7 +10,7 @@ before_install:
 before_deploy:
   - "GOOS=linux GOARCH=amd64 make && cd mego-api && tar czf mego-${TRAVIS_TAG}.linux.tar.gz mego && rm -rf mego && cd -"
   - "GOOS=darwin GOARCH=amd64 make && cd mego-api && tar czf mego-${TRAVIS_TAG}.darwin.tar.gz mego && rm -rf mego && cd -"
-  - "GOOS=windows GOARCH=amd64 make && cd mego-api && tar czf mego-${TRAVIS_TAG}.windows.tar.gz mego.exe && rm -rf mego.exe && cd -"
+  - "GOOS=windows GOARCH=amd64 make cflags='-ldflags -H=windowsgui' && cd mego-api && tar czf mego-${TRAVIS_TAG}.windows.tar.gz mego.exe && rm -rf mego.exe && cd -"
 
 deploy:
   provider: releases
