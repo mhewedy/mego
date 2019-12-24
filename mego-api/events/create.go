@@ -11,7 +11,7 @@ func doCreate(i *createInput, u *user.User) error {
 	ewsClient := commons.NewEWSClient(u.Username, u.Password)
 
 	body := i.Body +
-		`<br/><br/><br/><div style="color: gray; font-size: x-small;"> 
+		`<br/><br/><br/><div style="color: gray; font-size: 9.5; font-family: Arial;"> 
 		Sent by <a style="color: gray; text-decoration: none;" href="https://github.com/mhewedy/mego" 
 		target="_blank"><span style="font-weight: bold;">MEGO</span></a> The Meeting Organizer</div>`
 
