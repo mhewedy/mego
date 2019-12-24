@@ -21,13 +21,16 @@ So when a request made to the server with the valid user token, then the token g
 
 ## Screenshots
 
-1. Search is done using some basic indexing and searching in-memory scheme.
+* Search is done using some [basic yet efficient indexing and searching in-memory scheme](https://medium.com/@mhewedy_46874/implementing-a-simple-indexing-algorithm-in-golang-c65be7eaa563):
+
 <kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/1.png"> </kbd>
 
-2. Availabity is returned based on the user input
+* Availability is returned based on the user input:
+
 <kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/2.png"></kbd>
 
-3. User can send meeting request and add optional attendees as well, where thier availabity time will not checked.
+* User can send meeting request and add optional attendees as well, where thier availabity time will not checked:
+
 <kbd> <img src="https://github.com/mhewedy/mego/raw/master/screenshots/3.png"></kbd>
 
 ## Download
