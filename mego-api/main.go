@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/mhewedy/mego/api"
 	"log"
 	"net/http"
+	"os"
 	"os/exec"
 	"runtime"
 )
@@ -12,8 +14,13 @@ import (
 func main() {
 
 	go func() {
+		logf, _ := os.Create("access.log")
+		defer logf.Close()
+
+		loggingHandler := handlers.LoggingHandler(logf, api.Route())
+
 		fmt.Println("Server start listening on port 3000")
-		log.Fatal(http.ListenAndServe(":3000", api.Route()))
+		log.Fatal(http.ListenAndServe(":3000", loggingHandler))
 	}()
 
 	openBrowser("http://localhost:3000")

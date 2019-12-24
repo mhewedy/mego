@@ -4,3 +4,4 @@
 /mego-api/public
 /mego-api/pkged.go
 /mego-api/mego
+/mego-api/access.log
