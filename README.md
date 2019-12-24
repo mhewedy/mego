@@ -1,6 +1,16 @@
 # MEGO
 
+## What?
 A meeting organizer for Exchange server.
+
+## Why?
+Reserving a meeting with many people and many candidate rooms wasn't always an amusing activity. you need go by eye through the timeline of all people and all candidate rooms to see the most suitable one.
+
+In MEGO, all people with each selected room is **represented in just one box**, either it is *free* or *not*. (busy/tentative)
+
+so you no longer need to do the dunting work of eye checking, and adding and removing rooms by hand, all rooms should be added in a tree-like structure, organized around the building, the zone, the size, so you just click the room(s) and choose the users and here we go.
+
+Other features also exists like easily search through your organization people through a [simple and efficient indexing algorithm](https://medium.com/@mhewedy_46874/implementing-a-simple-indexing-algorithm-in-golang-c65be7eaa563)
 
 ## How it works:
 * It connects to Exchage server using [ews](http://github.com/mhewedy/ews)
