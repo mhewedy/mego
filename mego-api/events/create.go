@@ -1,11 +1,11 @@
 package events
 
 import (
+	"fmt"
 	"github.com/mhewedy/ews/ewsutil"
 	"github.com/mhewedy/mego/commons"
 	"github.com/mhewedy/mego/rooms"
 	"github.com/mhewedy/mego/user"
-	"log"
 	"time"
 )
 
@@ -17,18 +17,21 @@ func doCreate(i *createInput, u *user.User) error {
 		Sent by <a style="color: gray; text-decoration: none;" href="https://github.com/mhewedy/mego" 
 		target="_blank"><span style="font-weight: bold;">MEGO</span></a> The Meeting Organizer</div>`
 
-	name, err := rooms.FindByEmail(i.Room)
+	i.To = append(i.To, i.Room)
+
+	strings, err := rooms.FindByEmail(i.Room)
 	if err != nil {
-		log.Println(err)
-		name = i.Room
+		return err
 	}
+
+	room := fmt.Sprintf("Meeting Room-%s- %s -%s –PAX%s", strings[1], strings[2], strings[4], strings[3])
 
 	return ewsutil.CreateHTMLEvent(ewsClient,
 		i.To,
 		i.Optional,
 		i.Subject,
 		body,
-		name,
+		room,
 		i.From,
 		time.Duration(i.Duration)*time.Minute,
 	)

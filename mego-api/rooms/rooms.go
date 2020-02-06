@@ -79,7 +79,17 @@ func loadRoomList() {
 	buildRoomTree()
 }
 
-func FindByEmail(toFound string) (string, error) {
+func FindDisplayNameByEmail(toFound string) (string, error) {
+
+	rr, err := FindByEmail(toFound)
+	if err != nil {
+		return "", err
+	}
+
+	return rr[displayName], nil
+}
+
+func FindByEmail(toFound string) ([]string, error) {
 	once.Do(loadRoomList)
 
 	for i, rr := range roomList {
@@ -87,10 +97,10 @@ func FindByEmail(toFound string) (string, error) {
 			continue // skip header
 		}
 		if rr[email] == toFound {
-			return rr[displayName], nil
+			return rr, nil
 		}
 	}
-	return "", fmt.Errorf("no such room found: %s", toFound)
+	return nil, fmt.Errorf("no such room found: %s", toFound)
 }
 
 func buildRoomTree() {

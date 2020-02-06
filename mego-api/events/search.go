@@ -20,7 +20,7 @@ func doSearch(eventUsers [][]ewsutil.EventUser, from time.Time, to time.Time, u 
 	for i, ee := range eventUsers {
 
 		email := ee[roomIndex].Email
-		name, err := rooms.FindByEmail(email)
+		name, err := rooms.FindDisplayNameByEmail(email)
 		if err != nil {
 			log.Println(err)
 			name = email
