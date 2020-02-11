@@ -10,6 +10,7 @@ require (
 	github.com/markbates/pkger v0.12.8
 	github.com/mhewedy/ews v1.0.14
 	github.com/mhewedy/go-conf v0.0.2
+	github.com/mhewedy/httputil v0.0.0-20200211200408-e8eab4286fdb
 	github.com/schollz/progressbar/v2 v2.14.2
 	github.com/stretchr/testify v1.4.0
 )
