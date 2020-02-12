@@ -20,13 +20,13 @@ type Attendee struct {
 	DisplayName  string           `json:"display_name"`
 	Title        string           `json:"title,omitempty"`
 	EmailAddress string           `json:"email_address"`
+	Department   string           `json:"department,omitempty"`
 	Image        string           `json:"image,omitempty"`
 	details      *AttendeeDetails `json:"-"` // for caching only
 }
 
 type AttendeeDetails struct {
 	Attendee
-	Department          string `json:"department,omitempty"`
 	BusinessPhoneNumber string `json:"business_phone_numbers,omitempty"`
 	MobilePhone         string `json:"mobile_phone,omitempty"`
 	OfficeLocation      string `json:"office_location,omitempty"`
@@ -124,6 +124,7 @@ func getAttendeesStartsWith(s string, u *user.User) []Attendee {
 			Title:        p.Title,
 			EmailAddress: p.EmailAddress.EmailAddress,
 			PersonaId:    p.PersonaId.Id,
+			Department:   p.Departments.StringAttributedValue.Value,
 		}
 	}
 	return attendees

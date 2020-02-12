@@ -29,9 +29,9 @@ func getAttendeeDetails(c ews.Client, e string) (*AttendeeDetails, error) {
 	}
 
 	attendee.Image = base64
+	attendee.Department = persona.Department // make sure attendee continue to return even if not returned at index time
 	attendee.details = &AttendeeDetails{
 		Attendee:            attendee,
-		Department:          persona.Department,
 		BusinessPhoneNumber: persona.BusinessPhoneNumbers.PhoneNumberAttributedValue.Value.Number,
 		MobilePhone:         persona.MobilePhones.PhoneNumberAttributedValue.Value.Number,
 		OfficeLocation:      persona.OfficeLocations.StringAttributedValue.Value,
