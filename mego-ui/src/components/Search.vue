@@ -15,6 +15,7 @@
             <span>{{slotProps.item.email_address}}</span>
             <span><b>{{slotProps.item.display_name}}</b></span>
             <span v-if="slotProps.item.title">({{slotProps.item.title}})</span>
+            <span v-if="slotProps.item.department"> - {{slotProps.item.department}}</span>
             </div>
           </div>
         </template>
